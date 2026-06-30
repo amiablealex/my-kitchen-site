@@ -1,0 +1,12 @@
+[Unit]
+Description=My Kitchen website (gunicorn)
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/projects/my-kitchen-website
+ExecStart=/home/pi/projects/my-kitchen-website/venv/bin/gunicorn app:app --workers 2 --bind 127.0.0.1:8008
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

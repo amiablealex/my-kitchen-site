@@ -1,0 +1,15 @@
+# Cloudflare tunnel config — add the new hostname alongside your existing site.
+# Both hostnames point at the same local nginx (port 80); nginx routes by the
+# Host header to the right server block. Keep the catch-all 404 LAST.
+#
+# After editing: restart cloudflared, and create the DNS route for the new
+# hostname (see the website README, "Make it public").
+
+tunnel: tunnel-name
+credentials-file: /etc/cloudflared/credential.json
+ingress:
+  - hostname: mydomain.com            # your existing personal site
+    service: http://localhost:80
+  - hostname: your-domain.example     # <-- the new My Kitchen site domain
+    service: http://localhost:80
+  - service: http_status:404

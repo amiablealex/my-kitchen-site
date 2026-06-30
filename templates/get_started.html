@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Get started — {{ site.name }}{% endblock %}
+{% block description %}Install My Kitchen as a Home Assistant add-on (recommended) or with Docker, then configure your LLM provider.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap measure">
+    <p class="eyebrow">Get started</p>
+    <h1 class="display page-title">Up and running</h1>
+    <p class="lead">My Kitchen runs on your own hardware. The smoothest path is the Home Assistant
+       add-on — one repository, one install, HTTPS and remote access handled for you. Plain Docker
+       works too if you'd rather not use Home Assistant.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap measure">
+
+    <article class="install card install--primary">
+      <div class="install-head">
+        <span class="badge badge--ok">Recommended</span>
+        <h2>{{ icon('home') }} Home Assistant add-on</h2>
+      </div>
+      <p>If you run Home Assistant OS (e.g. on a Raspberry Pi), this is the easiest way to install,
+         update and reach My Kitchen securely — including from your phone via the companion app.</p>
+      <ol class="walk">
+        <li><strong>Add the repository.</strong> In Home Assistant go to
+          <em>Settings → Add-ons → Add-on store</em>, open the <em>⋮</em> menu (top right),
+          choose <em>Repositories</em>, paste the URL below and click <em>Add</em>.
+          <pre class="code"><code>{{ site.ha_repo }}</code></pre>
+        </li>
+        <li><strong>Install.</strong> Close the dialog, find <strong>My Kitchen</strong> in the store
+          and click <em>Install</em>. The first build clones the app and may take a few minutes.</li>
+        <li><strong>Configure.</strong> On the <em>Configuration</em> tab, set your LLM provider and
+          API key (see <a href="#configure">Configuration</a> below). Save.</li>
+        <li><strong>Start.</strong> On the <em>Info</em> tab, click <em>Start</em>. Turn on
+          <em>Show in sidebar</em> for one-tap access.</li>
+        <li><strong>First login.</strong> Open the add-on. A starter account is created automatically
+          and its password is printed once in the add-on <em>Log</em> tab — log in, then change it
+          under Household.</li>
+      </ol>
+      <div class="callout callout--info">
+        {{ icon('info') }}
+        <div><strong>Remote access.</strong> With Home Assistant Cloud (Nabu Casa) or your own
+          HTTPS, the add-on is reachable securely through HA ingress — no ports to forward and
+          nothing exposed directly to the internet.</div>
+      </div>
+    </article>
+
+    <article class="install card">
+      <div class="install-head">
+        <h2>{{ icon('dns') }} Docker</h2>
+      </div>
+      <p>Prefer to run it standalone? My Kitchen is a single container with a single-file SQLite
+         database on a mounted volume. The container runs database migrations automatically on start.</p>
+      <ol class="walk">
+        <li><strong>Clone the repo.</strong>
+          <pre class="code"><code>git clone {{ site.github }}.git
+cd my-kitchen</code></pre>
+        </li>
+        <li><strong>Set your config.</strong> Copy the example environment file and fill in your
+          values — at minimum a stable <code>SECRET_KEY</code>, your LLM provider and API key, and the
+          database path. The repository's <a href="{{ site.github }}/blob/main/DEPLOY.md" rel="noopener" target="_blank">DEPLOY.md</a>
+          lists every variable.
+          <pre class="code"><code># a few of the key variables (see DEPLOY.md for the full list)
+SECRET_KEY=change-me-to-a-long-random-string
+MY_KITCHEN_DB_PATH=/data/my_kitchen.db
+LLM_PROVIDER=gemini
+APP_TIMEZONE=Europe/London</code></pre>
+        </li>
+        <li><strong>Launch.</strong>
+          <pre class="code"><code>docker compose up -d --build</code></pre>
+        </li>
+        <li><strong>Reverse proxy (optional).</strong> Put it behind nginx/Caddy for a clean
+          hostname and TLS, exactly as you would any small web service.</li>
+      </ol>
+      <div class="callout callout--info">
+        {{ icon('info') }}
+        <div>The <a href="{{ site.github }}/blob/main/DEPLOY.md" rel="noopener" target="_blank">DEPLOY.md</a>
+          in the repo is the source of truth for the full environment list, backup/restore and
+          volume layout.</div>
+      </div>
+    </article>
+
+    <h2 id="configure" class="section-heading anchored">Configuration</h2>
+    <p>My Kitchen talks to a large language model through a swappable provider adapter. Set these in
+       the add-on's <em>Configuration</em> tab, or as environment variables under Docker.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Setting</th><th>What it does</th><th>Default</th></tr></thead>
+        <tbody>
+          <tr><td>LLM provider</td><td>Which model service to use: <code>gemini</code>, <code>anthropic</code>, or <code>mock</code> (no API calls — for trying the app).</td><td><code>gemini</code></td></tr>
+          <tr><td>API key</td><td>Your key for the chosen provider. Stored on your device; sent only with generation requests.</td><td>—</td></tr>
+          <tr><td>Model</td><td>The specific model to call.</td><td><code>gemini-3.5-flash</code></td></tr>
+          <tr><td>Temperature</td><td>How adventurous generation is. Higher = more variety.</td><td><code>0.8</code></td></tr>
+          <tr><td>Max tokens</td><td>Output length ceiling per generation.</td><td><code>8000</code></td></tr>
+          <tr><td>Timezone</td><td>Used for recipe history timestamps.</td><td><code>Europe/London</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout--tip">
+      {{ icon('check') }}
+      <div><strong>Fully local?</strong> The provider adapter is designed to accept a local model
+        (e.g. Ollama) as well. A Raspberry Pi won't match a hosted model's quality and speed today,
+        but if you have the hardware, a fully on-network setup is on the table. See
+        <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
+    </div>
+
+    <h2 class="section-heading anchored">Updating &amp; backups</h2>
+    <p><strong>Home Assistant:</strong> new versions appear on the add-on's update screen — click
+       <em>Update</em>. Database migrations run automatically. Configure
+       <em>Settings → System → Backups</em> so HA snapshots the add-on before schema-changing releases.</p>
+    <p><strong>Docker:</strong> <code>git pull</code> then <code>docker compose up -d --build</code>;
+       migrations apply on start. Your data lives on the mounted <code>/data</code> volume — back that
+       up on your normal schedule.</p>
+
+    <div class="next-row">
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
+      <a class="btn btn--secondary" href="{{ url_for('faq') }}">{{ icon('info') }} Common questions</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

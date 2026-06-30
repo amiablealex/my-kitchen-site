@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}FAQ — {{ site.name }}{% endblock %}
+{% block description %}Common questions about My Kitchen: Home Assistant, cost, privacy, which LLM, multiple users and more.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap measure">
+    <p class="eyebrow">FAQ</p>
+    <h1 class="display page-title">Common questions</h1>
+    <p class="lead">The short answers. For the longer ones, see the <a href="{{ url_for('docs') }}">docs</a>.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap measure">
+    <div class="faq">
+      <details>
+        <summary>Do I need Home Assistant?</summary>
+        <p>No. Home Assistant is the easiest path — one-click install, updates and secure remote
+           access — but My Kitchen also runs as a plain Docker container behind any reverse proxy.</p>
+      </details>
+      <details>
+        <summary>Is it free?</summary>
+        <p>The app is open source and free to run. The only running cost is your LLM provider's API
+           usage, which is small with the lightweight default model — or zero if you run a local model.</p>
+      </details>
+      <details>
+        <summary>Does my data leave my network?</summary>
+        <p>Your stock, recipes, history and accounts stay on your hardware. The only thing sent out is
+           a short generation brief (ingredients and constraints) to your chosen LLM, and only when you
+           generate. A local-model option avoids even that. See <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
+      </details>
+      <details>
+        <summary>Which LLM does it use?</summary>
+        <p>A lightweight hosted model by default, through a swappable provider adapter. You supply your
+           own API key, and you can point it at a different provider — or a local model.</p>
+      </details>
+      <details>
+        <summary>Can more than one person use it?</summary>
+        <p>Yes. Add everyone in the house, each with their own dietary needs and their own favourites.
+           Pick who you're cooking for and the recipe brief adjusts.</p>
+      </details>
+      <details>
+        <summary>Can I add my own recipes?</summary>
+        <p>Yes — write them straight into the app, with ingredients picked from your catalogue so they
+           join your cookable suggestions like any other recipe.</p>
+      </details>
+      <details>
+        <summary>Is it safe for allergies?</summary>
+        <p>It takes allergies seriously and states them as absolute exclusions in the brief — but an AI
+           is not a safety guarantee. Recipes generated with an allergy in play carry a visible reminder
+           to check the ingredients yourself, and you always should.</p>
+      </details>
+      <details>
+        <summary>Does it track nutrition or calories?</summary>
+        <p>No. That's deliberately out of scope — it's an inspiration tool for cooking from what you
+           have, not a tracker.</p>
+      </details>
+    </div>
+
+    <div class="next-row">
+      <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a>
+      <a class="btn btn--secondary" href="{{ site.github }}" rel="noopener" target="_blank">Ask on GitHub</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

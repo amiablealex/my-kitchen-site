@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Documentation — {{ site.name }}{% endblock %}
+{% block description %}How My Kitchen works: stock, the ingredient catalogue, the Lets Cook wizard, suggestions, generation, and household setup.{% endblock %}
+
+{% block content %}
+<section class="page-head page-head--tight">
+  <div class="wrap">
+    <p class="eyebrow">Documentation</p>
+    <h1 class="display page-title">How it works</h1>
+    <p class="lead">A light tour of the ideas behind My Kitchen and how to use it day to day.
+       For installing and configuring, see <a href="{{ url_for('get_started') }}">Get started</a>.</p>
+  </div>
+</section>
+
+<div class="wrap docs-layout">
+  <aside class="docs-toc" aria-label="On this page">
+    <p class="docs-toc-title">On this page</p>
+    <nav>
+      <a href="#concepts">The big idea</a>
+      <a href="#stock">Stock</a>
+      <a href="#catalogue">Ingredients &amp; the catalogue</a>
+      <a href="#wizard">The Lets Cook wizard</a>
+      <a href="#suggestions">Suggestions</a>
+      <a href="#generation">Generation</a>
+      <a href="#recipes">Recipes &amp; favourites</a>
+      <a href="#household">Household &amp; diets</a>
+      <a href="#privacy">Self-hosting &amp; data</a>
+      <a href="#trouble">Troubleshooting</a>
+    </nav>
+  </aside>
+
+  <article class="docs-body">
+    <section id="concepts" class="doc-sec">
+      <h2>The big idea</h2>
+      <p>My Kitchen is a household's recipe brain: a place that knows what's in stock, what's been
+         cooked and what's saved, and turns all of it into “here's what to make.” The key design
+         choice is that <strong>every recipe links to your real ingredient catalogue</strong>, not
+         free text — which is what lets the app tell you what's genuinely cookable right now.</p>
+      <p>One principle runs through everything: <strong>AI proposes, the app verifies, you review.</strong>
+         The model is never the final word — its output is checked against your kitchen and handed to
+         you to confirm.</p>
+    </section>
+
+    <section id="stock" class="doc-sec">
+      <h2>Stock</h2>
+      <p>Stock is a simple in-or-out toggle. There are no quantities, no “mark as cooked” decrement,
+         no low-stock alerts — deliberately. Inventory systems are what kill household tools through
+         maintenance burden, so stock stays a binary toggle, forever.</p>
+      <p>You maintain it from the <em>Stock</em> screen: a grouped view of what's in, search-to-add
+         against your catalogue, and a tap to remove. Quick notes like “needs using” or “1 large” can
+         ride along and get passed to the model.</p>
+    </section>
+
+    <section id="catalogue" class="doc-sec">
+      <h2>Ingredients &amp; the catalogue</h2>
+      <p>Behind the app is a catalogue of ingredients grouped into categories (protein, carb, veg and
+         more). Each one is either:</p>
+      <ul>
+        <li><strong>A core ingredient</strong> — the things that come and go, which you stock and
+          choose between.</li>
+        <li><strong>A staple</strong> — oil, salt, common spices, flour. Assumed always available and
+          used freely; you don't track these.</li>
+      </ul>
+      <p>When a recipe is saved, each ingredient line is matched to a catalogue entry by a
+         deterministic resolver (no AI guesswork). On any recipe you'll see a calm pill naming the
+         linked ingredient, and you can re-link, unlink or add-and-link a line yourself — the app
+         never silently overrides a manual link.</p>
+    </section>
+
+    <section id="wizard" class="doc-sec">
+      <h2>The Lets Cook wizard</h2>
+      <p>A short, linear flow — one screen at a time, easy to step back, built to use one-handed at
+         the hob:</p>
+      <ol>
+        <li><strong>Choose ingredients to use up.</strong> Tap in-stock items to make them must-use.
+          Leave it blank to cook from whatever's in.</li>
+        <li><strong>Meal type &amp; cuisine.</strong> Breakfast through to a sauce or dressing;
+          cuisine where it applies.</li>
+        <li><strong>Time.</strong> Quick (under 30 min) or relaxed (30–75 min).</li>
+        <li><strong>Cooking for.</strong> Pick people and add guests — servings and dietary needs
+          follow automatically.</li>
+      </ol>
+      <p>Stock is read live as you go, so a mid-flow stock fix shows up immediately.</p>
+    </section>
+
+    <section id="suggestions" class="doc-sec">
+      <h2>Suggestions</h2>
+      <p>Before any generation, the review step shows saved recipes you can <strong>cook right now</strong>
+         that fit your brief — as a row of cards. A recipe qualifies when every required ingredient is
+         linked to something in stock (staples assumed), the meal type and cuisine match, and any
+         must-use picks appear in it.</p>
+      <div class="callout callout--info">
+        {{ icon('info') }}
+        <div>Suggestions are precise on purpose: if a required ingredient line isn't linked to your
+          catalogue, the recipe is left out rather than promised falsely. Sparse at first — it grows
+          as your history does.</div>
+      </div>
+    </section>
+
+    <section id="generation" class="doc-sec">
+      <h2>Generation</h2>
+      <p>Nothing takes your fancy? Generate. The app builds a brief from your stock, constraints and a
+         randomly chosen creative angle, then returns <strong>two genuinely different recipes</strong>
+         with an energetic write-up — the why, the technique, doneness cues, finishing touches. You
+         pick one; both are saved.</p>
+      <p>Generation runs in the background, so a slow model never ties up the page — you wait on a
+         simple progress screen and land on the choice when it's ready.</p>
+    </section>
+
+    <section id="recipes" class="doc-sec">
+      <h2>Recipes &amp; favourites</h2>
+      <p>Every recipe renders the same four-part way: intro, ingredients, prep, cook (plus tips when
+         there are any). Recipes come from three sources — AI-generated, ones you write yourself, and
+         (later) imported — each marked with a small colour-coded dot.</p>
+      <p>The <em>Recipes</em> screen is a dated history you can filter by cook and by source. Favourite
+         any recipe, from any source; favourites are per-person, and they feed back into your
+         cookable suggestions.</p>
+    </section>
+
+    <section id="household" class="doc-sec">
+      <h2>Household &amp; diets</h2>
+      <p>Add the people in your house, each with their own dietary preferences and allergies. When you
+         choose who you're cooking for, the brief combines their needs: allergies are stated as
+         absolute exclusions, preferences as gentle steers.</p>
+      <div class="callout callout--warn">
+        {{ icon('info') }}
+        <div><strong>Allergies:</strong> an AI is not a safety guarantee. Recipes generated with an
+          allergy in the brief carry a visible reminder to check the ingredients yourself. Always do.</div>
+      </div>
+    </section>
+
+    <section id="privacy" class="doc-sec">
+      <h2>Self-hosting &amp; data</h2>
+      <p>Everything runs on your hardware and your data stays there. The only thing that leaves your
+         network is the generation brief — a short, low-sensitivity description of ingredients and
+         constraints — sent to your chosen LLM provider. A local-model option exists for a fully
+         on-network setup. The full picture is on the <a href="{{ url_for('privacy') }}">Privacy &amp; data</a> page.</p>
+    </section>
+
+    <section id="trouble" class="doc-sec">
+      <h2>Troubleshooting</h2>
+      <h3>The sidebar panel doesn't reflect a setting change</h3>
+      <p>Some Home Assistant panel changes need a full Core restart, not just an add-on restart.</p>
+      <h3>Generation seems to hang</h3>
+      <p>It runs in the background and the page polls for the result; very long generations are
+         expected to finish on the progress screen. If a run errors, the screen offers a retry.</p>
+      <h3>My catalogue didn't change after an update</h3>
+      <p>A normal update keeps your existing catalogue and only applies additive migrations. Rebuilding
+         the seed catalogue is a deliberate step — see the repo's notes before doing it, as it clears data.</p>
+      <p class="muted">More detail lives in the <a href="{{ site.github }}" rel="noopener" target="_blank">GitHub repository</a>.</p>
+    </section>
+  </article>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Privacy &amp; data — {{ site.name }}{% endblock %}
+{% block description %}What stays on your hardware, what leaves your network, and how to run My Kitchen fully locally.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap measure">
+    <p class="eyebrow">Privacy &amp; data</p>
+    <h1 class="display page-title">Where your data lives</h1>
+    <p class="lead">My Kitchen is built to be self-hosted and honest about the one thing that leaves
+       your network.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap measure">
+    <h2>Stays on your hardware</h2>
+    <p>Your accounts, stock list, ingredient catalogue, saved and generated recipes, history and
+       favourites all live in a single database file on the machine you run My Kitchen on. There's no
+       account with us, no cloud sync, no telemetry, no analytics. Nothing is shared between
+       households — it isn't a community platform.</p>
+
+    <h2>Leaves your network</h2>
+    <p>When — and only when — you generate a recipe, the app sends a short <strong>brief</strong> to
+       your chosen LLM provider: the ingredients in play, your constraints (meal type, time, dietary
+       needs as written) and a creative angle. It's low-sensitivity by design, but it does go to that
+       provider under their terms, using your own API key.</p>
+    <div class="callout callout--info">
+      {{ icon('info') }}
+      <div>This is the deliberate trade-off behind the project: a small Raspberry Pi can't match a
+        hosted model's quality and speed, so generation uses a cloud model while everything else stays
+        local. We'd rather say that plainly than market the app as fully private when a model call is
+        involved.</div>
+    </div>
+
+    <h2>Running fully local</h2>
+    <p>If you'd rather nothing left your network at all, the provider adapter is designed to accept a
+       local model (such as Ollama) behind the same interface. On capable hardware that gives you an
+       entirely on-network setup; on a small Pi you'll trade some recipe quality and speed for it. The
+       choice is yours.</p>
+
+    <h2>Security</h2>
+    <p>Access is gated by a per-household login on your network. Run via the Home Assistant add-on and
+       it sits behind HA's authenticated, HTTPS ingress — nothing is exposed directly to the internet
+       and there are no ports to forward. Run it standalone and it's an ordinary small web service you
+       put behind your own reverse proxy and TLS.</p>
+
+    <p class="muted">This page describes the app's design intent. You are responsible for your own
+       hosting, your LLM provider choice and their terms.</p>
+
+    <div class="next-row">
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
+      <a class="btn btn--secondary" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
