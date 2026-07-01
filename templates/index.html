@@ -12,126 +12,100 @@
        <strong>“here's what to make.”</strong></p>
     <div class="btn-row hero-cta">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a>
-      <a class="btn btn--secondary" href="{{ site.github }}" rel="noopener" target="_blank">View on GitHub</a>
     </div>
 
     <figure class="shot shot--hero">
-      <img src="{{ url_for('static', filename='img/screenshot-home.png?v=2') }}"
+      <img src="{{ url_for('static', filename='img/screenshot-home.png') }}"
            alt="The My Kitchen home screen on a phone" loading="eager" width="1080" height="2040">
     </figure>
   </div>
 </section>
 
-<section class="band">
-  <div class="wrap measure">
-    <h2>One input among several — not the whole product</h2>
-    <p class="lead">Most recipe apps are a search box bolted to an AI. My Kitchen is built the
-       other way round: every recipe is linked to your real ingredient catalogue, so the app can
-       tell you what you can cook <em>right now</em> before it ever calls a model. AI generation is
-       there when you want something new — verified against your kitchen, then handed to you to review.</p>
-  </div>
-</section>
-
 <section class="band band--alt">
   <div class="wrap">
-    <h2 class="section-heading">What it does</h2>
-    <div class="features">
-      <article class="feature card">
-        <span class="feature-ico">{{ icon('shelves') }}</span>
-        <h3>Cook from what you have</h3>
-        <p>A stock list that stays maintained because it's a single tap — in or out, never an
-           inventory to manage. The wizard builds meals around what's actually in.</p>
-      </article>
-      <article class="feature card">
-        <span class="feature-ico">{{ icon('kitchen') }}</span>
-        <h3>A pantry that's actually linked</h3>
-        <p>Every ingredient on every recipe is matched to your catalogue — so the app can reason
-           about what's cookable, not just match free text.</p>
-      </article>
-      <article class="feature card">
-        <span class="feature-ico">{{ icon('search') }}</span>
-        <h3>Suggestions before you generate</h3>
-        <p>At “Lets cook”, see saved recipes you can make tonight from current stock — surfaced
-           first, so a great meal you've already made doesn't get forgotten.</p>
-      </article>
-      <article class="feature card">
-        <span class="feature-ico">{{ icon('restaurant_menu') }}</span>
-        <h3>Two recipes, you pick</h3>
-        <p>Generation returns two genuinely different ideas with an energetic write-up — the why,
-           the technique, the finishing touches — then you choose.</p>
-      </article>
-      <article class="feature card">
-        <span class="feature-ico">{{ icon('group') }}</span>
-        <h3>Built for the household</h3>
-        <p>Multiple people, individual dietary needs and allergies, per-person favourites. Pick who
-           you're cooking for and the brief adjusts.</p>
-      </article>
-      <article class="feature card">
-        <span class="feature-ico">{{ icon('lock') }}</span>
-        <h3>Self-hosted &amp; private</h3>
-        <p>Runs on your own hardware. Your stock, recipes and history never leave your network —
-           only a small ingredient brief goes to the LLM. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
-      </article>
+    <div class="feature-lead">
+      <h2 class="section-heading">What it does</h2>
+      <p class="lead">Most recipe apps are a search box bolted to an AI. My Kitchen works the other
+         way round: it starts from what's actually in your kitchen, shows you what you can cook right
+         now, and only reaches for the model when you want something new — verified against your stock,
+         then handed to you to review. AI is one ingredient here, not the whole dish.</p>
     </div>
+
+    <ul class="feature-list">
+      <li class="feature-row">
+        <span class="feature-mark c1">{{ icon('shelves') }}</span>
+        <div class="feature-text">
+          <h3>Cook from what's actually in</h3>
+          <p>Keep stock with a single tap as you shop and cook — in or out, never an inventory to
+             manage. Staples like oil and spices are assumed, so you only track the things that come
+             and go, and meals get built around what you have.</p>
+        </div>
+      </li>
+      <li class="feature-row">
+        <span class="feature-mark c2">{{ icon('search') }}</span>
+        <div class="feature-text">
+          <h3>See what you can make right now</h3>
+          <p>At “Lets cook”, My Kitchen surfaces saved recipes you can cook tonight from current
+             stock — before it generates anything. A great meal you've made before doesn't get
+             forgotten, and you skip a needless trip to the model.</p>
+        </div>
+      </li>
+      <li class="feature-row">
+        <span class="feature-mark c3">{{ icon('cooking') }}</span>
+        <div class="feature-text">
+          <h3>Fresh ideas when you want them</h3>
+          <p>Nothing takes your fancy? Generate. It builds a brief from your kitchen, your
+             constraints and a creative angle, then returns two genuinely different recipes — the why,
+             the technique, the finishing touches. You pick one; both are saved.</p>
+        </div>
+      </li>
+      <li class="feature-row">
+        <span class="feature-mark c4">{{ icon('kitchen') }}</span>
+        <div class="feature-text">
+          <h3>Every recipe linked to your kitchen</h3>
+          <p>Each ingredient line is matched to your real catalogue, not loose text — which is what
+             lets the app reason about what's cookable in the first place. Write your own recipes in
+             too, and re-link anything by hand whenever you like.</p>
+        </div>
+      </li>
+      <li class="feature-row">
+        <span class="feature-mark c5">{{ icon('group') }}</span>
+        <div class="feature-text">
+          <h3>Built for the whole household</h3>
+          <p>Add everyone who eats here, each with their own dietary needs, allergies and favourites.
+             Choose who you're cooking for and the recipe adjusts — with a clear reminder to check
+             allergies yourself, because an AI is never a safety net.</p>
+        </div>
+      </li>
+      <li class="feature-row">
+        <span class="feature-mark c6">{{ icon('lock') }}</span>
+        <div class="feature-text">
+          <h3>Yours, on your own hardware</h3>
+          <p>Self-hosted and private: your stock, recipes and history never leave your network. Only
+             a short ingredient brief goes to the model when you generate — and a local-model option
+             keeps even that in-house. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
+        </div>
+      </li>
+    </ul>
   </div>
 </section>
 
 <section class="band">
-  <div class="wrap">
-    <h2 class="section-heading">How it works</h2>
-    <ol class="steps-flow">
-      <li class="step-flow">
-        <span class="step-num s1">1</span>
-        <div>
-          <h3>Keep stock current</h3>
-          <p>Tap items in or out as you shop and cook. Staples like oil and spices are assumed —
-             you only track the things that come and go.</p>
-        </div>
-      </li>
-      <li class="step-flow">
-        <span class="step-num s2">2</span>
-        <div>
-          <h3>Lets cook</h3>
-          <p>A quick guided flow: pick anything you want to use up, choose a meal type, time and
-             who you're feeding. One screen at a time, one-handed at the hob.</p>
-        </div>
-      </li>
-      <li class="step-flow">
-        <span class="step-num s3">3</span>
-        <div>
-          <h3>Cook now, or make something new</h3>
-          <p>See saved recipes you can cook from current stock. Nothing takes your fancy? Generate
-             two fresh ideas, built around your kitchen and constraints.</p>
-        </div>
-      </li>
-      <li class="step-flow">
-        <span class="step-num s4">4</span>
-        <div>
-          <h3>Cook, save, favourite</h3>
-          <p>Clear four-part recipes — intro, ingredients, prep, cook. Favourite the keepers; they
-             feed straight back into tomorrow's suggestions.</p>
-        </div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<section class="band band--alt">
   <div class="wrap">
     <h2 class="section-heading">A look inside</h2>
     <div class="shots-grid">
       <figure class="shot">
-        <img src="{{ url_for('static', filename='img/screenshot-wizard.png?v=2') }}"
+        <img src="{{ url_for('static', filename='img/screenshot-wizard.png') }}"
              alt="The Lets Cook wizard choosing ingredients" loading="lazy" width="1080" height="2040">
         <figcaption>The “Lets cook” wizard</figcaption>
       </figure>
       <figure class="shot">
-        <img src="{{ url_for('static', filename='img/screenshot-suggestions.png?v=2') }}"
+        <img src="{{ url_for('static', filename='img/screenshot-suggestions.png') }}"
              alt="Cookable recipe suggestions as cards" loading="lazy" width="1080" height="2040">
         <figcaption>Cookable suggestions</figcaption>
       </figure>
       <figure class="shot">
-        <img src="{{ url_for('static', filename='img/screenshot-recipe.png?v=2') }}"
+        <img src="{{ url_for('static', filename='img/screenshot-recipe.png') }}"
              alt="A full recipe with ingredient links" loading="lazy" width="1080" height="2040">
         <figcaption>A full recipe</figcaption>
       </figure>
@@ -146,7 +120,6 @@
        That works too. Either way, it's your kitchen, on your network.</p>
     <div class="btn-row center-row">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
-      <a class="btn btn--secondary" href="{{ url_for('docs') }}">Read the docs</a>
     </div>
   </div>
 </section>

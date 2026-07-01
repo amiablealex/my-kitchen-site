@@ -287,35 +287,25 @@ pre.code code { background: none; padding: 0; font-size: 0.88rem; line-height: 1
 /* ================================================================ band ==== */
 .section-heading { text-align: center; }
 
-/* features grid */
-.features { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
-.feature { display: flex; flex-direction: column; gap: var(--space-1); }
-.feature h3 { margin: var(--space-1) 0 var(--space-1); font-size: 1.15rem; font-family: var(--font-display); font-weight: 700; }
-.feature p { margin: 0; color: var(--text-muted); }
-.feature-ico {
+/* feature list — flat rows, a coloured marker holding the feature's icon
+   (the how-it-works dot, used for the whole feature set). No cards. */
+.feature-lead { max-width: var(--measure); margin: 0 auto var(--space-6); }
+.feature-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-5); max-width: var(--measure); margin-inline: auto; }
+.feature-row { display: flex; gap: var(--space-4); align-items: flex-start; margin: 0; }
+.feature-mark {
+  flex: none; width: 44px; height: 44px; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 46px; height: 46px; border-radius: var(--radius-sm);
-  background: var(--surface-2); color: var(--accent-1); margin-bottom: var(--space-2);
-}
-.feature-ico .icon { width: 1.6em; height: 1.6em; }
-@media (min-width: 620px) { .features { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 920px) { .features { grid-template-columns: 1fr 1fr 1fr; } }
-
-/* how-it-works flow */
-.steps-flow { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-4); max-width: var(--measure); margin-inline: auto; }
-.step-flow { display: flex; gap: var(--space-4); align-items: flex-start; margin: 0; }
-.step-flow h3 { margin: 0 0 var(--space-1); font-size: 1.15rem; font-family: var(--font-display); font-weight: 700; }
-.step-flow p { margin: 0; color: var(--text-muted); }
-.step-num {
-  flex: none; width: 42px; height: 42px; border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-weight: 800; font-size: 1.2rem;
   color: var(--on-accent); background: var(--c, var(--accent-1));
 }
-.step-num.s1 { --c: var(--accent-1); }
-.step-num.s2 { --c: var(--accent-2); }
-.step-num.s3 { --c: var(--accent-3); }
-.step-num.s4 { --c: var(--accent-4); }
+.feature-mark .icon { width: 1.5em; height: 1.5em; }
+.feature-mark.c1 { --c: var(--accent-1); }
+.feature-mark.c2 { --c: var(--accent-2); }
+.feature-mark.c3 { --c: var(--accent-3); }
+.feature-mark.c4 { --c: var(--accent-4); }
+.feature-mark.c5 { --c: var(--accent-1); }
+.feature-mark.c6 { --c: var(--accent-2); }
+.feature-text h3 { margin: 4px 0 var(--space-1); font-size: 1.15rem; font-family: var(--font-display); font-weight: 700; }
+.feature-text p { margin: 0; color: var(--text-muted); }
 
 /* screenshots grid */
 .shots-grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; max-width: 380px; margin-inline: auto; }
@@ -330,12 +320,17 @@ pre.code code { background: none; padding: 0; font-size: 0.88rem; line-height: 1
 .page-head--tight { padding-bottom: 0; }
 .page-title { font-size: clamp(2.2rem, 9vw, 3.4rem); margin: var(--space-2) 0 var(--space-4); }
 
-/* =============================================================== install == */
-.install { margin-bottom: var(--space-5); }
-.install--primary { border-color: color-mix(in srgb, var(--accent-1) 50%, var(--divider)); box-shadow: var(--shadow-2); }
-.install-head { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-3); }
-.install-head h2 { margin: 0; display: flex; align-items: center; gap: var(--space-2); }
-.install-head h2 .icon { color: var(--accent-1); }
+/* =========================================================== get started == */
+/* Flat, standardised sections (no cards, no badges) — matches the docs look. */
+.gs-block { margin-bottom: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--divider); }
+.gs-block:first-child { padding-top: 0; border-top: 0; }
+.gs h2 {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  margin-bottom: var(--space-3); padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--divider);
+}
+.gs h2 .icon { color: var(--accent-1); width: 1.05em; height: 1.05em; }
 .walk { padding-left: 1.25em; }
 .walk li { margin-bottom: var(--space-3); }
 .anchored { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
