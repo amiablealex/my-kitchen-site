@@ -7,9 +7,9 @@
   <div class="wrap hero-inner">
     <p class="eyebrow">Self-hosted · Private · Open source</p>
     <h1 class="display hero-title">{{ site.name }}</h1>
-    <p class="hero-tagline">The self-hosted recipe brain for your house. It knows what's in
-       stock, what you've cooked and what you've saved — and turns it into
-       <strong>“here's what to make.”</strong></p>
+    <p class="hero-tagline">The household's recipe brain: it knows what's in stock, all of your recipes, 
+      and turns that knowledge into
+       <strong>“what's cookable right now?”</strong></p>
     <div class="btn-row hero-cta">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a>
     </div>
@@ -25,10 +25,9 @@
   <div class="wrap">
     <div class="feature-lead">
       <h2 class="section-heading">What it does</h2>
-      <p class="lead">Most recipe apps are a search box bolted to an AI. My Kitchen works the other
-         way round: it starts from what's actually in your kitchen, shows you what you can cook right
-         now, and only reaches for the model when you want something new — verified against your stock,
-         then handed to you to review. AI is one ingredient here, not the whole dish.</p>
+      <p class="lead">My Kitchen is your simple stock manager, personal recipe database, and creative assistant. It asks "What's in stock?" 
+        and shows you which of your personal recipe database you can cook right now. Nothing take your fancy? An integrated AI model takes your brief and 
+        generates a high-quality creative recipe - verified against your actual live stock list.</p>
     </div>
 
     <ul class="feature-list">
@@ -36,18 +35,15 @@
         <span class="feature-mark c1">{{ icon('shelves') }}</span>
         <div class="feature-text">
           <h3>Cook from what's actually in</h3>
-          <p>Keep stock with a single tap as you shop and cook — in or out, never an inventory to
-             manage. Staples like oil and spices are assumed, so you only track the things that come
-             and go, and meals get built around what you have.</p>
+          <p>Keep stock with a single tap as you shop and cook. Configure a bank of staples like oil and spices, and meals get built around what you have.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c2">{{ icon('search') }}</span>
         <div class="feature-text">
           <h3>See what you can make right now</h3>
-          <p>At “Lets cook”, My Kitchen surfaces saved recipes you can cook tonight from current
-             stock — before it generates anything. A great meal you've made before doesn't get
-             forgotten, and you skip a needless trip to the model.</p>
+          <p>At “Lets cook”, My Kitchen surfaces your saved recipes you can cook immediately from your current
+             stock. A great meal you've made before doesn't get forgotten, and you skip a needless trip to the generation model.</p>
         </div>
       </li>
       <li class="feature-row">
@@ -55,26 +51,23 @@
         <div class="feature-text">
           <h3>Fresh ideas when you want them</h3>
           <p>Nothing takes your fancy? Generate. It builds a brief from your kitchen, your
-             constraints and a creative angle, then returns two genuinely different recipes — the why,
-             the technique, the finishing touches. You pick one; both are saved.</p>
+             constraints and a creative angle, then returns two distinctly different recipes for you to choose from.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c4">{{ icon('kitchen') }}</span>
         <div class="feature-text">
           <h3>Every recipe linked to your kitchen</h3>
-          <p>Each ingredient line is matched to your real catalogue, not loose text — which is what
-             lets the app reason about what's cookable in the first place. Write your own recipes in
-             too, and re-link anything by hand whenever you like.</p>
+          <p>Each loose-text ingredient line is matched to your real catalogue, which is the engine that
+             lets the app reason about what's cookable. Write your own recipes in too, and re-configure the ingredient links by hand if the resolver ever gets it wrong.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c5">{{ icon('group') }}</span>
         <div class="feature-text">
           <h3>Built for the whole household</h3>
-          <p>Add everyone who eats here, each with their own dietary needs, allergies and favourites.
-             Choose who you're cooking for and the recipe adjusts — with a clear reminder to check
-             allergies yourself, because an AI is never a safety net.</p>
+          <p>Add everyone to the app, and you can all see each other's favourite recipes. Configure your own dietary needs, allergies and preferences, 
+            choose who you're cooking for and any generated recipes adjust accordingly. Always check allergies yourself, because an AI is never a safety net.</p>
         </div>
       </li>
       <li class="feature-row">
@@ -82,8 +75,8 @@
         <div class="feature-text">
           <h3>Yours, on your own hardware</h3>
           <p>Self-hosted and private: your stock, recipes and history never leave your network. Only
-             a short ingredient brief goes to the model when you generate — and a local-model option
-             keeps even that in-house. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
+             a short ingredient brief goes to the model when you generate, and a local-model option even
+             keeps that local. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
         </div>
       </li>
     </ul>
