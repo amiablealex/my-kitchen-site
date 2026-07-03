@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
-{% block title %}Documentation — {{ site.name }}{% endblock %}
+{% block title %}Documentation: {{ site.name }}{% endblock %}
 {% block description %}How My Kitchen works: stock, the ingredient catalogue, the Lets Cook wizard, suggestions, generation, and household setup.{% endblock %}
 
 {% block content %}
@@ -33,13 +33,8 @@
   <article class="docs-body">
     <section id="concepts" class="doc-sec">
       <h2>The big idea</h2>
-      <p>My Kitchen is a household's recipe brain: a place that knows what's in stock, what's been
-         cooked and what's saved, and turns all of it into “here's what to make.” The key design
-         choice is that <strong>every recipe links to your real ingredient catalogue</strong>, not
-         free text — which is what lets the app tell you what's genuinely cookable right now.</p>
-      <p>One principle runs through everything: <strong>AI proposes, the app verifies, you review.</strong>
-         The model is never the final word — its output is checked against your kitchen and handed to
-         you to confirm.</p>
+      <p>My Kitchen is the household's recipe brain: it knows what's in stock, all of your recipes, 
+        and turns that knowledge into “what's cookable right now?”</p>
     </section>
 
     <section id="stock" class="doc-sec">
