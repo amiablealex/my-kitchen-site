@@ -7,8 +7,8 @@
   <div class="wrap hero-inner">
     <p class="eyebrow">Self-hosted · Private · Open source</p>
     <h1 class="display hero-title">{{ site.name }}</h1>
-    <p class="hero-tagline">The household's recipe brain: it knows what's in stock, all of your recipes, 
-      and turns that knowledge into
+    <p class="hero-tagline">The household's recipe brain: it holds all of your recipes, knows what's in stock, 
+      and shows you
        <strong>“what's cookable right now?”</strong></p>
     <div class="btn-row hero-cta">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a>
@@ -25,47 +25,47 @@
   <div class="wrap">
     <div class="feature-lead">
       <h2 class="section-heading">What it does</h2>
-      <p class="lead">My Kitchen is your simple stock manager, personal recipe database, and creative assistant. It asks "What's in stock?" 
-        and shows you which of your personal recipe database you can cook right now. Nothing take your fancy? An integrated AI model takes your brief and 
-        generates a high-quality creative recipe - verified against your actual live stock list.</p>
+      <p class="lead">My Kitchen is a simple stock manager, personal recipe database, and creative assistant. It shows you which of your personal recipe database you can cook right now, based on 
+        what you're feeling like and what you've got currently in the kitchen. None of the recipes take your fancy? An integrated AI model takes your brief and 
+        generates a high-quality creative recipe - verified against your live in-stock database to make sure you'll actually be able to cook it.</p>
     </div>
 
     <ul class="feature-list">
       <li class="feature-row">
         <span class="feature-mark c1">{{ icon('shelves') }}</span>
         <div class="feature-text">
-          <h3>Cook from what's actually in</h3>
-          <p>Keep stock with a single tap as you shop and cook. Configure a bank of staples like oil and spices, and meals get built around what you have.</p>
+          <h3>Simple stock inventory manager</h3>
+          <p>Designed to be effortless and minimise the maintenance burden. Configure a bank of staples like oil and spices, and My Kitchen assumes they'll always be available. </p>
         </div>
       </li>
       <li class="feature-row">
-        <span class="feature-mark c2">{{ icon('search') }}</span>
+        <span class="feature-mark c2">{{ icon('kitchen') }}</span>
+        <div class="feature-text">
+          <h3>Comprehensive recipe database</h3>
+          <p>Upload your own recipes, and link each ingredient to your real catalogue. This is the engine that
+             lets the app work out what's cookable.</p>
+        </div>
+      </li>
+      <li class="feature-row">
+        <span class="feature-mark c3">{{ icon('search') }}</span>
         <div class="feature-text">
           <h3>See what you can make right now</h3>
-          <p>At “Lets cook”, My Kitchen surfaces your saved recipes you can cook immediately from your current
-             stock. A great meal you've made before doesn't get forgotten, and you skip a needless trip to the generation model.</p>
+          <p>At “Lets cook”, My Kitchen knows what you've got in stock, asks what kind of recipe you're after (e.g breakfast, dinner, snack) and optionally a cuisine (british, mediterranean...), 
+            then surfaces all your saved recipes that fit the brief.</p>
         </div>
       </li>
       <li class="feature-row">
-        <span class="feature-mark c3">{{ icon('cooking') }}</span>
+        <span class="feature-mark c4">{{ icon('cooking') }}</span>
         <div class="feature-text">
           <h3>Fresh ideas when you want them</h3>
-          <p>Nothing takes your fancy? Generate. It builds a brief from your kitchen, your
-             constraints and a creative angle, then returns two distinctly different recipes for you to choose from.</p>
-        </div>
-      </li>
-      <li class="feature-row">
-        <span class="feature-mark c4">{{ icon('kitchen') }}</span>
-        <div class="feature-text">
-          <h3>Every recipe linked to your kitchen</h3>
-          <p>Each loose-text ingredient line is matched to your real catalogue, which is the engine that
-             lets the app reason about what's cookable. Write your own recipes in too, and re-configure the ingredient links by hand if the resolver ever gets it wrong.</p>
+          <p>Nothing take your fancy? An integrated AI model takes the brief and a creative angle, then returns two distinctly different recipes 
+            for you to choose from that you can make with what you've got in stock right now.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c5">{{ icon('group') }}</span>
         <div class="feature-text">
-          <h3>Built for the whole household</h3>
+          <h3>Built for the household</h3>
           <p>Add everyone to the app, and you can all see each other's favourite recipes. Configure your own dietary needs, allergies and preferences, 
             choose who you're cooking for and any generated recipes adjust accordingly. Always check allergies yourself, because an AI is never a safety net.</p>
         </div>
@@ -75,7 +75,7 @@
         <div class="feature-text">
           <h3>Yours, on your own hardware</h3>
           <p>Self-hosted and private: your stock, recipes and history never leave your network. Only
-             a short ingredient brief goes to the model when you generate, and a local-model option even
+             a short ingredient brief goes to the AI model when you generate, and a local-model option even
              keeps that local. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
         </div>
       </li>
@@ -109,8 +109,8 @@
 <section class="band cta-band">
   <div class="wrap measure center">
     <h2>Run it on your own hardware</h2>
-    <p class="lead">The easiest path is a one-click Home Assistant add-on. Prefer plain Docker?
-       That works too. Either way, it's your kitchen, on your network.</p>
+    <p class="lead">You'll need a device to host the server. The easiest path is a one-click Home Assistant add-on. Otherwise, you'll need to configure a standard docker flask app. 
+      Either way, it's your kitchen, on your network.</p>
     <div class="btn-row center-row">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
     </div>
