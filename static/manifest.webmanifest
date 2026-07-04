@@ -1,7 +1,7 @@
 {
   "name": "My Kitchen",
   "short_name": "My Kitchen",
-  "description": "The self-hosted recipe brain for your house.",
+  "description": "Self-hosted recipe brain for your house.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#3B1058",
