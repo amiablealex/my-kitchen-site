@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
-{% block title %}Get started — {{ site.name }}{% endblock %}
+{% block title %}Get started: {{ site.name }}{% endblock %}
 {% block description %}Install My Kitchen as a Home Assistant add-on or with Docker, then configure your LLM provider.{% endblock %}
 
 {% block content %}
@@ -8,9 +8,9 @@
   <div class="wrap measure">
     <p class="eyebrow">Get started</p>
     <h1 class="display page-title">Up and running</h1>
-    <p class="lead">My Kitchen runs on your own hardware. If you use Home Assistant, the add-on is the
-       simplest path — install, updates and secure remote access are handled for you. Plain Docker
-       works just as well if you'd rather not.</p>
+    <p class="lead">My Kitchen runs on your own hardware. If you use Home Assistant, the App is the
+       simplest path; install, updates and secure remote access are handled for you. Plain Docker
+       works if you aren't running Home Assistant.</p>
   </div>
 </section>
 
@@ -19,12 +19,10 @@
 
     <div class="gs-block">
       <h2>{{ icon('home') }} Home Assistant add-on</h2>
-      <p>The recommended path if you run Home Assistant OS — for example on a Raspberry Pi. It installs,
-         updates and reaches My Kitchen securely, including from your phone via the companion app.</p>
       <ol class="walk">
         <li><strong>Add the repository.</strong> In Home Assistant go to
-          <em>Settings → Add-ons → Add-on store</em>, open the <em>⋮</em> menu (top right),
-          choose <em>Repositories</em>, paste the URL below and click <em>Add</em>.
+          <em>Settings → Apps → Install App</em>, open the <em>⋮</em> menu (top right),
+          choose <em>Repositories</em>, click 'Add' and paste the URL below, then click <em>Add</em> again.
           <pre class="code"><code>{{ site.ha_repo }}</code></pre>
         </li>
         <li><strong>Install.</strong> Close the dialog, find <strong>My Kitchen</strong> in the store
@@ -32,22 +30,22 @@
         <li><strong>Configure.</strong> On the <em>Configuration</em> tab, set your LLM provider and
           API key (see <a href="#configure">Configuration</a> below). Save.</li>
         <li><strong>Start.</strong> On the <em>Info</em> tab, click <em>Start</em>. Turn on
-          <em>Show in sidebar</em> for one-tap access.</li>
+          <em>Show in sidebar</em> for convenience.</li>
         <li><strong>First login.</strong> Open the add-on. A starter account is created automatically
-          and its password is printed once in the add-on <em>Log</em> tab — log in, then change it
-          under Household.</li>
+          and its password is printed once in the add-on <em>Log</em> tab (go to Apps -> My Kitchen -> log). Find the user and password, 
+          log in, then change it in the My Kitchen interface under 'Household'.</li>
       </ol>
       <div class="callout callout--info">
         {{ icon('info') }}
         <div><strong>Remote access.</strong> With Home Assistant Cloud (Nabu Casa) or your own
-          HTTPS, the add-on is reachable securely through HA ingress — no ports to forward and
+          HTTPS, the add-on is reachable securely through HA ingress. No ports to forward and
           nothing exposed directly to the internet.</div>
       </div>
     </div>
 
     <div class="gs-block">
       <h2>{{ icon('dns') }} Docker</h2>
-      <p>Prefer to run it standalone? My Kitchen is a single container with a single-file SQLite
+      <p>My Kitchen is a single container with a single-file SQLite
          database on a mounted volume, and it runs database migrations automatically on start.</p>
       <ol class="walk">
         <li><strong>Clone the repo.</strong>
@@ -55,7 +53,7 @@
 cd my-kitchen</code></pre>
         </li>
         <li><strong>Set your config.</strong> Copy the example environment file and fill in your
-          values — at minimum a stable <code>SECRET_KEY</code>, your LLM provider and API key, and the
+          values. At minimum, a stable <code>SECRET_KEY</code>, your LLM provider and API key, and the
           database path. The repository's <a href="{{ site.github }}/blob/main/DEPLOY.md" rel="noopener" target="_blank">DEPLOY.md</a>
           lists every variable.
           <pre class="code"><code># a few of the key variables (see DEPLOY.md for the full list)
@@ -68,14 +66,14 @@ APP_TIMEZONE=Europe/London</code></pre>
           <pre class="code"><code>docker compose up -d --build</code></pre>
         </li>
         <li><strong>Reverse proxy (optional).</strong> Put it behind nginx or Caddy for a clean
-          hostname and TLS, exactly as you would any small web service.</li>
+          hostname and TLS.</li>
       </ol>
     </div>
 
     <div class="gs-block">
       <h2 id="configure" class="anchored">Configuration</h2>
       <p>My Kitchen talks to a large language model through a swappable provider adapter. Set these in
-         the add-on's <em>Configuration</em> tab, or as environment variables under Docker.</p>
+         the app's <em>Configuration</em> tab, or as environment variables under Docker.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Setting</th><th>What it does</th><th>Default</th></tr></thead>
@@ -90,22 +88,21 @@ APP_TIMEZONE=Europe/London</code></pre>
         </table>
       </div>
       <div class="callout callout--tip">
-        {{ icon('check') }}
-        <div><strong>Fully local?</strong> The provider adapter is designed to accept a local model
-          (e.g. Ollama) too. A Raspberry Pi won't match a hosted model's quality and speed today, but
-          if you have the hardware, a fully on-network setup is on the table. See
+        {{ icon('info') }}        
+        <div><strong>Want to stay fully local?</strong> The provider adapter is designed to accept a local model
+          (e.g. Ollama) too. A Raspberry Pi won't match a cloud model's quality and speed today, but
+          if you have the hardware, a fully on-network setup is possible. See
           <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
       </div>
     </div>
 
     <div class="gs-block">
       <h2>Updating &amp; backups</h2>
-      <p><strong>Home Assistant:</strong> new versions appear on the add-on's update screen — click
-         <em>Update</em>. Database migrations run automatically. Configure
-         <em>Settings → System → Backups</em> so HA snapshots the add-on before schema-changing releases.</p>
+      <p><strong>Home Assistant:</strong> new versions appear under standard 'updates'. Configure
+         <em>Settings → System → Backups</em> so HA snapshots the App before schema-changing releases.</p>
       <p><strong>Docker:</strong> <code>git pull</code> then <code>docker compose up -d --build</code>;
-         migrations apply on start. Your data lives on the mounted <code>/data</code> volume — back that
-         up on your normal schedule.</p>
+         migrations apply on start. Your data lives on the mounted <code>/data</code> volume. Back that
+         up yourself however you want.</p>
     </div>
 
   </div>
