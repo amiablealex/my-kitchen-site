@@ -39,85 +39,69 @@
 
     <section id="stock" class="doc-sec">
       <h2>Stock</h2>
-      <p>Stock is a simple in-or-out toggle. There are no quantities, no “mark as cooked” decrement,
-         no low-stock alerts — deliberately. Inventory systems are what kill household tools through
-         maintenance burden, so stock stays a binary toggle, forever.</p>
-      <p>You maintain it from the <em>Stock</em> screen: a grouped view of what's in, search-to-add
-         against your catalogue, and a tap to remove. Quick notes like “needs using” or “1 large” can
-         ride along and get passed to the model.</p>
+      <p>Stock is a simple in-or-out toggle which you maintain from the <em>Stock</em> screen: 
+        a grouped view of what's in, search-to-add against your catalogue, and a tap to remove. 
+        Quick notes like “needs using” or “1 large” can ride along and get passed to the model for generations. </p>
+      <p></p>
     </section>
 
     <section id="catalogue" class="doc-sec">
       <h2>Ingredients &amp; the catalogue</h2>
       <p>Behind the app is a catalogue of ingredients grouped into categories (protein, carb, veg and
-         more). Each one is either:</p>
+         more). Each ingredient is either:</p>
       <ul>
-        <li><strong>A core ingredient</strong> — the things that come and go, which you stock and
-          choose between.</li>
-        <li><strong>A staple</strong> — oil, salt, common spices, flour. Assumed always available and
-          used freely; you don't track these.</li>
+        <li><strong>A core ingredient</strong>: things that come and go, which you maintain in the stock manager.</li>
+        <li><strong>A staple</strong>: oil, salt, common spices, flour. Assumed always available and used freely; you don't need to track these.</li>
       </ul>
       <p>When a recipe is saved, each ingredient line is matched to a catalogue entry by a
-         deterministic resolver (no AI guesswork). On any recipe you'll see a calm pill naming the
-         linked ingredient, and you can re-link, unlink or add-and-link a line yourself — the app
-         never silently overrides a manual link.</p>
+         deterministic resolver. On any recipe you'll see the
+         linked ingredient, and you can re-link, unlink or add-and-link a line yourself if the app ever gets it wrong.</p>
     </section>
 
     <section id="wizard" class="doc-sec">
       <h2>The Lets Cook wizard</h2>
-      <p>A short, linear flow — one screen at a time, easy to step back, built to use one-handed at
-         the hob:</p>
+      <p>This is where the app helps you decvide what to make right now.</p>
       <ol>
         <li><strong>Choose ingredients to use up.</strong> Tap in-stock items to make them must-use.
           Leave it blank to cook from whatever's in.</li>
         <li><strong>Meal type &amp; cuisine.</strong> Breakfast through to a sauce or dressing;
-          cuisine where it applies.</li>
+          cuisine where it applies (e.g mediterranean, british...).</li>
         <li><strong>Time.</strong> Quick (under 30 min) or relaxed (30–75 min).</li>
-        <li><strong>Cooking for.</strong> Pick people and add guests — servings and dietary needs
-          follow automatically.</li>
+        <li><strong>Cooking for.</strong> Pick people and add guests; this is how the app will calculate servings and dietary needs.</li>
       </ol>
       <p>Stock is read live as you go, so a mid-flow stock fix shows up immediately.</p>
     </section>
 
     <section id="suggestions" class="doc-sec">
       <h2>Suggestions</h2>
-      <p>Before any generation, the review step shows saved recipes you can <strong>cook right now</strong>
-         that fit your brief — as a row of cards. A recipe qualifies when every required ingredient is
-         linked to something in stock (staples assumed), the meal type and cuisine match, and any
-         must-use picks appear in it.</p>
+      <p>Before any generation, the review step shows saved recipes that are <strong>cookable right now</strong>
+         that fit your brief. A recipe qualifies when all of its required ingredients are
+         linked to something in stock, the meal type and cuisine match, and any must-use ingredients appear in it.</p>
       <div class="callout callout--info">
         {{ icon('info') }}
         <div>Suggestions are precise on purpose: if a required ingredient line isn't linked to your
-          catalogue, the recipe is left out rather than promised falsely. Sparse at first — it grows
+          catalogue, the recipe is left out rather than promised falsely. Sparse at first, it grows
           as your history does.</div>
       </div>
     </section>
 
     <section id="generation" class="doc-sec">
       <h2>Generation</h2>
-      <p>Nothing takes your fancy? Generate. The app builds a brief from your stock, constraints and a
-         randomly chosen creative angle, then returns <strong>two genuinely different recipes</strong>
-         with an energetic write-up — the why, the technique, doneness cues, finishing touches. You
-         pick one; both are saved.</p>
-      <p>Generation runs in the background, so a slow model never ties up the page — you wait on a
-         simple progress screen and land on the choice when it's ready.</p>
+      <p>Nothing takes your fancy? An integrated AI model takes the brief and a creative angle, then returns two distinctly different recipes for you to choose from with an energetic write-up e.g 
+        technique, doneness cues, tips, finishing touches.</p>
     </section>
 
     <section id="recipes" class="doc-sec">
       <h2>Recipes &amp; favourites</h2>
-      <p>Every recipe renders the same four-part way: intro, ingredients, prep, cook (plus tips when
-         there are any). Recipes come from three sources — AI-generated, ones you write yourself, and
-         (later) imported — each marked with a small colour-coded dot.</p>
-      <p>The <em>Recipes</em> screen is a dated history you can filter by cook and by source. Favourite
-         any recipe, from any source; favourites are per-person, and they feed back into your
-         cookable suggestions.</p>
+      <p>Every recipe fits into the same standardised stricture: intro, ingredients, prep, cook, tips. Recipes are grouped by source: currently AI-generated, and ones you write yourself.</p>
+      <p>The <em>Recipes</em> screen is a dated history you can filter by cook and by source. Favouriting
+         any recipe makes it appear into a separate smaller list. Each registered user has their own favourites, whereas all users see every recipe created by anyone in the main recipe history list.</p>
     </section>
 
     <section id="household" class="doc-sec">
       <h2>Household &amp; diets</h2>
-      <p>Add the people in your house, each with their own dietary preferences and allergies. When you
-         choose who you're cooking for, the brief combines their needs: allergies are stated as
-         absolute exclusions, preferences as gentle steers.</p>
+      <p>Add the people in your house, each with their own dietary preferences and allergies. In the wizard, if you specify
+        who you're cooking for, the brief combines their needs: allergies are stated as absolute exclusions and preferences as gentle steers.</p>
       <div class="callout callout--warn">
         {{ icon('info') }}
         <div><strong>Allergies:</strong> an AI is not a safety guarantee. Recipes generated with an
@@ -128,21 +112,13 @@
     <section id="privacy" class="doc-sec">
       <h2>Self-hosting &amp; data</h2>
       <p>Everything runs on your hardware and your data stays there. The only thing that leaves your
-         network is the generation brief — a short, low-sensitivity description of ingredients and
-         constraints — sent to your chosen LLM provider. A local-model option exists for a fully
-         on-network setup. The full picture is on the <a href="{{ url_for('privacy') }}">Privacy &amp; data</a> page.</p>
+         network is the generation brief; a short, low-sensitivity description of ingredients and
+         constraints sent to your chosen LLM provider. A local-model would give a fully
+         local setup. See more: <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
     </section>
 
     <section id="trouble" class="doc-sec">
       <h2>Troubleshooting</h2>
-      <h3>The sidebar panel doesn't reflect a setting change</h3>
-      <p>Some Home Assistant panel changes need a full Core restart, not just an add-on restart.</p>
-      <h3>Generation seems to hang</h3>
-      <p>It runs in the background and the page polls for the result; very long generations are
-         expected to finish on the progress screen. If a run errors, the screen offers a retry.</p>
-      <h3>My catalogue didn't change after an update</h3>
-      <p>A normal update keeps your existing catalogue and only applies additive migrations. Rebuilding
-         the seed catalogue is a deliberate step — see the repo's notes before doing it, as it clears data.</p>
       <p class="muted">More detail lives in the <a href="{{ site.github }}" rel="noopener" target="_blank">GitHub repository</a>.</p>
     </section>
   </article>
