@@ -34,7 +34,7 @@ SITE = {
         "private, and at home in Home Assistant."
     ),
     # TODO: set to your real domain (no trailing slash), e.g. https://mykitchen.example
-    "url": "https://your-domain.example",
+    "url": "https://my-kitchen.io",
     "github": "https://github.com/amiablealex/my-kitchen",
     # The Home Assistant add-on repository URL users paste into HA. This is the
     # repo that contains repository.yaml + addon/ — i.e. the app repo.
