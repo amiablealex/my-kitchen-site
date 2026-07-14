@@ -11,7 +11,7 @@
       and shows you
        <strong>“what's cookable right now?”</strong></p>
     <div class="btn-row hero-cta">
-      <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a>
+      {# <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a> #}
     </div>
 
     <figure class="shot shot--hero">
@@ -25,58 +25,57 @@
   <div class="wrap">
     <div class="feature-lead">
       <h2 class="section-heading">What it does</h2>
-      <p class="lead">My Kitchen is a simple stock manager, personal recipe database, and creative assistant. It shows you which of your personal recipe database you can cook right now, based on 
-        what you're feeling like and what you've got currently in the kitchen. None of the recipes take your fancy? An integrated AI model takes your brief and 
-        generates a high-quality creative recipe - verified against your live in-stock database to make sure you'll actually be able to cook it.</p>
+      <p class="lead">Simple stock manager, recipe database, and creative assistant. My Kitchen shows you which of your recipes that are cookable right now, based on 
+        your preferences and what's currently in stock. If no existing recipes appeal, an integrated AI generates a high-quality creative recipe that fits the brief.</p>
     </div>
 
     <ul class="feature-list">
       <li class="feature-row">
         <span class="feature-mark c1">{{ icon('shelves') }}</span>
         <div class="feature-text">
-          <h3>Simple stock inventory manager</h3>
-          <p>Designed to be effortless and minimise the maintenance burden. Configure a bank of staples like oil and spices, and My Kitchen assumes they'll always be available. </p>
+          <h3>Stock manager</h3>
+          <p>Designed for minimal effort. Configure a bank of staples like oil and spices, and My Kitchen assumes they'll always be available. </p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c2">{{ icon('kitchen') }}</span>
         <div class="feature-text">
-          <h3>Comprehensive recipe database</h3>
-          <p>Upload your own recipes, and link each ingredient to your real catalogue. This is the engine that
-             lets the app work out what's cookable.</p>
+          <h3>Recipe database</h3>
+          <p>Upload your own recipes, and link each ingredient to your catalogue. This is the engine behind
+             working out what's cookable.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c3">{{ icon('search') }}</span>
         <div class="feature-text">
           <h3>See what you can make right now</h3>
-          <p>At “Lets cook”, My Kitchen knows what you've got in stock, asks what kind of recipe you're after (e.g breakfast, dinner, snack) and optionally a cuisine (british, mediterranean...), 
-            then surfaces all your saved recipes that fit the brief.</p>
+          <p>It knows what's in stock, asks what kind of recipe you're after,
+            then resurfaces all saved recipes that fit the brief.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c4">{{ icon('cooking') }}</span>
         <div class="feature-text">
-          <h3>Fresh ideas when you want them</h3>
-          <p>Nothing take your fancy? An integrated AI model takes the brief and a creative angle, then returns two distinctly different recipes 
-            for you to choose from that you can make with what you've got in stock right now.</p>
+          <h3>Creative assistant</h3>
+          <p>If no existing recipes are appealing, an integrated AI model takes the brief and returns two distinctly different recipes 
+            to choose from that can be madee with what's in stock right now.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c5">{{ icon('group') }}</span>
         <div class="feature-text">
-          <h3>Built for the household</h3>
-          <p>Add everyone to the app, and you can all see each other's favourite recipes. Configure your own dietary needs, allergies and preferences, 
-            choose who you're cooking for and any generated recipes adjust accordingly. Always check allergies yourself, because an AI is never a safety net.</p>
+          <h3>Multiple users</h3>
+          <p>Everyone can see each other's uploaded recipes. Configure dietary needs, allergies, preferences. 
+            Choose who you're cooking for and the generated recipes adjust accordingly.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c6">{{ icon('lock') }}</span>
         <div class="feature-text">
-          <h3>Yours, on your own hardware</h3>
-          <p>Self-hosted and private: your stock, recipes and history never leave your network. Only
-             a short ingredient brief goes to the AI model when you generate, and a local-model option even
-             keeps that local. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
+          <h3>Fully local</h3>
+          <p>Self-hosted and private: stock, recipes and history never leave the host network. Only
+             a short ingredient brief goes to the AI model for generations, and a local-model would even
+             keep that local. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
         </div>
       </li>
     </ul>
@@ -108,9 +107,8 @@
 
 <section class="band cta-band">
   <div class="wrap measure center">
-    <h2>Run it on your own hardware</h2>
-    <p class="lead">You'll need a device to host the server. The easiest option is a Home Assistant (HAOS) App. Otherwise, you'll need to configure a docker container. 
-      Either way, it's your kitchen, on your network.</p>
+    <h2>Run on your own hardware</h2>
+    <p class="lead">A device is needed to host the server. The easiest option is a Home Assistant (HAOS) App. Otherwise, you'll need to configure a docker container.</p>
     <div class="btn-row center-row">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
     </div>
