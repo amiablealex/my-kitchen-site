@@ -1,61 +1,148 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}FAQ: {{ site.name }}{% endblock %}
-{% block description %}Common questions about My Kitchen: Home Assistant, cost, privacy, which LLM, multiple users and more.{% endblock %}
+{% block description %}Common questions about My Kitchen: hardware, cost, privacy, allergies, importing recipes, multiple users and getting your data out.{% endblock %}
 
 {% block content %}
 <section class="page-head">
   <div class="wrap measure">
     <p class="eyebrow">FAQ</p>
     <h1 class="display page-title">Common questions</h1>
-    <p class="lead">The short answers. For the longer ones, see the <a href="{{ url_for('docs') }}">docs</a>.</p>
+    <p class="lead">The short answers. For the longer ones, see the
+      <a href="{{ url_for('docs') }}">docs</a>.</p>
   </div>
 </section>
 
 <section class="band">
   <div class="wrap measure">
+
+    <h2>Running it</h2>
     <div class="faq">
       <details>
         <summary>Do I need Home Assistant?</summary>
-        <p>No, it also runs as a plain Docker container behind any reverse proxy. Home Assistant is the easiest path; 
-          it's a one-click install, easy updates and secure remote access. </p>
+        <p>No. It also runs as a plain Docker container behind any reverse proxy, or as an ordinary
+           Python app. Home Assistant is simply the easiest path: one-click install, updates in the
+           usual place, and secure remote access with nothing exposed. If you do go that route you
+           need Home Assistant OS or Supervised — add-ons aren't available on Container or Core.</p>
       </details>
       <details>
-        <summary>Is it free?</summary>
-        <p>The app is open source and free to run. The only running cost is your LLM provider's API
-           usage, which is small with the lightweight default model, or zero if you run a local model.</p>
+        <summary>What hardware do I need?</summary>
+        <p>Very little. A Raspberry Pi 4 is plenty, and that's what it was built on — the app is a
+           small Flask service with a single-file database, and the heavy lifting happens on the
+           model provider's hardware. Anything that runs Docker will do.</p>
+      </details>
+      <details>
+        <summary>Can I try it before committing to an API key?</summary>
+        <p>Yes. Set the provider to <code>mock</code> and the whole app works with canned recipes and
+           no outbound calls at all — stock, suggestions, your own recipes, everything except real
+           generation. It's the honest way to see whether you'd use it.</p>
+      </details>
+      <details>
+        <summary>Can I use it when I'm not at home?</summary>
+        <p>Through Home Assistant, yes — with Nabu Casa or your own HTTPS it's reachable over HA's
+           authenticated ingress, with no ports forwarded. Standalone, that's down to your own reverse
+           proxy and TLS setup.</p>
+      </details>
+      <details>
+        <summary>What happens to my data when I update?</summary>
+        <p>Database changes are applied automatically on start, and they're written to be additive so
+           existing recipes and history carry through. Configure Home Assistant's backups anyway
+           before a version that changes the schema — the release notes say when that's the case.</p>
+      </details>
+    </div>
+
+    <h2>Cost &amp; privacy</h2>
+    <div class="faq">
+      <details>
+        <summary>What does it cost to run?</summary>
+        <p>The app is free and open source. The only running cost is your provider's API usage on your
+           own key, and only generation calls the model — browsing, filtering, stock and cookable
+           suggestions are all local and free. One generation is a single call to a lightweight model,
+           so a month of normal household cooking is pennies. Set a spending cap in your provider's
+           console and you can't be surprised.</p>
       </details>
       <details>
         <summary>Does my data leave my network?</summary>
-        <p>Your stock, recipes, history and accounts stay on your hardware. The only thing sent out is
-           a short generation brief (ingredients and constraints) to your chosen LLM, and only when you
-           generate. A local-model option avoids even that. See <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
+        <p>Your stock, recipes, history, notes and accounts stay on your hardware. The only thing sent
+           out is a short generation brief — ingredients and constraints — to your chosen model, and
+           only when you press generate. The exact contents are listed on
+           <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
       </details>
       <details>
-        <summary>Which LLM does it use?</summary>
-        <p>A lightweight hosted model by default, through a swappable provider adapter. You supply your
-           own API key, and you can point it at a different provider, or a local model.</p>
+        <summary>Can I run it entirely locally, with no cloud model?</summary>
+        <p>Not yet, and I'd rather say so than imply otherwise. The provider adapter is built to be
+           swappable and a local model such as Ollama is the obvious next one to add, but it isn't
+           written. Today, real generation means a hosted model and an API key. Everything else is
+           already local.</p>
+      </details>
+      <details>
+        <summary>Which model does it use, and can I change it?</summary>
+        <p>A lightweight hosted model by default, through a swappable adapter — Gemini or Anthropic,
+           with your own key, plus a keyless mock. The specific model is a setting, so you can point
+           it at a cheaper or a stronger one without touching code.</p>
+      </details>
+    </div>
+
+    <h2>Using it</h2>
+    <div class="faq">
+      <details>
+        <summary>Do I have to type in every ingredient I own?</summary>
+        <p>No. A fresh install comes with around 170 common ingredients already in the catalogue, and
+           anything you always have — oil, salt, spices, flour — gets flagged as a staple and dropped
+           from the stock list entirely. What's left to keep up with is the fresh stuff that genuinely
+           comes and goes, as a tap-in, tap-out list.</p>
       </details>
       <details>
         <summary>Can more than one person use it?</summary>
-        <p>Yes. Add everyone in the house, each with their own sign-in details, dietary preferences, and their own favourites.
-           Pick who you're cooking for and the recipe brief adjusts.</p>
+        <p>Yes. Everyone gets their own sign-in, their own favourites and their own dietary tags.
+           Recipes and notes are shared across the household — you see what everyone's cooked. Pick
+           who's eating and the brief adjusts to them.</p>
       </details>
       <details>
         <summary>Can I add my own recipes?</summary>
-        <p>Yes. Write them straight into the app, with ingredients picked from your catalogue so they
-           join your cookable suggestions like the other recipes.</p>
+        <p>Yes, and it's worth doing. Write them straight into the app with ingredients picked from
+           your catalogue, and they join your cookable suggestions exactly like generated ones.
+           They're often the ones you'll actually be offered, since they're the food you already
+           cook.</p>
+      </details>
+      <details>
+        <summary>Can it import a recipe from a website or a photo of a cookbook?</summary>
+        <p>Not yet — both are next on the list. Web import is the nearer of the two, since most recipe
+           sites publish structured data that can be read in directly. For now, recipes are typed in
+           by hand.</p>
+      </details>
+      <details>
+        <summary>Why aren't any recipes showing up in my suggestions?</summary>
+        <p>Almost always because the bank is still small — suggestions only offer recipes you can
+           cook right now, so they're sparse at first and grow with your history. If a specific recipe
+           won't appear, check it has a meal type tag and that each of its ingredients is linked to a
+           catalogue entry; anything unverifiable is left out rather than promised falsely.</p>
       </details>
       <details>
         <summary>Is it safe for allergies?</summary>
-        <p>Allergies are emphasised as absolute exclusions in the brief, but an AI
-           is not a safety guarantee. Recipes generated with an allergy in play carry a visible reminder
-           to check the ingredients yourself, and you always should.</p>
+        <p>Allergies are stated in the brief as absolute exclusions and the model handles the obvious
+           cases well, but an AI is not a safety guarantee and the app can't verify the output in code.
+           Recipes generated with an allergy in play carry a visible reminder to check the ingredients
+           yourself. Always do.</p>
+      </details>
+      <details>
+        <summary>Does it do shopping lists, quantities or meal planning?</summary>
+        <p>No, and deliberately not. The app is for cooking with what you've got, and each of those
+           would pull it towards being an inventory system to maintain. The reasoning is written up
+           under <a href="{{ url_for('approach') }}">Approach</a>.</p>
+      </details>
+      <details>
+        <summary>Can I get my recipes back out?</summary>
+        <p>Your data is a single SQLite file on your own machine, which you can copy, query or back up
+           however you like — nothing is locked away in a proprietary format or on someone else's
+           server. Individual recipes print or save to PDF from the share view. There's no one-click
+           bulk export button today.</p>
       </details>
     </div>
 
     <div class="next-row">
-      <a class="btn btn--secondary" href="{{ site.github }}" rel="noopener" target="_blank">Ask on GitHub</a>
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
+      <a class="btn btn--secondary" href="{{ site.github }}/issues" rel="noopener" target="_blank">{{ icon('star') }} Ask on GitHub</a>
     </div>
   </div>
 </section>

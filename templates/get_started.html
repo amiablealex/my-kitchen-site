@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Get started: {{ site.name }}{% endblock %}
-{% block description %}Install My Kitchen as a Home Assistant add-on or with Docker, then configure your LLM provider.{% endblock %}
+{% block description %}Install My Kitchen as a Home Assistant add-on, with Docker, or as a plain Python app — then set up your kitchen.{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,14 @@
   <div class="wrap measure gs">
 
     <div class="gs-block">
-      <h2>{{ icon('home') }} Home Assistant add-on</h2>
+      <h2>{{ icon('home') }} Home Assistant app</h2>
+      <p>The easiest route: one install, updates through Home Assistant, and secure remote access with
+        no ports to forward.</p>
+      <div class="callout callout--info">
+        {{ icon('info') }}
+        <div>Add-ons require Home Assistant <strong>OS</strong> or <strong>Supervised</strong>. If
+          you're on Container or Core, use the Docker route below — it's the same app.</div>
+      </div>
       <ol class="walk">
         <li><strong>Add the repository.</strong> In Home Assistant go to
           <em>Settings → Apps → Install App</em>, open the <em>⋮</em> menu (top right),
@@ -17,14 +24,15 @@
           <pre class="code"><code>{{ site.ha_repo }}</code></pre>
         </li>
         <li><strong>Install.</strong> Close the dialog, find <strong>My Kitchen</strong> in the store
-          and click <em>Install</em>. The first build clones the app and may take a few minutes.</li>
+          and click <em>Install</em>. The first build clones the app and builds an image locally, which
+          takes a few minutes on a Pi.</li>
         <li><strong>Configure.</strong> On the <em>Configuration</em> tab, set your LLM provider and
           API key (see <a href="#configure">Configuration</a> below). Save.</li>
         <li><strong>Start.</strong> On the <em>Info</em> tab, click <em>Start</em>. Turn on
           <em>Show in sidebar</em> for convenience.</li>
         <li><strong>First login.</strong> Open the add-on. A starter account is created automatically
-          and its password is printed once in the add-on <em>Log</em> tab (go to Apps -> My Kitchen -> log). Find the user and password, 
-          log in, then change it in the My Kitchen interface under 'Household'.</li>
+          and its password is printed once in the add-on <em>Log</em> tab (Apps → My Kitchen → Log).
+          Log in with those details, then change the password in-app under <em>Household</em>.</li>
       </ol>
       <div class="callout callout--info">
         {{ icon('info') }}
@@ -32,6 +40,33 @@
           HTTPS, the add-on is reachable securely through HA ingress. No ports to forward and
           nothing exposed directly to the internet.</div>
       </div>
+    </div>
+
+    <div class="gs-block">
+      <h2 id="setup" class="anchored">{{ icon('cooking') }} Setting up your kitchen</h2>
+      <p>Installed and logged in? A quarter of an hour spent here is what makes the app useful rather
+        than empty. Roughly in this order:</p>
+      <ol class="walk">
+        <li><strong>Change the starter password</strong> and add everyone else in the house, under
+          <em>Household</em>.</li>
+        <li><strong>Add dietary tags</strong> for whoever needs them — allergies, disliked foods,
+          diets — and assign them to people as you create them. A tag assigned to nobody never reaches
+          a recipe.</li>
+        <li><strong>Prune the catalogue.</strong> A fresh install seeds around 170 common ingredients
+          to save you typing. Under <em>Manage → Ingredients</em>, retire the ones you'll never buy and
+          add the ones you always do. This is the one bit worth doing properly — everything else is
+          built on it.</li>
+        <li><strong>Check your staples.</strong> Anything you always have — oil, salt, common spices,
+          flour — should be flagged as a staple so it stays out of your stock list and gets used
+          freely.</li>
+        <li><strong>Add your equipment</strong> under <em>Manage</em>, so recipes are written for the
+          kitchen you've actually got.</li>
+        <li><strong>Set your stock</strong> — a first pass through the kitchen, checking in what's
+          there.</li>
+        <li><strong>Cook something.</strong> Hit <em>Lets Cook</em>. Your suggestions will be empty
+          at first; that list fills out as your recipe bank grows, and writing in two or three
+          recipes you already cook regularly is the fastest way to get it going.</li>
+      </ol>
     </div>
 
     <div class="gs-block">
@@ -62,6 +97,18 @@ APP_TIMEZONE=Europe/London</code></pre>
     </div>
 
     <div class="gs-block">
+      <h2>{{ icon('tune') }} Or just run it</h2>
+      <p>It's an ordinary Flask app, so no container is required if you'd rather not.</p>
+      <pre class="code"><code>python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env            # then edit
+flask db upgrade &amp;&amp; flask seed  # schema + starter catalogue
+python run.py</code></pre>
+      <p class="muted">With <code>LLM_PROVIDER=mock</code> that needs no API key at all — a good way
+        to click through the whole app before deciding whether you want it.</p>
+    </div>
+
+    <div class="gs-block">
       <h2 id="configure" class="anchored">Configuration</h2>
       <p>My Kitchen talks to a large language model through a swappable provider adapter. Set these in
          the app's <em>Configuration</em> tab, or as environment variables under Docker.</p>
@@ -78,11 +125,19 @@ APP_TIMEZONE=Europe/London</code></pre>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--tip">
-        {{ icon('info') }}        
-        <div><strong>Fully local?</strong> The provider adapter is being designed to accept a local model
-          (e.g. Ollama). A Raspberry Pi won't match a cloud model's quality and speed today, but
-          if you have the hardware, a fully on-network setup will be possible. See
+
+      <h3>What it costs</h3>
+      <p>The app is free and open source. The running cost is your provider's API usage, billed to
+        your own key. Only generation calls the model — browsing, suggestions, stock and everything
+        else are local and free — and a generation is a single call to a lightweight model. In
+        practice that's pennies over a month of normal household cooking, but it isn't nothing, and
+        it's worth setting a spending cap in your provider's console.</p>
+
+      <div class="callout callout--info">
+        {{ icon('info') }}
+        <div><strong>Running fully local?</strong> Not yet. The provider adapter is deliberately
+          swappable and a local model (such as Ollama) is a natural fit for it, but that provider
+          isn't written — today, generation means a hosted model and an API key. See
           <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
       </div>
     </div>
@@ -90,10 +145,17 @@ APP_TIMEZONE=Europe/London</code></pre>
     <div class="gs-block">
       <h2>Updating &amp; backups</h2>
       <p><strong>Home Assistant:</strong> new versions appear under standard 'updates'. Configure
-         <em>Settings → System → Backups</em> so HA snapshots the App before schema-changing releases.</p>
+         <em>Settings → System → Backups</em> so HA snapshots the add-on before schema-changing releases.</p>
       <p><strong>Docker:</strong> <code>git pull</code> then <code>docker compose up -d --build</code>;
          migrations apply on start. Your data lives on the mounted <code>/data</code> volume. Back that
          up yourself however you want.</p>
+      <p class="muted">What changed in each version is listed under
+        <a href="{{ url_for('releases') }}">Releases</a>.</p>
+    </div>
+
+    <div class="next-row">
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
+      <a class="btn btn--secondary" href="{{ url_for('faq') }}">{{ icon('info') }} FAQ</a>
     </div>
 
   </div>

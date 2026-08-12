@@ -22,6 +22,9 @@
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-180.png') }}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+
+  {# Structured data — filled in on the home page only. #}
+  {% block jsonld %}{% endblock %}
 </head>
 <body>
 {% from "_icons.html" import icon %}
@@ -63,7 +66,9 @@
       <a href="{{ url_for('index') }}">Home</a>
       <a href="{{ url_for('get_started') }}">Get started</a>
       <a href="{{ url_for('docs') }}">Docs</a>
+      <a href="{{ url_for('approach') }}">Approach</a>
       <a href="{{ url_for('faq') }}">FAQ</a>
+      <a href="{{ url_for('releases') }}">Releases</a>
       <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>
       <a href="{{ site.github }}" rel="noopener" target="_blank">GitHub</a>
     </nav>

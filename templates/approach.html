@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Approach: {{ site.name }}{% endblock %}
+{% block description %}What My Kitchen sets out to do, the features deliberately left out and why, and how the project is maintained.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap measure">
+    <p class="eyebrow">Approach</p>
+    <h1 class="display page-title">What it does, and what it won't</h1>
+    <p class="lead">My Kitchen is a small tool with one job. Most of the decisions that shaped it were
+      decisions <strong>not</strong> to build something — so here they are, with the reasons.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap measure gs">
+
+    <div class="gs-block">
+      <h2>The one job</h2>
+      <p>Turn what's actually in your kitchen into something worth cooking tonight. Every feature is
+        judged against that moment: standing in the kitchen, hungry, wanting an answer rather than a
+        project.</p>
+      <p>Three things follow. Stock has to be effortless enough that it stays accurate. Recipes have
+        to be structured enough that “can I make this?” is answerable. And the output has to be
+        genuinely good — a mediocre recipe is worse than no recipe, because you'll stop opening the
+        app.</p>
+    </div>
+
+    <div class="gs-block">
+      <h2>Left out on purpose</h2>
+
+      <h3>Stock quantities, decrementing and low-stock alerts</h3>
+      <p>The hardest guardrail in the project. The moment stock holds numbers, it needs maintaining
+        every time you cook, and within a fortnight it's wrong — at which point the whole app is
+        lying to you. In-or-out is coarse, but it's a toggle you'll still be updating in a year.</p>
+
+      <h3>A shopping list, or “what am I missing?”</h3>
+      <p>The app is reached for inspiration from what you <em>have</em>. A recipe you can't make
+        tonight doesn't get cooked tonight, so the near-misses were never the interesting part. It'd
+        also drag the app back towards inventory.</p>
+
+      <h3>Meal planning and calendars</h3>
+      <p>Different tool, different mindset. This one is for the decision you make at 6pm, not the one
+        you make on Sunday.</p>
+
+      <h3>Nutrition and calorie tracking</h3>
+      <p>A language model's nutrition figures range from rough to confidently wrong, and numbers that
+        look precise get trusted. Not worth the risk, and not what the app is for.</p>
+
+      <h3>Star ratings</h3>
+      <p>Built, then dropped before shipping. A rating is only worth storing if something consumes
+        it — and nothing would. It can't feed the recipe generator without leading it towards last
+        month's food; favourites already answer “which are the good ones”; and sorting a two-person
+        recipe bank by average score is a report nobody runs. Notes cover the same ground better,
+        because “needed 10 minutes longer, use less chilli” is the part worth re-reading.</p>
+
+      <h3>A chat assistant</h3>
+      <p>Open-ended conversation about cooking is well served by the apps built for it. The narrow
+        version — asking a question about the recipe already on screen, where the context is already
+        loaded — is worth having, and is on the list.</p>
+
+      <h3>Sharing between households, and any public route</h3>
+      <p>A community feature turns a private tool into a platform: moderation, accounts, scale,
+        privacy exposure. The actual need — sending someone a recipe — is met by the print/share
+        view, which hands you a PDF rather than opening a door into your instance.</p>
+
+      <h3>AI-generated food photography</h3>
+      <p>Generic at best and misleading at worst, since the picture won't be of the dish you're about
+        to make.</p>
+
+      <div class="callout callout--info">
+        {{ icon('info') }}
+        <div>None of this is a promise never to change my mind — a couple of these have been revisited
+          already. It's a record of the reasoning, so the same ground doesn't get re-covered from
+          scratch every time.</div>
+      </div>
+    </div>
+
+    <div class="gs-block">
+      <h2>What's next</h2>
+      <p>A short list, worked through slowly:</p>
+      <ul>
+        <li><strong>Importing recipes from the web.</strong> Most recipe sites publish structured data
+          that can be read directly into the app's format — often with no AI involved at all. This is
+          the big one, because typing recipes in by hand is the main friction in building up a bank.</li>
+        <li><strong>Asking a question about a recipe.</strong> A box on the recipe page: swaps,
+          substitutions, why a step works. Answers only — not rewriting the recipe by conversation.</li>
+        <li><strong>Importing from a photograph</strong>, for cookbooks.</li>
+        <li><strong>A local model option</strong>, so generation could stay on your network too.</li>
+      </ul>
+      <p class="muted">In roughly that order, with no dates attached. See
+        <a href="{{ url_for('releases') }}">Releases</a> for what's actually landed.</p>
+    </div>
+
+    <div class="gs-block">
+      <h2>How this is maintained</h2>
+      <p>It's a personal household project, used daily in my own kitchen and shared in case it's
+        useful to someone else. That's the honest scope: I fix what breaks, I finish what's on the
+        list above, and I'm not chasing a feature set. A small tool that still works in three years is
+        the goal — not a big one that needs constant attention.</p>
+      <p>Bugs and questions are genuinely welcome on
+        <a href="{{ site.github }}/issues" rel="noopener" target="_blank">GitHub</a>. Feature requests
+        are read too, but the list above is short on purpose, and “no, and here's why” is a normal
+        answer here.</p>
+    </div>
+
+    <div class="next-row">
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
+      <a class="btn btn--secondary" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

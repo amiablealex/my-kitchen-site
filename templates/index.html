@@ -2,21 +2,38 @@
 {% from "_icons.html" import icon %}
 {% block title %}{{ site.name }}: {{ site.tagline }}{% endblock %}
 
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ site.name }}",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Linux, Docker, Home Assistant OS",
+  "url": "{{ site.url }}",
+  "codeRepository": "{{ site.github }}",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "description": "{{ site.blurb }}",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <section class="hero">
   <div class="wrap hero-inner">
     <p class="eyebrow">Self-hosted · Private · Open source</p>
     <h1 class="display hero-title">{{ site.name }}</h1>
-    <p class="hero-tagline">The household's recipe brain: it holds all of your recipes, knows what's in stock, 
-      and shows you
-       <strong>“what's cookable right now?”</strong></p>
+    <p class="hero-tagline">The household's recipe brain: it holds all of your recipes, knows what's
+      in stock, and shows you <strong>“what's cookable right now?”</strong></p>
     <div class="btn-row hero-cta">
-      {# <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a> #}
+      <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Get started</a>
     </div>
 
     <figure class="shot shot--hero">
       <img src="{{ url_for('static', filename='img/screenshot-suggestions.png', v='2') }}"
-           alt="The recipe suggestions window" loading="eager" width="1080" height="2040">
+           alt="Cookable recipe suggestions on the review step" loading="eager" width="1080" height="2040">
     </figure>
   </div>
 </section>
@@ -27,54 +44,58 @@
     <div class="feature-lead">
       <h2 class="section-heading">What this is</h2>
     </div>
-    
+
     <ul class="feature-list">
       <li class="feature-row">
         <span class="feature-mark c1">{{ icon('shelves') }}</span>
         <div class="feature-text">
           <h3>Stock manager</h3>
-          <p>Designed for minimal effort. Check ingredients in and out; configure a bank of staples like oil and spices, and My Kitchen assumes they'll always be available. </p>
+          <p>Designed for minimal effort. Check ingredients in and out, grouped and colour-coded by
+             section; set up a bank of staples like oil and spices and My Kitchen assumes they're
+             always there. In or out; not an inventory to keep accurate.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c2">{{ icon('kitchen') }}</span>
         <div class="feature-text">
-          <h3>Recipe database</h3>
-          <p>Upload your own recipes, and link each ingredient to your catalogue. The data-driven engine behind
-             working out what's cookable.</p>
+          <h3>Your own recipe bank</h3>
+          <p>Write your own recipes, linking each ingredient to your catalogue. That structure is the engine behind working out what's
+             cookable.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c3">{{ icon('search') }}</span>
         <div class="feature-text">
           <h3>See what you can make right now</h3>
-          <p>It knows what's in stock, asks what kind of recipe you're after,
-            then surfaces all saved recipes that fit the brief.</p>
+          <p>It knows what's in stock, asks what kind of thing you're after, then surfaces every saved
+             recipe that fits and that you have the ingredients for.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c4">{{ icon('cooking') }}</span>
         <div class="feature-text">
           <h3>Creative assistant</h3>
-          <p>If no existing recipes are appealing, an integrated AI model takes the brief and returns two distinctly different recipes 
-            to choose from that can be madee with what's in stock right now.</p>
+          <p>If nothing takes your fancy, an AI model takes the brief and returns two deliberately
+             different recipes to choose from, built around what's in stock, with techniques and
+             finishing touches that make them worth cooking.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c5">{{ icon('group') }}</span>
         <div class="feature-text">
-          <h3>Multiple users</h3>
-          <p>Everyone can see each other's uploaded recipes. Configure dietary needs, allergies, preferences. 
-            Choose who you're cooking for and the generated recipes adjust accordingly.</p>
+          <h3>Everyone in the house</h3>
+          <p>Separate logins and favourites, shared recipes and notes. Record allergies, dislikes and
+             diets per person; pick who's eating and the brief adjusts. Leave notes on a recipe for
+             next time — what you changed, whether to make it again.</p>
         </div>
       </li>
       <li class="feature-row">
         <span class="feature-mark c6">{{ icon('lock') }}</span>
         <div class="feature-text">
-          <h3>Fully local</h3>
-          <p>Self-hosted and private: stock, recipes and history never leave the host network. Only
-             a short ingredient brief goes to the AI model for generations, and a local-model would even
-             keep that local. <a href="{{ url_for('privacy') }}">More on data ›</a></p>
+          <h3>Self-hosted and private</h3>
+          <p>Your stock, recipes, history and accounts never leave your hardware. The only thing that
+             does is a short ingredient brief to the AI model, and only when you generate.
+             <a href="{{ url_for('privacy') }}">More on data ›</a></p>
         </div>
       </li>
     </ul>
@@ -87,27 +108,40 @@
     <div class="shots-grid">
       <figure class="shot">
         <img src="{{ url_for('static', filename='img/screenshot-home.png', v='3') }}"
-             alt="The stock manager" loading="eager" width="1080" height="2040">
-        <figcaption>The “Lets cook” wizard</figcaption>
+             alt="The My Kitchen home screen" loading="lazy" width="1080" height="2040">
+        <figcaption>The home screen</figcaption>
       </figure>
       <figure class="shot">
         <img src="{{ url_for('static', filename='img/screenshot-wizard.png', v='2') }}"
-             alt="The Lets Cook wizard choosing ingredients" loading="lazy" width="1080" height="2040">
-        <figcaption>Cookable suggestions</figcaption>
+             alt="Choosing ingredients to use up in the Lets Cook wizard" loading="lazy" width="1080" height="2040">
+        <figcaption>The “Lets Cook” wizard</figcaption>
       </figure>
       <figure class="shot">
         <img src="{{ url_for('static', filename='img/screenshot-recipe.png', v='2') }}"
-             alt="A full recipe with ingredient links" loading="lazy" width="1080" height="2040">
+             alt="A full recipe with linked ingredients" loading="lazy" width="1080" height="2040">
         <figcaption>A full recipe</figcaption>
       </figure>
     </div>
   </div>
 </section>
 
+<section class="band band--alt">
+  <div class="wrap measure">
+    <h2 class="section-heading">Built small, on purpose</h2>
+    <p class="lead">My Kitchen does one job: turning what you've got into something worth cooking. It
+      isn't an inventory system, a shopping-list app, a meal planner or a nutrition tracker — and the
+      reasons those were left out are written down.</p>
+    <div class="btn-row center-row">
+      <a class="btn btn--secondary" href="{{ url_for('approach') }}">{{ icon('tune') }} What it won't do, and why</a>
+    </div>
+  </div>
+</section>
+
 <section class="band cta-band">
   <div class="wrap measure center">
-    <h2>Run on your own hardware</h2>
-    <p class="lead">A device is needed to host the server. The easiest option is a Home Assistant (HAOS) App. Otherwise, you'll need to configure a docker container.</p>
+    <h2>Run it on your own hardware</h2>
+    <p class="lead">You'll need somewhere to host it. The easiest route by far is as a Home Assistant
+      app; otherwise it's an ordinary Docker container, or a plain Python app.</p>
     <div class="btn-row center-row">
       <a class="btn btn--cta" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
     </div>

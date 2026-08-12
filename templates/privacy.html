@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Privacy &amp; data — {{ site.name }}{% endblock %}
-{% block description %}What stays on your hardware, what leaves your network, and how to run My Kitchen fully locally.{% endblock %}
+{% block description %}What stays on your hardware, what leaves your network, and exactly what a generation brief contains.{% endblock %}
 
 {% block content %}
 <section class="page-head">
@@ -16,16 +16,28 @@
 <section class="band">
   <div class="wrap measure">
     <h2>Stays on your hardware</h2>
-    <p>Your accounts, stock list, ingredient catalogue, saved and generated recipes, history and
-       favourites all live in a single database file on the machine you run My Kitchen on. There's no
-       account with us, no cloud sync, no telemetry, no analytics. Nothing is shared between
-       households — it isn't a community platform.</p>
+    <p>Your accounts, stock list, ingredient catalogue, saved and generated recipes, history,
+       favourites and notes all live in a single database file on the machine you run My Kitchen on.
+       There's no account with us, no cloud sync, no telemetry, no analytics. Nothing is shared
+       between households — it isn't a community platform.</p>
 
     <h2>Leaves your network</h2>
     <p>When — and only when — you generate a recipe, the app sends a short <strong>brief</strong> to
-       your chosen LLM provider: the ingredients in play, your constraints (meal type, time, dietary
-       needs as written) and a creative angle. It's low-sensitivity by design, but it does go to that
-       provider under their terms, using your own API key.</p>
+       your chosen LLM provider, using your own API key. It contains:</p>
+    <ul>
+      <li>The ingredients in play: what you picked to use up, what's in stock, your staples, and any
+        short notes attached to them.</li>
+      <li>Your equipment list.</li>
+      <li>The meal type, cuisine, time band and number of servings.</li>
+      <li>The dietary tags of the people you're cooking for, as written — the tag names, not the
+        names of the people.</li>
+      <li>The titles of your recent recipes, so you don't get the same thing twice.</li>
+      <li>A randomly chosen creative angle.</li>
+    </ul>
+    <p>That's the whole of it. Your account details, your history beyond those titles, your notes and
+       your favourites are never sent — notes in particular are deliberately kept out of the brief.
+       Nothing is sent at any other time: browsing, filtering, suggestions and stock all happen
+       locally.</p>
     <div class="callout callout--info">
       {{ icon('info') }}
       <div>This is the deliberate trade-off behind the project: a small Raspberry Pi can't match a
@@ -33,18 +45,29 @@
         local. We'd rather say that plainly than market the app as fully private when a model call is
         involved.</div>
     </div>
+    <p class="muted">One caveat worth stating: dietary tags are free text you write yourself. If you
+       name one after a medical condition, that wording goes in the brief. Naming tags after foods
+       rather than diagnoses keeps them out.</p>
 
     <h2>Running fully local</h2>
-    <p>If you'd rather nothing left your network at all, the provider adapter is designed to accept a
-       local model (such as Ollama) behind the same interface. On capable hardware that gives you an
-       entirely on-network setup; on a small Pi you'll trade some recipe quality and speed for it. The
-       choice is yours.</p>
+    <p>Not possible today, and the site shouldn't imply otherwise. The provider adapter is built to be
+       swappable — that's how <code>mock</code>, Gemini and Anthropic already sit behind one
+       interface — and a local model such as Ollama is the natural next one to add. It's on the list
+       rather than in the app. On capable hardware it would give an entirely on-network setup; on a
+       small Pi it would cost you real recipe quality and speed, which is why it hasn't been the
+       priority.</p>
+    <p>In the meantime, <code>mock</code> mode runs the entire app with no API key and no outbound
+       call at all. You lose real generation, but stock, suggestions, your own recipes and everything
+       else work exactly as normal.</p>
 
     <h2>Security</h2>
     <p>Access is gated by a per-household login on your network. Run via the Home Assistant add-on and
        it sits behind HA's authenticated, HTTPS ingress — nothing is exposed directly to the internet
        and there are no ports to forward. Run it standalone and it's an ordinary small web service you
        put behind your own reverse proxy and TLS.</p>
+    <p>The print / share view is worth a specific mention, because “share” usually means a public
+       link. Here it doesn't: it's a chrome-free page behind the same login, for printing, saving to
+       PDF or screenshotting. What you send someone is the file, not access to your instance.</p>
 
     <p class="muted">This page describes the app's design intent. You are responsible for your own
        hosting, your LLM provider choice and their terms.</p>

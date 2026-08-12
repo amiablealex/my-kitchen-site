@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Releases: {{ site.name }}{% endblock %}
+{% block description %}What's changed in each version of My Kitchen, straight from the project's changelog.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap measure">
+    <p class="eyebrow">Releases</p>
+    <h1 class="display page-title">What's changed</h1>
+    {% if releases %}
+      <p class="lead">Currently on <strong>{{ releases[0].version }}</strong>. Updates arrive through
+        Home Assistant, or with a <code>git pull</code> and a rebuild.</p>
+    {% else %}
+      <p class="lead">Release notes live with the code.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap measure gs">
+
+    {% if releases %}
+      {% for r in releases %}
+        <div class="gs-block" id="v{{ r.version }}">
+          <h2 class="anchored">
+            <span class="badge{% if loop.first %} badge--ok{% endif %}">{{ r.version }}</span>
+            {% if r.title %}{{ r.title }}{% endif %}
+          </h2>
+          {{ r.body }}
+        </div>
+      {% endfor %}
+
+      <div class="next-row">
+        <a class="btn btn--secondary" href="{{ changelog_url }}" rel="noopener" target="_blank">
+          {{ icon('star') }} Full changelog on GitHub
+        </a>
+      </div>
+    {% else %}
+      <div class="gs-block">
+        <div class="callout callout--warn">
+          {{ icon('info') }}
+          <div>The release notes couldn't be loaded just now. They're always available in the
+            repository.</div>
+        </div>
+        <div class="next-row">
+          <a class="btn btn--secondary" href="{{ changelog_url }}" rel="noopener" target="_blank">
+            {{ icon('star') }} Changelog on GitHub
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}
