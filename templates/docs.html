@@ -287,42 +287,31 @@
     <section id="trouble" class="doc-sec">
       <h2>Troubleshooting</h2>
 
-      <h3>The add-on install is taking ages</h3>
-      <p>The first build clones the app and builds an image locally, which takes a few minutes on a
-        Pi. That's normal, and it only happens on install and update.</p>
-
-      <h3>I can't see My Kitchen in the add-on store</h3>
-      <p>The store caches its list. <em>Settings → Add-ons → ⋮ → Check for updates</em>, or reload the
-        Supervisor, then look again. Add-ons also need Home Assistant <strong>OS</strong> or
-        <strong>Supervised</strong> — they aren't available on Container or Core installs.</p>
+      <h3>I can't see My Kitchen in the Home Assistant 'App' store</h3>
+      <p>The store caches its list. <em>Settings → Apps → ⋮ → Check for updates</em>, or reload the
+        Supervisor, then look again. Apps also need Home Assistant <strong>OS</strong> or
+        <strong>Supervised</strong>, they aren't available on Container or Core installs.</p>
 
       <h3>I've lost the first-run password</h3>
-      <p>It's printed once in the add-on's <em>Log</em> tab. If it's scrolled away, running
-        <code>flask set-password</code> from the add-on's shell sets a new one.</p>
+      <p>It's printed once in the app's <em>Log</em> tab. If it's scrolled away, running
+        <code>flask set-password</code> from the app's shell sets a new one.</p>
 
       <h3>The sidebar entry hasn't changed after an update</h3>
-      <p>Changes to the sidebar panel need a full Home Assistant Core restart. Restarting the add-on
+      <p>Changes to the sidebar panel need a full Home Assistant Core restart. Restarting the app
         alone isn't enough.</p>
 
       <h3>Generation fails or returns nothing</h3>
-      <p>Check the provider and API key on the <em>Configuration</em> tab, and the add-on log for the
-        error. Switching the provider to <code>mock</code> is a quick way to confirm the app itself is
-        fine — it runs the whole flow with canned recipes and no API call.</p>
+      <p>Check the provider and API key on the <em>Configuration</em> tab, and the app log for the
+        error. Switching the provider to <code>mock</code> is a quick way to test if the app itself is
+        fine.</p>
 
       <h3>A recipe won't show up in suggestions</h3>
       <p>Most often one of three things: an ingredient line isn't linked to your catalogue (open the
         recipe and check the tags beside each ingredient), the recipe has no meal type tag, or one of
         its required ingredients isn't in stock. Suggestions exclude anything they can't verify.</p>
 
-      <h3>“Add to home screen” installs Home Assistant, not My Kitchen</h3>
-      <p>Through Home Assistant ingress, the browser sees HA's app rather than this one, so you get
-        HA's icon. Reaching the app on its own HTTPS address would give it its own — not something the
-        add-on can do from inside ingress.</p>
-
-      <h3>Before a big update</h3>
-      <p>Updates apply database migrations automatically on start. They're written to be additive and
-        backward-safe, but configure <em>Settings → System → Backups</em> anyway so Home Assistant
-        snapshots the add-on first.</p>
+      <h3>“Add to home screen” installs Home Assistant, not the My Kitchen app</h3>
+      <p> Through Home Assistant ingress, the browser sees HA's overall app rather than My Kitchen. HA doesn't provide a cloud URL that directs straight to an 'app', so unfortunately a native 'install' is not possible.</p>
 
       <p class="muted">Still stuck? Open an issue on the
         <a href="{{ site.github }}/issues" rel="noopener" target="_blank">GitHub repository</a>.</p>
