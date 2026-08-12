@@ -14,8 +14,8 @@
         no ports to forward.</p>
       <div class="callout callout--info">
         {{ icon('info') }}
-        <div>Add-ons require Home Assistant <strong>OS</strong> or <strong>Supervised</strong>. If
-          you're on Container or Core, use the Docker route below — it's the same app.</div>
+        <div>'Apps' require Home Assistant <strong>OS</strong> or <strong>Supervised</strong>. If
+          you're on Container or Core, use the Docker route below.</div>
       </div>
       <ol class="walk">
         <li><strong>Add the repository.</strong> In Home Assistant go to
@@ -30,7 +30,7 @@
           API key (see <a href="#configure">Configuration</a> below). Save.</li>
         <li><strong>Start.</strong> On the <em>Info</em> tab, click <em>Start</em>. Turn on
           <em>Show in sidebar</em> for convenience.</li>
-        <li><strong>First login.</strong> Open the add-on. A starter account is created automatically
+        <li><strong>First login.</strong> Open the app. A starter account is created automatically
           and its password is printed once in the add-on <em>Log</em> tab (Apps → My Kitchen → Log).
           Log in with those details, then change the password in-app under <em>Household</em>.</li>
       </ol>
@@ -44,25 +44,24 @@
 
     <div class="gs-block">
       <h2 id="setup" class="anchored">{{ icon('cooking') }} Setting up your kitchen</h2>
-      <p>Installed and logged in? A quarter of an hour spent here is what makes the app useful rather
+      <p>A quarter of an hour spent here after installing the app is what makes it useful rather
         than empty. Roughly in this order:</p>
       <ol class="walk">
         <li><strong>Change the starter password</strong> and add everyone else in the house, under
           <em>Household</em>.</li>
-        <li><strong>Add dietary tags</strong> for whoever needs them — allergies, disliked foods,
-          diets — and assign them to people as you create them. A tag assigned to nobody never reaches
-          a recipe.</li>
+        <li><strong>Add dietary tags</strong> for whoever needs them (allergies, disliked foods,
+          diets) and assign them to people as you create them. A tag assigned to nobody never reaches
+          the brief.</li>
         <li><strong>Prune the catalogue.</strong> A fresh install seeds around 170 common ingredients
           to save you typing. Under <em>Manage → Ingredients</em>, retire the ones you'll never buy and
-          add the ones you always do. This is the one bit worth doing properly — everything else is
+          add the ones you always do. This is the one bit worth doing properly; everything else is
           built on it.</li>
-        <li><strong>Check your staples.</strong> Anything you always have — oil, salt, common spices,
-          flour — should be flagged as a staple so it stays out of your stock list and gets used
+        <li><strong>Check your staples.</strong> Anything you always have (oil, salt, common spices,
+          flour...) should be flagged as a staple so it stays out of your stock list and gets used
           freely.</li>
         <li><strong>Add your equipment</strong> under <em>Manage</em>, so recipes are written for the
           kitchen you've actually got.</li>
-        <li><strong>Set your stock</strong> — a first pass through the kitchen, checking in what's
-          there.</li>
+        <li><strong>Set your stock</strong>. A first pass through the kitchen, checking in what you've currently got.</li>
         <li><strong>Cook something.</strong> Hit <em>Lets Cook</em>. Your suggestions will be empty
           at first; that list fills out as your recipe bank grows, and writing in two or three
           recipes you already cook regularly is the fastest way to get it going.</li>
@@ -104,8 +103,8 @@ pip install -r requirements.txt
 cp .env.example .env            # then edit
 flask db upgrade &amp;&amp; flask seed  # schema + starter catalogue
 python run.py</code></pre>
-      <p class="muted">With <code>LLM_PROVIDER=mock</code> that needs no API key at all — a good way
-        to click through the whole app before deciding whether you want it.</p>
+      <p class="muted">With <code>LLM_PROVIDER=mock</code> that needs no API key. A good way
+        to check out the app before deciding whether you want to add your key.</p>
     </div>
 
     <div class="gs-block">
@@ -128,16 +127,16 @@ python run.py</code></pre>
 
       <h3>What it costs</h3>
       <p>The app is free and open source. The running cost is your provider's API usage, billed to
-        your own key. Only generation calls the model — browsing, suggestions, stock and everything
-        else are local and free — and a generation is a single call to a lightweight model. In
+        your own key. Only generation calls the model - browsing, suggestions, stock and everything
+        else are local and free. Generation is a single call to a lightweight model. In
         practice that's pennies over a month of normal household cooking, but it isn't nothing, and
         it's worth setting a spending cap in your provider's console.</p>
 
       <div class="callout callout--info">
         {{ icon('info') }}
-        <div><strong>Running fully local?</strong> Not yet. The provider adapter is deliberately
-          swappable and a local model (such as Ollama) is a natural fit for it, but that provider
-          isn't written — today, generation means a hosted model and an API key. See
+        <div><strong>Running fully local?</strong> Not yet. The provider adapter is
+          swappable and a local model (such as Ollama) is a natural fit, but a local provider
+          isn't implemented yet. Currently, generation means a call to a cloud model with an API key. See
           <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
       </div>
     </div>
@@ -145,9 +144,9 @@ python run.py</code></pre>
     <div class="gs-block">
       <h2>Updating &amp; backups</h2>
       <p><strong>Home Assistant:</strong> new versions appear under standard 'updates'. Configure
-         <em>Settings → System → Backups</em> so HA snapshots the add-on before schema-changing releases.</p>
+         <em>Settings → System → Backups</em> if you want HA to snapshot the app's data before schema-changing releases.</p>
       <p><strong>Docker:</strong> <code>git pull</code> then <code>docker compose up -d --build</code>;
-         migrations apply on start. Your data lives on the mounted <code>/data</code> volume. Back that
+         migrations apply on start. Data lives on the mounted <code>/data</code> volume. Back that
          up yourself however you want.</p>
       <p class="muted">What changed in each version is listed under
         <a href="{{ url_for('releases') }}">Releases</a>.</p>
