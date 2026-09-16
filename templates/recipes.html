@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Recipes: {{ site.name }}{% endblock %}
+{% block description %}Recipes from My Kitchen, the self-hosted household recipe app: most written by its creative assistant around whatever was in stock.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap recipes-intro">
+    <h1 class="display page-title">Recipes</h1>
+    <p class="lead">Recipes from our own My Kitchen, shown exactly as the app exports them. Most came
+      from its creative assistant, built around whatever happened to be in stock that day.</p>
+    <p class="muted">AI isn't a safety guarantee, so check the ingredients against any allergies before
+      you cook.</p>
+  </div>
+</section>
+
+<section class="wrap recipes-body">
+  {% if recipes %}
+    <ul class="recipe-cards">
+      {% for r in recipes %}
+        <li>
+          <a class="recipe-card" href="{{ url_for('recipe', slug=r.slug) }}">
+            <h2>{{ r.title }}</h2>
+            {% if r.blurb %}<p class="recipe-card-blurb">{{ r.blurb }}</p>{% endif %}
+            <p class="recipe-card-meta">
+              {%- if r.servings %}Serves {{ r.servings }}{% endif %}
+              {%- if r.meal_type %}{% if r.servings %} · {% endif %}{{ r.meal_type }}{% endif %}
+              {%- if r.cuisine %} · {{ r.cuisine }}{% endif %}
+              {%- if r.time_band == 'quick' %} · Quick{% elif r.time_band == 'relaxed' %} · Relaxed{% endif %}
+            </p>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted center recipes-empty">No recipes published yet. Check back soon.</p>
+  {% endif %}
+</section>
+{% endblock %}

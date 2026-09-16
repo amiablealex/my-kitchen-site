@@ -1,0 +1,107 @@
+{
+  "format": "my-kitchen-recipe",
+  "version": 1,
+  "exported_at": "2026-09-15",
+  "source": "ai",
+  "title": "Caramelised 'Assassin's' Spaghetti (Spaghetti all'Assassina)",
+  "blurb": "A fiery, deeply caramelised southern Italian classic where pasta is pan-fried to smoky perfection.",
+  "intro": "Originating in Bari, Puglia, this technique is a total game-changer. Instead of boiling the spaghetti in water, you cook it directly in a hot frying pan with a concentrated, spicy tomato broth. As the liquid reduces, the pasta fries in olive oil, creating crunchy, deeply caramelised, charred bits that carry an incredible depth of flavour. It is smoky, spicy, and utterly addictive.",
+  "servings": 2,
+  "meal_type": "Dinner",
+  "cuisine": "Italian",
+  "time_band": "quick",
+  "ingredients": [
+    {
+      "amount": "180",
+      "unit": "g",
+      "text": "Spaghetti",
+      "to_buy": false
+    },
+    {
+      "amount": "400",
+      "unit": "g tin",
+      "text": "Chopped tomatoes",
+      "to_buy": false
+    },
+    {
+      "amount": "30",
+      "unit": "g",
+      "text": "Parmesan",
+      "to_buy": false
+    },
+    {
+      "amount": "3",
+      "unit": "cloves",
+      "text": "Garlic",
+      "to_buy": false
+    },
+    {
+      "amount": "2",
+      "unit": "tbsp",
+      "text": "Tomato purée",
+      "to_buy": false
+    },
+    {
+      "amount": "1",
+      "unit": "tsp",
+      "text": "Chilli flakes",
+      "to_buy": false
+    },
+    {
+      "amount": "3",
+      "unit": "tbsp",
+      "text": "Olive oil",
+      "to_buy": false
+    }
+  ],
+  "prep": [
+    {
+      "title": "Make the tomato broth",
+      "text": "In a medium saucepan, combine the chopped tomatoes, 400ml of water, the tomato purée, and a generous pinch of salt. Bring to a gentle simmer over a medium heat, then lower the heat to keep it warm.",
+      "timer_minutes": 5
+    },
+    {
+      "title": "Slice the garlic",
+      "text": "Peel and thinly slice the garlic cloves. Grate the Parmesan finely and set it aside.",
+      "timer_minutes": 3
+    }
+  ],
+  "cook": [
+    {
+      "title": "Sizzle the aromatics",
+      "text": "Heat the olive oil in a large, wide frying pan (ideally non-stick or cast iron) over a medium heat. Add the sliced garlic and chilli flakes. Fry for 1-2 minutes until the garlic is golden and highly fragrant, but be careful not to let it burn.",
+      "timer_minutes": 2
+    },
+    {
+      "title": "Toast the spaghetti",
+      "text": "Add the dry spaghetti directly into the frying pan. Use tongs to carefully turn and coat the dry strands in the spicy garlic oil. Let it toast for 2-3 minutes until the pasta starts to turn slightly golden and blistered in places.",
+      "timer_minutes": 3
+    },
+    {
+      "title": "Add the first ladle of broth",
+      "text": "Ladle about half of the warm tomato broth into the frying pan. It will hiss and steam vigorously. Let the liquid bubble rapidly over a medium-high heat without stirring too much. Allow the pasta to absorb the liquid until it starts to sizzle and fry in the oil again, about 5 minutes.",
+      "timer_minutes": 5
+    },
+    {
+      "title": "Caramelise the pasta",
+      "text": "Once the liquid has completely evaporated, let the spaghetti fry against the bottom of the pan for 1-2 minutes without moving it. You want to hear a crackling sound and see the pasta develop a deep red, slightly charred crust. Carefully flip the pasta over to expose the un-caramelised side.",
+      "timer_minutes": 2
+    },
+    {
+      "title": "Final reduction",
+      "text": "Add the remaining tomato broth ladle by ladle, letting it reduce and fry between each addition. Continue this process until the pasta is perfectly al dente and coated in a thick, rich, concentrated tomato glaze.",
+      "timer_minutes": 5
+    },
+    {
+      "title": "Finish and serve",
+      "text": "Remove the pan from the heat. Toss through half of the finely grated Parmesan so it melts into the glaze. Divide between two bowls and top with the remaining Parmesan.",
+      "timer_minutes": 1
+    }
+  ],
+  "tips": [
+    {
+      "title": "The secret to the char",
+      "text": "Don't be afraid of the crackling sound when the liquid dries up. That frying stage is exactly when the caramelisation happens. Just keep an eye on it so it chars rather than burns to ash."
+    }
+  ]
+}

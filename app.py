@@ -10,17 +10,22 @@ Run in prod:   gunicorn app:app --workers 2 --bind 127.0.0.1:8008
 """
 
 import html as _html
+import json
+import logging
 import re
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime
+from datetime import date, datetime
+from pathlib import Path
 
-from flask import Flask, render_template
-from markupsafe import Markup
+from flask import Flask, Response, abort, render_template, url_for
+from markupsafe import Markup, escape
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+log = logging.getLogger(__name__)
+BASE_DIR = Path(__file__).resolve().parent
 
 # Behind nginx + a Cloudflare tunnel. Trust one proxy hop for the forwarded
 # host/proto so url_for and request.url reflect the public https origin.
@@ -48,6 +53,7 @@ SITE = {
 
 NAV = [
     ("index", "Home"),
+    ("recipes", "Recipes"),
     ("get_started", "Get started"),
     ("docs", "Docs"),
     ("approach", "Approach"),
@@ -199,6 +205,165 @@ def get_releases():
 
 
 # --------------------------------------------------------------------------- #
+# Recipes
+#
+# Recipes exported from the app (the "Download recipe data" link on its print
+# view) are committed to content/recipes/<slug>.json; the filename is the URL.
+# An optional matching PDF goes in static/recipes/<slug>.pdf and gets a download
+# button. Nothing else to wire up: the folder is re-read whenever a file in it
+# changes, so a git pull is enough and no restart is needed.
+#
+# Two optional keys can be added by hand to an exported file:
+#   "published": "2026-09-15"   ordering, newest first (defaults to exported_at)
+#   "note": "..."               a line from our kitchen, shown under the sheet
+# --------------------------------------------------------------------------- #
+RECIPES_DIR = BASE_DIR / "content" / "recipes"
+RECIPE_PDF_DIR = BASE_DIR / "static" / "recipes"
+_SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+_recipes_cache = {"signature": None, "recipes": []}
+
+
+def _clean(value):
+    """Strip a text field; anything that isn't text-like becomes empty."""
+    if value is None or isinstance(value, (dict, list, bool)):
+        return ""
+    return str(value).strip()
+
+
+def _parse_date(value):
+    try:
+        return date.fromisoformat(_clean(value)[:10])
+    except ValueError:
+        return None
+
+
+def _ingredient_line(amount, unit, text):
+    """Amount + unit + text, dropping empty parts. Mirrors the app's
+    ingredient_line macro (_ingredients.html)."""
+    return " ".join(p for p in (_clean(amount), _clean(unit), _clean(text)) if p)
+
+
+def _steps(items, with_timer=True):
+    out = []
+    for step in items if isinstance(items, list) else []:
+        if not isinstance(step, dict) or not _clean(step.get("text")):
+            continue
+        timer = step.get("timer_minutes") if with_timer else None
+        out.append({
+            "title": _clean(step.get("title")),
+            "text": _clean(step.get("text")),
+            "timer_minutes": timer if isinstance(timer, int) and timer > 0 else None,
+        })
+    return out
+
+
+def _load_recipe(path):
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("not a JSON object")
+
+    ingredients = []
+    for ing in data.get("ingredients") or []:
+        if not isinstance(ing, dict):
+            continue
+        # "item" is the app's legacy ingredients_json key; accept either.
+        line = _ingredient_line(ing.get("amount"), ing.get("unit"),
+                                ing.get("text") or ing.get("item"))
+        if line:
+            ingredients.append({"line": line, "to_buy": bool(ing.get("to_buy"))})
+
+    recipe = {
+        "slug": path.stem,
+        "title": _clean(data.get("title")),
+        "blurb": _clean(data.get("blurb")),
+        "intro": _clean(data.get("intro")),
+        "servings": data.get("servings") if isinstance(data.get("servings"), int) else None,
+        "meal_type": _clean(data.get("meal_type")),
+        "cuisine": _clean(data.get("cuisine")),
+        "time_band": _clean(data.get("time_band")),
+        "source": _clean(data.get("source")) or "ai",
+        "note": _clean(data.get("note")),
+        "published": _parse_date(data.get("published") or data.get("exported_at")),
+        "ingredients": ingredients,
+        "prep": _steps(data.get("prep")),
+        "cook": _steps(data.get("cook")),
+        "tips": _steps(data.get("tips"), with_timer=False),
+        "pdf": (RECIPE_PDF_DIR / f"{path.stem}.pdf").is_file(),
+    }
+    if not recipe["title"] or not recipe["ingredients"] or not recipe["cook"]:
+        raise ValueError("needs a title, ingredients and cook steps")
+    return recipe
+
+
+def _recipes_signature():
+    files = sorted(RECIPES_DIR.glob("*.json")) + sorted(RECIPE_PDF_DIR.glob("*.pdf"))
+    return tuple((str(f), f.stat().st_mtime_ns, f.stat().st_size) for f in files)
+
+
+def get_recipes():
+    """Published recipes, newest first. Re-read only when the files change."""
+    try:
+        signature = _recipes_signature()
+    except OSError:
+        signature = ()
+    if signature == _recipes_cache["signature"]:
+        return _recipes_cache["recipes"]
+
+    recipes = []
+    for path in sorted(RECIPES_DIR.glob("*.json")):
+        if not _SLUG_RE.match(path.stem):
+            log.warning("Skipping recipe %s: filename must be lowercase-hyphenated", path.name)
+            continue
+        try:
+            recipes.append(_load_recipe(path))
+        except (OSError, ValueError) as exc:  # JSONDecodeError is a ValueError
+            log.warning("Skipping recipe %s: %s", path.name, exc)
+
+    # Newest first; undated recipes after dated ones, then alphabetical.
+    recipes.sort(key=lambda r: r["title"].lower())
+    recipes.sort(key=lambda r: r["published"] or date.min, reverse=True)
+    _recipes_cache.update(signature=signature, recipes=recipes)
+    return recipes
+
+
+def _recipe_jsonld(recipe):
+    """schema.org Recipe. No image, so no rich result, but still useful data."""
+    def section(name, steps):
+        return {
+            "@type": "HowToSection",
+            "name": name,
+            "itemListElement": [
+                {"@type": "HowToStep", "name": s["title"], "text": s["text"]}
+                if s["title"] else {"@type": "HowToStep", "text": s["text"]}
+                for s in steps
+            ],
+        }
+
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Recipe",
+        "name": recipe["title"],
+        "url": SITE["url"] + url_for("recipe", slug=recipe["slug"]),
+        "author": {"@type": "Organization", "name": SITE["name"], "url": SITE["url"]},
+        "recipeIngredient": [i["line"] for i in recipe["ingredients"]],
+        "recipeInstructions": [
+            section(name, recipe[key])
+            for key, name in (("prep", "Prep"), ("cook", "Cook")) if recipe[key]
+        ],
+    }
+    optional = {
+        "description": recipe["blurb"],
+        "recipeYield": str(recipe["servings"]) if recipe["servings"] else "",
+        "recipeCategory": recipe["meal_type"],
+        "recipeCuisine": recipe["cuisine"],
+        "datePublished": recipe["published"].isoformat() if recipe["published"] else "",
+    }
+    data.update({k: v for k, v in optional.items() if v})
+    return data
+
+
+# --------------------------------------------------------------------------- #
 # Routes
 # --------------------------------------------------------------------------- #
 @app.route("/")
@@ -247,6 +412,51 @@ def releases():
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html", page="privacy")
+
+
+@app.route("/recipes")
+def recipes():
+    return render_template("recipes.html", page="recipes", recipes=get_recipes())
+
+
+@app.route("/recipes/<slug>")
+def recipe(slug):
+    all_recipes = get_recipes()
+    index = next((i for i, r in enumerate(all_recipes) if r["slug"] == slug), None)
+    if index is None:
+        abort(404)
+    return render_template(
+        "recipe.html",
+        page="recipes",
+        recipe=all_recipes[index],
+        prev_recipe=all_recipes[index - 1] if index > 0 else None,
+        next_recipe=all_recipes[index + 1] if index + 1 < len(all_recipes) else None,
+        position=index + 1,
+        total=len(all_recipes),
+        jsonld=_recipe_jsonld(all_recipes[index]),
+    )
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    entries = [(url_for(endpoint), None) for endpoint, _ in NAV]
+    entries += [(url_for("releases"), None), (url_for("privacy"), None)]
+    entries += [(url_for("recipe", slug=r["slug"]), r["published"]) for r in get_recipes()]
+    body = ['<?xml version="1.0" encoding="UTF-8"?>',
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for path, lastmod in entries:
+        body.append("  <url><loc>%s</loc>%s</url>" % (
+            escape(SITE["url"] + path),
+            "<lastmod>%s</lastmod>" % lastmod.isoformat() if lastmod else "",
+        ))
+    body.append("</urlset>")
+    return Response("\n".join(body) + "\n", mimetype="application/xml")
+
+
+@app.route("/robots.txt")
+def robots():
+    text = "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % SITE["url"]
+    return Response(text, mimetype="text/plain")
 
 
 @app.errorhandler(404)

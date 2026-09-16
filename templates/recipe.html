@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}{{ recipe.title }}: {{ site.name }}{% endblock %}
+{% block description %}{{ recipe.blurb or site.blurb }}{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ jsonld | tojson }}</script>{% endblock %}
+
+{#- Previous / next through the recipe list (newest first). Plain links, so it
+    works without JS; the script below adds the left/right arrow keys. -#}
+{% macro pager(where) -%}
+<nav class="paper-nav paper-nav--{{ where }}" aria-label="More recipes{% if where == 'foot' %} (bottom){% endif %}">
+  <span class="paper-nav-slot">
+    {%- if prev_recipe %}
+      <a class="btn btn--secondary btn--sm" href="{{ url_for('recipe', slug=prev_recipe.slug) }}" rel="prev"
+         title="{{ prev_recipe.title }}">{{ icon('arrow_forward', 'icon--flip') }} Previous</a>
+    {%- endif %}
+  </span>
+  <a class="paper-nav-all" href="{{ url_for('recipes') }}">All recipes <span class="muted">({{ position }} of {{ total }})</span></a>
+  <span class="paper-nav-slot paper-nav-slot--end">
+    {%- if next_recipe %}
+      <a class="btn btn--secondary btn--sm" href="{{ url_for('recipe', slug=next_recipe.slug) }}" rel="next"
+         title="{{ next_recipe.title }}">Next {{ icon('arrow_forward') }}</a>
+    {%- endif %}
+  </span>
+</nav>
+{%- endmacro %}
+
+{% block content %}
+<div class="wrap paper-wrap">
+  {{ pager('head') }}
+
+  {#- The sheet mirrors the app's print view (templates/wizard/recipe_share.html)
+      so the page and the exported PDF read as the same object. If the recipe
+      body markup changes there, mirror it here. Class names match the app's on
+      purpose; site.css scopes them under .paper. -#}
+  <article class="paper">
+    <p class="paper-mark">My Kitchen</p>
+
+    <h1 class="recipe-title">{{ recipe.title }}</h1>
+    {% if recipe.blurb %}
+      <p class="recipe-blurb">{{ recipe.blurb }}</p>
+    {% endif %}
+    <p class="recipe-serves">
+      {%- if recipe.servings %}Serves {{ recipe.servings }}{% endif %}
+      {%- if recipe.meal_type %}{% if recipe.servings %} · {% endif %}{{ recipe.meal_type }}{% endif %}
+      {%- if recipe.cuisine %} · {{ recipe.cuisine }}{% endif %}
+      {%- if recipe.time_band == 'quick' %} · Quick{% elif recipe.time_band == 'relaxed' %} · Relaxed{% endif %}
+    </p>
+
+    {% if recipe.intro %}
+      <p class="recipe-intro">{{ recipe.intro }}</p>
+    {% endif %}
+
+    <section class="recipe-section">
+      <h2>Ingredients</h2>
+      <ul class="ingredient-list">
+        {% for ing in recipe.ingredients %}
+          <li>{{ ing.line }}{% if ing.to_buy %} <span class="to-buy">(optional extra)</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    {% if recipe.prep %}
+    <section class="recipe-section">
+      <h2>Prep</h2>
+      <ol class="method">
+        {% for step in recipe.prep %}
+          <li>{% if step.title %}<span class="step-title">{{ step.title }}.</span> {% endif %}{{ step.text }}{% if step.timer_minutes %} <span class="timer">{{ step.timer_minutes }} min</span>{% endif %}</li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% endif %}
+
+    <section class="recipe-section">
+      <h2>Cook</h2>
+      <ol class="method">
+        {% for step in recipe.cook %}
+          <li>{% if step.title %}<span class="step-title">{{ step.title }}.</span> {% endif %}{{ step.text }}{% if step.timer_minutes %} <span class="timer">{{ step.timer_minutes }} min</span>{% endif %}</li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    {% if recipe.tips %}
+    <section class="recipe-section">
+      <h2>Tips</h2>
+      <ul class="tips-list">
+        {% for tip in recipe.tips %}
+          <li>{% if tip.title %}<span class="step-title">{{ tip.title }}.</span> {% endif %}{{ tip.text }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <p class="paper-foot">Made with My Kitchen · a self-hosted household recipe app</p>
+  </article>
+
+  <div class="paper-after">
+    {% if recipe.note %}
+      <div class="callout callout--tip">
+        {{ icon('restaurant_menu') }}
+        <p><strong>From our kitchen:</strong> {{ recipe.note }}</p>
+      </div>
+    {% endif %}
+    <p class="paper-source">
+      {% if recipe.source == 'user' %}Written by hand in My Kitchen.
+      {% else %}Written by My Kitchen's creative assistant. AI isn't a safety guarantee, so check the
+        ingredients against any allergies before you cook.{% endif %}
+    </p>
+    <div class="btn-row">
+      {% if recipe.pdf %}
+        <a class="btn btn--secondary btn--sm" href="{{ url_for('static', filename='recipes/' ~ recipe.slug ~ '.pdf') }}">Download the PDF</a>
+      {% endif %}
+      <a class="btn btn--primary btn--sm" href="{{ url_for('get_started') }}">{{ icon('cooking') }} Cook from your own stock</a>
+    </div>
+  </div>
+
+  {{ pager('foot') }}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Left/right arrow keys follow the Previous/Next links. Ignored while typing
+  // or with a modifier held, so browser shortcuts still work.
+  document.addEventListener("keydown", function (e) {
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
+    var rel = e.key === "ArrowLeft" ? "prev" : e.key === "ArrowRight" ? "next" : null;
+    var link = rel && document.querySelector('a[rel="' + rel + '"]');
+    if (link) window.location.href = link.href;
+  });
+</script>
+{% endblock %}

@@ -383,6 +383,112 @@ pre.code code { background: none; padding: 0; font-size: 0.88rem; line-height: 1
   .site-footer-inner { flex-direction: row; justify-content: space-between; align-items: flex-start; }
 }
 
+/* ============================================================== recipes === */
+/* Public recipes. Each recipe is a white sheet that mirrors the app's print /
+   share view, so the page and the exported PDF read as the same object. As in
+   the app's @media print block, the light tokens are redefined on the sheet and
+   cascade to everything inside it; the recipe rules below are the app's own,
+   scoped under .paper. The index cards share the same tokens. */
+.paper,
+.recipe-card {
+  --surface: #f4f2f7;
+  --surface-2: #ebe7f0;
+  --text: #1a1220;
+  --text-muted: #5a5266;
+  --divider: rgba(0, 0, 0, 0.18);
+  --ink-accent: #b8560a; /* accent-3 darkened: bright orange fails contrast on white */
+  background: #fff;
+  color: var(--text);
+}
+
+/* --- index --- */
+.recipes-intro > p { max-width: var(--measure); }
+.recipes-body { padding-bottom: var(--space-7); }
+.recipes-empty { padding-block: var(--space-6); }
+.recipe-cards {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: var(--space-4); grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .recipe-cards { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 960px) { .recipe-cards { grid-template-columns: 1fr 1fr 1fr; } }
+.recipe-cards li { margin: 0; }
+.recipe-card {
+  display: flex; flex-direction: column; height: 100%;
+  padding: var(--space-5); border-radius: var(--radius);
+  box-shadow: var(--shadow-2); text-decoration: none;
+}
+.recipe-card:hover { text-decoration: none; box-shadow: var(--shadow-3); }
+.recipe-card h2 { font-size: 1.3rem; margin: 0 0 var(--space-2); overflow-wrap: break-word; }
+.recipe-card-blurb { flex: 1; margin: 0 0 var(--space-3); color: var(--text-muted); }
+.recipe-card-meta { margin: 0; color: var(--text-muted); font-size: var(--fs-small); font-weight: 600; }
+
+/* --- recipe page --- */
+.paper-wrap { max-width: 880px; padding-block: var(--space-5) var(--space-7); }
+
+.paper-nav { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+.paper-nav--foot { margin: var(--space-6) 0 0; }
+.paper-nav-slot { flex: 1 1 0; display: flex; }
+.paper-nav-slot--end { justify-content: flex-end; }
+.paper-nav-all { text-align: center; font-size: var(--fs-small); font-weight: 600; }
+.icon--flip { transform: scaleX(-1); }
+
+.paper {
+  border-radius: var(--radius); box-shadow: var(--shadow-3);
+  padding: var(--space-5) var(--space-4) var(--space-5);
+}
+@media (min-width: 720px) { .paper { padding: 3rem 3.5rem 2.5rem; } }
+
+.paper .paper-mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; margin: 0 0 var(--space-3); }
+.paper .recipe-title {
+  font-family: var(--font-display); font-weight: 800; line-height: 1.05;
+  font-size: clamp(2rem, 7vw, 2.8rem); margin: 0 0 var(--space-2); overflow-wrap: break-word;
+}
+.paper .recipe-blurb { color: var(--text-muted); font-size: 1.05rem; margin-bottom: var(--space-2); }
+.paper .recipe-serves { color: var(--text-muted); font-weight: 600; margin-bottom: var(--space-4); }
+.paper .recipe-intro {
+  background: var(--surface); border-left: 4px solid var(--accent-3);
+  border-radius: var(--radius); padding: var(--space-4);
+  font-size: 1.05rem; margin-bottom: var(--space-5);
+}
+.paper .recipe-section { margin-bottom: var(--space-5); }
+.paper .ingredient-list,
+.paper .tips-list { list-style: none; padding: 0; margin: 0; }
+.paper .ingredient-list li { margin: 0; padding: var(--space-2) 0; border-bottom: 1px solid var(--divider); }
+.paper .tips-list li { margin: 0; padding: var(--space-3) 0; border-bottom: 1px solid var(--divider); }
+.paper .tips-list li:last-child { border-bottom: 0; }
+.paper .to-buy { color: var(--ink-accent); font-weight: 700; }
+.paper .method { padding-left: 1.4em; margin: 0 0 var(--space-4); }
+.paper .method li { margin-bottom: var(--space-4); }
+.paper .step-title { font-family: var(--font-display); font-weight: 700; }
+.paper .timer {
+  display: inline-block; margin-left: var(--space-2); padding: 1px 8px;
+  border: 1px solid var(--divider); border-radius: var(--radius-pill);
+  background: var(--surface-2); color: var(--text-muted); font-size: 0.75rem; white-space: nowrap;
+}
+.paper .paper-foot {
+  margin: var(--space-6) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--divider);
+  color: var(--text-muted); font-size: var(--fs-small);
+}
+
+.paper-after { margin-top: var(--space-5); }
+.paper-after .callout { margin-top: 0; }
+.paper-source { color: var(--text-muted); font-size: var(--fs-small); }
+
+/* Printing the web page gives the same result as the app's PDF: sheet only. */
+@media print {
+  html:has(.paper) { font-size: 14px; } /* the app's root size, so scale matches its PDF */
+  body:has(.paper) { background: #fff; }
+  body:has(.paper) .site-header,
+  body:has(.paper) .site-footer,
+  .paper-nav, .paper-after { display: none; }
+  .paper-wrap { max-width: none; padding: 0; }
+  .paper { box-shadow: none; border-radius: 0; padding: 0; }
+  .paper .recipe-section h2 { break-after: avoid; }
+  .paper .method li, .paper .ingredient-list li, .paper .tips-list li { break-inside: avoid; }
+  .paper .paper-foot { break-before: avoid; }
+  @page { margin: 14mm; }
+}
+
 /* --------------------------------------------------------------- motion --- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
