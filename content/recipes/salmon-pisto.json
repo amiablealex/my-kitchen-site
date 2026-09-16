@@ -1,0 +1,110 @@
+{
+  "format": "my-kitchen-recipe",
+  "version": 1,
+  "exported_at": "2026-09-16",
+  "source": "ai",
+  "title": "Smoky Spanish-Style Salmon with Chickpea & Tomato 'Pisto'",
+  "blurb": "A rich, warming pan-fry of salmon nestled on a smoky, slow-cooked Spanish chickpea and vegetable stew.",
+  "intro": "This recipe takes its inspiration from a classic Spanish pisto—a rich, slowly simmered vegetable stew sweet with peppers, courgettes, and tomatoes. By adding hearty chickpeas and a generous hit of smoked paprika, we create a deeply comforting, smoky base that is perfect for nestling a beautifully seared salmon fillet into. It’s robust, deeply savoury, and incredibly satisfying, proving that quick weeknight cooking can still pack a massive flavour punch.",
+  "servings": 2,
+  "meal_type": "Dinner",
+  "cuisine": "Mediterranean",
+  "time_band": "quick",
+  "ingredients": [
+    {
+      "amount": "2",
+      "unit": "pieces",
+      "text": "Salmon fillet",
+      "to_buy": false
+    },
+    {
+      "amount": "100",
+      "unit": "g",
+      "text": "Broccoli",
+      "to_buy": false
+    },
+    {
+      "amount": "150",
+      "unit": "g",
+      "text": "Cherry tomatoes",
+      "to_buy": false
+    },
+    {
+      "amount": "1",
+      "unit": "whole",
+      "text": "Bell pepper",
+      "to_buy": false
+    },
+    {
+      "amount": "1",
+      "unit": "medium",
+      "text": "Courgette",
+      "to_buy": false
+    },
+    {
+      "amount": "240",
+      "unit": "g (drained weight)",
+      "text": "Chickpeas",
+      "to_buy": false
+    },
+    {
+      "amount": "1",
+      "unit": "whole",
+      "text": "Red onion",
+      "to_buy": false
+    },
+    {
+      "amount": "3",
+      "unit": "cloves",
+      "text": "Garlic",
+      "to_buy": false
+    },
+    {
+      "amount": "10",
+      "unit": "g",
+      "text": "Fresh coriander",
+      "to_buy": false
+    },
+    {
+      "amount": "1",
+      "unit": "whole",
+      "text": "Lemon",
+      "to_buy": true
+    }
+  ],
+  "prep": [
+    {
+      "title": "Chop the aromatics and veg",
+      "text": "Finely dice the red onion and mince the garlic. Cut the bell pepper and courgette into small, rustic chunks. Chop the broccoli into small florets and finely slice the tender stems. Drain and rinse the chickpeas.",
+      "timer_minutes": 5
+    }
+  ],
+  "cook": [
+    {
+      "title": "Build the smoky stew base",
+      "text": "Heat 2 tablespoons of olive oil in a large frying pan or shallow casserole dish over a medium heat. Add the red onion, pepper, courgette, and broccoli stems. Cook for 6-8 minutes, stirring occasionally, until the vegetables are softened and starting to sweeten and caramelise at the edges.",
+      "timer_minutes": 8
+    },
+    {
+      "title": "Add the spices, tomatoes and chickpeas",
+      "text": "Stir in the minced garlic, 1.5 teaspoons of smoked paprika, and a pinch of cumin. Cook for 1 minute until highly fragrant. Add the cherry tomatoes and the drained chickpeas, using your spoon to gently press down on the tomatoes so they begin to burst. Reduce the heat slightly, cover, and let it simmer and thicken into a glossy, jammy sauce.",
+      "timer_minutes": 7
+    },
+    {
+      "title": "Sear the salmon",
+      "text": "While the stew is simmering, heat a splash of oil in a separate medium frying pan over a medium-high heat. Season the salmon fillets with salt, black pepper, and a pinch of smoked paprika. Sear the salmon skin-side down for 4 minutes until the skin is beautifully crisp, then flip and cook for a further 2 minutes until cooked to your liking.",
+      "timer_minutes": 6
+    },
+    {
+      "title": "Finish and serve",
+      "text": "Stir a splash of red wine vinegar (from your staples) into the chickpea stew to cut through the richness and wake up all the flavours. Taste and season with salt and pepper. Spoon the rich stew into shallow bowls, place the crispy salmon on top, and scatter with fresh coriander and a squeeze of lemon juice if using.",
+      "timer_minutes": 2
+    }
+  ],
+  "tips": [
+    {
+      "title": "Embrace the vinegar splash",
+      "text": "Don't skip the splash of red wine vinegar at the end of the stew. That tiny hit of acid balances the sweetness of the charred peppers and tomatoes, transforming the dish from good to restaurant-quality."
+    }
+  ]
+}
