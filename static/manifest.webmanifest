@@ -1,7 +1,7 @@
 {
   "name": "My Kitchen",
   "short_name": "My Kitchen",
-  "description": "Self-hosted recipe brain for your house.",
+  "description": "A self-hosted recipe app for a household.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#3B1058",

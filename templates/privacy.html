@@ -1,80 +1,91 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
-{% block title %}Privacy &amp; data — {{ site.name }}{% endblock %}
-{% block description %}What stays on your hardware, what leaves your network, and exactly what a generation brief contains.{% endblock %}
+{% block title %}Privacy &amp; data: {{ site.name }}{% endblock %}
+{% block description %}What stays on your machine, what's sent to the AI provider, and exactly what each request contains.{% endblock %}
 
 {% block content %}
 <section class="page-head">
-  <div class="wrap measure">
-    <p class="eyebrow">Privacy &amp; data</p>
-    <h1 class="display page-title">Where your data lives</h1>
-    <p class="lead">My Kitchen is built to be self-hosted and honest about the one thing that leaves
-       your network.</p>
+  <div class="wrap">
+    <h1 class="display page-title">Privacy &amp; data</h1>
+    <p class="lead">What stays on your machine, and what's sent to your AI provider and when.</p>
   </div>
 </section>
 
-<section class="band">
-  <div class="wrap measure">
-    <h2>Stays on your hardware</h2>
-    <p>Your accounts, stock list, ingredient catalogue, saved and generated recipes, history,
-       favourites and notes all live in a single database file on the machine you run My Kitchen on.
-       There's no account with us, no cloud sync, no telemetry, no analytics. Nothing is shared
-       between households — it isn't a community platform.</p>
+<section class="section">
+  <div class="wrap measure gs">
 
-    <h2>Leaves your network</h2>
-    <p>When (and only when) you generate a recipe, the app sends a short <strong>brief</strong> to
-       your chosen LLM provider, using your own API key. It contains:</p>
-    <ul>
-      <li>The ingredients in play: what you picked to use up, what's in stock, your staples, and any
-        short notes attached to them.</li>
-      <li>Your equipment list.</li>
-      <li>The meal type, cuisine, time band and number of servings.</li>
-      <li>The dietary tags of the people you're cooking for, as written (the tag names, not the
-        names of the people).</li>
-      <li>The titles of your recent recipes, so you don't get the same thing twice.</li>
-      <li>A randomly chosen creative angle.</li>
-    </ul>
-    <p>That's the whole of it. Your account details, your history beyond those titles, your notes and
-       your favourites are never sent; notes in particular are deliberately kept out of the brief.
-       Nothing is sent at any other time: browsing, filtering, suggestions and stock all happen
-       locally.</p>
-    <div class="callout callout--info">
-      {{ icon('info') }}
-      <div>This is the deliberate trade-off behind the project: a small Raspberry Pi can't match a
-        hosted model's quality and speed, so generation uses a cloud model while everything else stays
-        local. We'd rather say that plainly than market the app as fully private when a model call is
-        involved.</div>
+    <div class="gs-block">
+      <h2>On your machine</h2>
+      <p>Accounts, stock, the ingredient catalogue, recipes, history, favourites and notes are all in
+        one SQLite database file on the machine running My Kitchen. There's no account with me, no
+        sync, no telemetry and no analytics, and nothing is shared between households.</p>
     </div>
-    <p class="muted">One caveat worth stating: dietary tags are free text you write yourself. If you
-       name one after a medical condition, that wording goes in the brief. Naming tags after foods
-       rather than diagnoses keeps them out.</p>
 
-    <h2>Running fully local</h2>
-    <p>Not possible today, and the site shouldn't imply otherwise. The provider adapter is built to be
-       swappable — that's how <code>mock</code>, Gemini and Anthropic already sit behind one
-       interface — and a local model such as Ollama is the natural next one to add. It's on the list
-       rather than in the app. On capable hardware it would give an entirely on-network setup; on a
-       small Pi it would cost you real recipe quality and speed, which is why it hasn't been the
-       priority.</p>
-    <p>In the meantime, <code>mock</code> mode runs the entire app with no API key and no outbound
-       call at all. You lose real generation, but stock, suggestions, your own recipes and everything
-       else work exactly as normal.</p>
+    <div class="gs-block">
+      <h2>Sent to your AI provider</h2>
+      <p>The app calls your chosen provider, with your own API key, in three situations and no others.
+        Browsing, filtering, suggestions and stock never leave your network.</p>
 
-    <h2>Security</h2>
-    <p>Access is gated by a per-household login on your network. Run via the Home Assistant add-on and
-       it sits behind HA's authenticated, HTTPS ingress — nothing is exposed directly to the internet
-       and there are no ports to forward. Run it standalone and it's an ordinary small web service you
-       put behind your own reverse proxy and TLS.</p>
-    <p>The print / share view is worth a specific mention, because “share” usually means a public
-       link. Here it doesn't: it's a chrome-free page behind the same login, for printing, saving to
-       PDF or screenshotting. What you send someone is the file, not access to your instance.</p>
+      <h3>New recipes</h3>
+      <p>When you tap <em>Generate recipes</em> (or ask for two more), the request contains:</p>
+      <ul>
+        <li>the ingredients: your must-use picks, what's in stock, your staples, and any notes on them;</li>
+        <li>your equipment list;</li>
+        <li>the meal type, cuisine, time band and number of servings;</li>
+        <li>the dietary tags of the people you're cooking for, by tag name, not by person;</li>
+        <li>your request, if you wrote one;</li>
+        <li>the titles of your recent recipes, and of the two you passed on if you asked for two more;</li>
+        <li>a randomly chosen creative angle.</li>
+      </ul>
 
-    <p class="muted">This page describes the app's design intent. You are responsible for your own
-       hosting, your LLM provider choice and their terms.</p>
+      <h3>New versions</h3>
+      <p>When you confirm a new version, the request contains the current recipe in full, the change you
+        asked for, and the same kind of information as above for the original meal.</p>
+
+      <h3>@kitchen questions</h3>
+      <p>When you ask @kitchen, the request contains the recipe, your question, the servings you're
+        viewing it at, the last few questions and answers on that recipe, what's in stock, your
+        staples, and the allergy and dislike tags of everyone in the household (tag names only).</p>
+
+      <p>Account details, people's names, favourites and ordinary notes are never sent.</p>
+      <div class="callout">
+        {{ icon('info') }}
+        <div>A small machine like a Raspberry Pi can't run a model that writes recipes this well, so
+          generation uses a cloud model while everything else stays local. I'd rather say that plainly
+          than call the app fully private.</div>
+      </div>
+      <p class="muted">Dietary tags are free text you write yourself. If you name one after a medical
+        condition, that wording goes into requests; naming tags after foods rather than diagnoses keeps
+        it out.</p>
+    </div>
+
+    <div class="gs-block">
+      <h2>Running fully local</h2>
+      <p>Not possible yet. Providers sit behind one interface (that's how <code>mock</code>, Gemini and
+        Anthropic work), and a local model such as Ollama is on the
+        <a href="{{ url_for('approach') }}#roadmap">roadmap</a>. On capable hardware that would keep
+        everything on your network; on a small Pi it would cost recipe quality and speed, which is why
+        it hasn't come first.</p>
+      <p>Meanwhile, <code>mock</code> mode runs the whole app with no API key and no outbound calls. You
+        lose generation and @kitchen, but stock, suggestions, your own recipes and everything else work
+        as normal.</p>
+    </div>
+
+    <div class="gs-block">
+      <h2>Security</h2>
+      <p>Access needs a login for your household. Through the Home Assistant app it sits behind Home
+        Assistant's authenticated HTTPS ingress, with nothing exposed directly to the internet and no
+        ports to forward. Run on its own, it's a small web service to put behind your own reverse proxy
+        and TLS.</p>
+      <p>The print and share view is a plain page behind the same login, for printing, saving to PDF or
+        screenshotting. There are no public links; what you send someone is the file.</p>
+      <p class="muted">This page describes how the app is designed. Your hosting, your choice of
+        provider and that provider's terms are your responsibility.</p>
+    </div>
 
     <div class="next-row">
-      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
-      <a class="btn btn--secondary" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Docs</a>
+      <a class="btn btn--ghost" href="{{ url_for('get_started') }}">Get started</a>
     </div>
   </div>
 </section>

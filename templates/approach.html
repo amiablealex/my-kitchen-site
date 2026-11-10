@@ -1,112 +1,99 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Approach: {{ site.name }}{% endblock %}
-{% block description %}What My Kitchen sets out to do, the features deliberately left out and why, and how the project is maintained.{% endblock %}
+{% block description %}What My Kitchen is for, what isn't planned and why, the roadmap, and how the project is maintained.{% endblock %}
 
 {% block content %}
 <section class="page-head">
-  <div class="wrap measure">
-    <p class="eyebrow">Approach</p>
-    <h1 class="display page-title">What it does, and what it won't</h1>
-    <p class="lead">My Kitchen is a deliberately small and light-weight tool with one job. Most of the decisions that shaped it were
-      decisions <strong>not</strong> to build something. Here they are, with the reasons.</p>
+  <div class="wrap">
+    <h1 class="display page-title">Approach</h1>
+    <p class="lead">What the app is for, what I've decided not to build, what's next, and how I look
+      after it.</p>
   </div>
 </section>
 
-<section class="band">
+<section class="section">
   <div class="wrap measure gs">
 
     <div class="gs-block">
-      <h2>The one job</h2>
-      <p>Turn what's actually in your kitchen into something worth cooking tonight. Every feature is
-        judged against that moment: standing in the kitchen, hungry, wanting an answer rather than a
-        project. It was assumed the app would rarely get used outside of immediately before intending to cook something.</p>
-      <p>Three things follow. Stock has to be effortless enough that it stays accurate. Recipes have
-        to be structured and standardised enough that “can I make this?” is answerable. And any generated outputs have to be
-        high quality.</p>
+      <h2>What it's for</h2>
+      <p>Deciding what to cook tonight from what's already in. I mostly open it just before cooking,
+        so most decisions come back to that: it should give an answer quickly, without much input.</p>
+      <p>That needs three things. Stock has to be quick enough to keep up to date that it stays
+        accurate. Recipes have to be structured enough that the app can check them against stock.
+        And generated recipes have to be good enough to actually cook.</p>
     </div>
 
     <div class="gs-block">
-      <h2>Left out on purpose</h2>
+      <h2 id="not-planned" class="anchored">Not planned</h2>
 
-      <h3>Stock quantities, decrementing and low-stock alerts</h3>
-      <p>The hardest guardrail in the project. The moment stock holds numbers, it needs maintaining
-        every time you cook, and within a fortnight it's wrong — at which point the whole app is
-        lying to you. In-or-out is coarse, but it's a toggle you'll still be updating in a year.</p>
+      <h3>Stock quantities and low-stock alerts</h3>
+      <p>Once stock holds numbers, it needs updating every time you cook, and within a couple of weeks
+        it's wrong, at which point the suggestions are wrong too. In or out is less precise, but it's
+        something I still keep up to date.</p>
 
-      <h3>A shopping list, or “what am I missing?”</h3>
-      <p>The app is reached for inspiration from what you <em>have</em>. A recipe you can't make
-        tonight doesn't get cooked tonight, so the near-misses were never the interesting part. It'd
-        also drag the app back towards inventory.</p>
+      <h3>Shopping lists, or “what am I missing?”</h3>
+      <p>The app is for cooking from what you have. A recipe you can't make tonight doesn't get cooked
+        tonight, and tracking what's missing would pull the app back towards being an inventory.</p>
 
-      <h3>Meal planning and calendars</h3>
-      <p>Different tool, different mindset. This one is for the decision you make at 6pm, not the one
-        you make on Sunday.</p>
+      <h3>Meal planning</h3>
+      <p>Planning the week is a different job, done at a different time. This is for the decision at
+        six o'clock.</p>
 
-      <h3>Nutrition and calorie tracking</h3>
-      <p>A language model's nutrition figures range from rough to confidently wrong, and numbers that
-        look precise get trusted. Not worth the risk, and not what the app is for.</p>
+      <h3>Nutrition and calories</h3>
+      <p>A language model's nutrition figures range from rough to wrong, and precise-looking numbers get
+        trusted. It's not worth the risk, and it isn't what the app is for.</p>
 
       <h3>Star ratings</h3>
-      <p>Built, then dropped before shipping. A rating is only worth storing if something consumes
-        it — and nothing would. It can't feed the recipe generator without leading it towards last
-        month's food; favourites already answer “which are the good ones”; and sorting a two-person
-        recipe bank by average score is a report nobody runs. Notes cover the same ground better,
-        because “needed 10 minutes longer, use less chilli” is the part worth re-reading.</p>
+      <p>I built them and took them out before release. Nothing would have used them: they can't go into
+        the brief without steering it towards what we already ate, favourites already mark the good
+        ones, and sorting two people's recipes by average score isn't useful. Notes cover it better,
+        because “needed ten minutes longer, less chilli” is the part worth reading again.</p>
 
-      <h3>A chat assistant</h3>
-      <p>Open-ended conversation about cooking is well served by the apps built for it. The narrow
-        version — asking a question about the recipe already on screen, where the context is already
-        loaded — is worth having, and is on the list.</p>
+      <h3>General cooking chat</h3>
+      <p>@kitchen answers questions about the recipe you're looking at, where the context is already
+        there. An open-ended cooking chat isn't planned; other apps do that well.</p>
 
-      <h3>Sharing between households, and any public route</h3>
-      <p>A community feature turns a private tool into a platform: moderation, accounts, scale,
-        privacy exposure. The actual need — sending someone a recipe — is met by the print/share
-        view, which hands you a PDF rather than opening a door into your instance.</p>
+      <h3>Sharing between households</h3>
+      <p>Anything public turns a private tool into a platform, with accounts, moderation and privacy
+        exposure. Sending someone a recipe is covered by the print and share view, which gives you a
+        file rather than access to your instance.</p>
 
-      <h3>AI-generated food photography</h3>
-      <p>Generic at best and misleading at worst, since the picture won't be of the dish you're about
-        to make.</p>
+      <h3>AI-generated food photos</h3>
+      <p>The picture wouldn't be of the dish you're about to make, so at best it's generic and at worst
+        it's misleading.</p>
 
-      <div class="callout callout--info">
-        {{ icon('info') }}
-        <div>None of this is a promise never to change my mind — a couple of these have been revisited
-          already. It's a record of the reasoning, so the same ground doesn't get re-covered from
-          scratch every time.</div>
-      </div>
+      <p class="muted">This is how I see it now. A couple of these have changed before, and this list
+        is mostly here so I don't have to work the same reasoning out again.</p>
     </div>
 
     <div class="gs-block">
-      <h2>What's next</h2>
-      <p>A short list, worked through slowly:</p>
+      <h2 id="roadmap" class="anchored">Roadmap</h2>
       <ul>
-        <li><strong>Importing recipes from the web.</strong> Most recipe sites publish structured data
-          that can be read directly into the app's format — often with no AI involved at all. This is
-          the big one, because typing recipes in by hand is the main friction in building up a bank.</li>
-        <li><strong>Asking a question about a recipe.</strong> A box on the recipe page: swaps,
-          substitutions, why a step works. Answers only — not rewriting the recipe by conversation.</li>
-        <li><strong>Importing from a photograph</strong>, for cookbooks.</li>
-        <li><strong>A local model option</strong>, so generation could stay on your network too.</li>
+        <li><strong>Importing recipes from the web.</strong> Most recipe sites publish the recipe as
+          structured data (schema.org) that can be read straight into the app's format, often with no
+          AI at all. Typing recipes in is the main thing that slows down building up a collection, so
+          this comes first.</li>
+        <li><strong>Importing from a photo</strong>, for cookbooks.</li>
+        <li><strong>A local model option</strong>, so generation can stay on your network too.</li>
       </ul>
-      <p class="muted">In roughly that order, with no dates attached. See
-        <a href="{{ url_for('releases') }}">Releases</a> for what's actually landed.</p>
+      <p class="muted">Roughly in that order, with no dates. What's actually shipped is on
+        <a href="{{ url_for('releases') }}">Releases</a>.</p>
     </div>
 
     <div class="gs-block">
-      <h2>How this is maintained</h2>
-      <p>It's a personal household project, used daily in my own kitchen and shared in case it's
-        useful to someone else. That's the honest scope: I fix what breaks, I finish what's on the
-        list above, and I'm not chasing a feature set. A small tool that still works in three years is
-        the goal — not a big one that needs constant attention.</p>
-      <p>Bugs and questions are genuinely welcome on
-        <a href="{{ site.github }}/issues" rel="noopener" target="_blank">GitHub</a>. Feature requests
-        are read too, but the list above is short on purpose, and “no, and here's why” is a normal
-        answer here.</p>
+      <h2>Maintenance</h2>
+      <p>This is a personal project that we use every day at home, shared in case it's useful to
+        someone else. I fix what breaks and work through the roadmap; I'm not trying to grow the
+        feature list. I'd rather have a small tool that still works in three years.</p>
+      <p>Bug reports and questions are welcome on
+        <a href="{{ site.github }}/issues" rel="noopener" target="_blank">GitHub</a>. I read feature
+        requests too, but the roadmap is short, and “no, and here's why” is a normal answer.</p>
     </div>
 
     <div class="next-row">
-      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
-      <a class="btn btn--secondary" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Docs</a>
+      <a class="btn btn--ghost" href="{{ url_for('get_started') }}">Get started</a>
     </div>
 
   </div>

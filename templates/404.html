@@ -4,13 +4,12 @@
 
 {% block content %}
 <section class="page-head">
-  <div class="wrap measure center">
-    <p class="eyebrow">404</p>
-    <h1 class="display page-title">Nothing on the hob here</h1>
-    <p class="lead">That page doesn't exist. Let's get you back to something useful.</p>
-    <div class="btn-row center-row">
-      <a class="btn btn--cta" href="{{ url_for('index') }}">{{ icon('home') }} Home</a>
-      <a class="btn btn--secondary" href="{{ url_for('docs') }}">Docs</a>
+  <div class="wrap">
+    <h1 class="display page-title">Page not found</h1>
+    <p class="lead">There's no page at this address.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="{{ url_for('index') }}">{{ icon('home') }} Home</a>
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Docs</a>
     </div>
   </div>
 </section>

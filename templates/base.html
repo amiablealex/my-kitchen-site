@@ -18,7 +18,8 @@
   <meta property="og:image" content="{{ site.url }}{{ url_for('static', filename='img/og-image.png') }}">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="{{ url_for('static', filename='icons/favicon.png') }}">
+  <link rel="icon" href="{{ url_for('static', filename='icons/favicon.svg') }}" type="image/svg+xml">
+  <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}" sizes="32x32">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-180.png') }}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
@@ -27,22 +28,20 @@
   {% block jsonld %}{% endblock %}
 </head>
 <body>
-{% from "_icons.html" import icon %}
+{% from "_icons.html" import icon, brand_mark %}
 
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header" id="site-header">
   <div class="wrap site-header-inner">
-    <a class="site-brand rainbow" href="{{ url_for('index') }}">{{ site.name }}</a>
+    <a class="site-brand" href="{{ url_for('index') }}">{{ brand_mark() }}<span class="rainbow">{{ site.name }}</span></a>
 
     <nav class="site-nav" id="site-nav" aria-label="Primary">
       {% for endpoint, label in nav %}
         <a href="{{ url_for(endpoint) }}" class="site-nav-link{% if page == endpoint %} is-active{% endif %}"
            {% if page == endpoint %}aria-current="page"{% endif %}>{{ label }}</a>
       {% endfor %}
-      <a href="{{ site.github }}" class="site-nav-link site-nav-github" rel="noopener" target="_blank">
-        {{ icon('star') }} GitHub
-      </a>
+      <a href="{{ site.github }}" class="site-nav-link site-nav-github" rel="noopener" target="_blank">GitHub</a>
     </nav>
 
     <button class="icon-btn nav-toggle" type="button" id="nav-toggle"
@@ -59,7 +58,7 @@
 <footer class="site-footer">
   <div class="wrap site-footer-inner">
     <div class="site-footer-brand">
-      <span class="rainbow site-footer-logo">{{ site.name }}</span>
+      <span class="site-footer-logo">{{ brand_mark() }}<span class="rainbow">{{ site.name }}</span></span>
       <p class="muted">{{ site.tagline }}</p>
     </div>
     <nav class="site-footer-nav" aria-label="Footer">
@@ -68,14 +67,13 @@
       <a href="{{ url_for('get_started') }}">Get started</a>
       <a href="{{ url_for('docs') }}">Docs</a>
       <a href="{{ url_for('approach') }}">Approach</a>
-      <a href="{{ url_for('faq') }}">FAQ</a>
       <a href="{{ url_for('releases') }}">Releases</a>
       <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>
       <a href="{{ site.github }}" rel="noopener" target="_blank">GitHub</a>
     </nav>
   </div>
   <div class="wrap site-footer-fine muted">
-    <span>An open-source, self-hosted project. © {{ year }}.</span>
+    <span>Open source under the MIT licence. © {{ year }}.</span>
     <span>Not affiliated with Home Assistant or Nabu Casa.</span>
   </div>
 </footer>

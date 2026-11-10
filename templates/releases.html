@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Releases: {{ site.name }}{% endblock %}
-{% block description %}What's changed in each version of My Kitchen, straight from the project's changelog.{% endblock %}
+{% block description %}What changed in each version of My Kitchen, from the project's changelog.{% endblock %}
 
 {% block content %}
 <section class="page-head">
-  <div class="wrap measure">
-    <p class="eyebrow">Releases</p>
-    <h1 class="display page-title">What's changed</h1>
+  <div class="wrap">
+    <h1 class="display page-title">Releases</h1>
     {% if releases %}
-      <p class="lead">Currently on <strong>{{ releases[0].version }}</strong>. Updates arrive through
-        Home Assistant, or with a <code>git pull</code> and a rebuild.</p>
+      <p class="lead">The latest version is <strong>{{ releases[0].version }}</strong>. These notes come
+        from the changelog in the app's repository. Updates arrive through Home Assistant, or with a
+        <code>git pull</code> and a rebuild.</p>
     {% else %}
-      <p class="lead">Release notes live with the code.</p>
+      <p class="lead">These notes come from the changelog in the app's repository.</p>
     {% endif %}
   </div>
 </section>
 
-<section class="band">
+<section class="section">
   <div class="wrap measure gs">
 
     {% if releases %}
@@ -33,19 +33,18 @@
 
       <div class="next-row">
         <a class="btn btn--secondary" href="{{ changelog_url }}" rel="noopener" target="_blank">
-          {{ icon('star') }} Full changelog on GitHub
+          Full changelog on GitHub {{ icon('arrow_forward') }}
         </a>
       </div>
     {% else %}
       <div class="gs-block">
         <div class="callout callout--warn">
           {{ icon('info') }}
-          <div>The release notes couldn't be loaded just now. They're always available in the
-            repository.</div>
+          <div>The release notes couldn't be loaded just now. They're in the repository.</div>
         </div>
         <div class="next-row">
           <a class="btn btn--secondary" href="{{ changelog_url }}" rel="noopener" target="_blank">
-            {{ icon('star') }} Changelog on GitHub
+            Changelog on GitHub {{ icon('arrow_forward') }}
           </a>
         </div>
       </div>

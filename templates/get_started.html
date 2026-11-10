@@ -1,160 +1,168 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Get started: {{ site.name }}{% endblock %}
-{% block description %}Install My Kitchen as a Home Assistant add-on, with Docker, or as a plain Python app — then set up your kitchen.{% endblock %}
+{% block description %}Install My Kitchen as a Home Assistant app, with Docker, or as a plain Python app, then set it up for your household.{% endblock %}
 
 {% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <h1 class="display page-title">Get started</h1>
+    <p class="lead">Three ways to install it, the settings you'll need, and what to do first.</p>
+  </div>
+</section>
 
-<section class="band">
+<section class="section">
   <div class="wrap measure gs">
 
     <div class="gs-block">
-      <h2>{{ icon('home') }} Home Assistant app</h2>
-      <p>The easiest route: one install, updates through Home Assistant, and secure remote access with
-        no ports to forward.</p>
-      <div class="callout callout--info">
+      <h2><span class="bead k1">{{ icon('home') }}</span> Home Assistant app</h2>
+      <p>The simplest option if you already run Home Assistant. It installs from a repository, updates
+        through Home Assistant, and is reachable remotely through Home Assistant's own login.</p>
+      <div class="callout">
         {{ icon('info') }}
-        <div>'Apps' require Home Assistant <strong>OS</strong> or <strong>Supervised</strong>. If
-          you're on Container or Core, use the Docker route below.</div>
+        <div>Apps (previously called add-ons) need Home Assistant <strong>OS</strong> or
+          <strong>Supervised</strong>. On Container or Core, use Docker instead.</div>
       </div>
       <ol class="walk">
-        <li><strong>Add the repository.</strong> In Home Assistant go to
-          <em>Settings → Apps → Install App</em>, open the <em>⋮</em> menu (top right),
-          choose <em>Repositories</em>, click 'Add' and paste the URL below, then click <em>Add</em> again.
+        <li><strong>Add the repository.</strong> Go to <em>Settings → Apps → Install app</em>, open
+          the <em>⋮</em> menu, choose <em>Repositories</em>, paste this URL and click <em>Add</em>.
           <pre class="code"><code>{{ site.ha_repo }}</code></pre>
         </li>
-        <li><strong>Install.</strong> Close the dialog, find <strong>My Kitchen</strong> in the store
-          and click <em>Install</em>. The first build clones the app and builds an image locally, which
-          takes a few minutes on a Pi.</li>
-        <li><strong>Configure.</strong> On the <em>Configuration</em> tab, set your LLM provider and
-          API key (see <a href="#configure">Configuration</a> below). Save.</li>
-        <li><strong>Start.</strong> On the <em>Info</em> tab, click <em>Start</em>. Turn on
-          <em>Show in sidebar</em> for convenience.</li>
-        <li><strong>First login.</strong> Open the app. A starter account is created automatically
-          and its password is printed once in the add-on <em>Log</em> tab (Apps → My Kitchen → Log).
-          Log in with those details, then change the password in-app under <em>Household</em>.</li>
-      </ol>
-      <div class="callout callout--info">
-        {{ icon('info') }}
-        <div><strong>Remote access.</strong> With Home Assistant Cloud (Nabu Casa) or your own
-          HTTPS, the add-on is reachable securely through HA ingress. No ports to forward and
-          nothing exposed directly to the internet.</div>
-      </div>
-    </div>
-
-    <div class="gs-block">
-      <h2 id="setup" class="anchored">{{ icon('cooking') }} Setting up your kitchen</h2>
-      <p>A quarter of an hour spent here after installing the app is what makes it useful rather
-        than empty. Roughly in this order:</p>
-      <ol class="walk">
-        <li><strong>Change the starter password</strong> and add everyone else in the house, under
+        <li><strong>Install.</strong> Find <strong>My Kitchen</strong> in the list and click
+          <em>Install</em>. The first install builds the image locally, which takes a few minutes on
+          a Raspberry Pi.</li>
+        <li><strong>Configure.</strong> On the <em>Configuration</em> tab, choose a provider and add
+          its API key (see <a href="#configure">Configuration</a>). Save.</li>
+        <li><strong>Start.</strong> On the <em>Info</em> tab, click <em>Start</em>, and turn on
+          <em>Show in sidebar</em> if you want it there.</li>
+        <li><strong>Log in.</strong> A first account is created on the first start, and its password
+          is printed once in the <em>Log</em> tab. Log in with it, then change it under
           <em>Household</em>.</li>
-        <li><strong>Add dietary tags</strong> for whoever needs them (allergies, disliked foods,
-          diets) and assign them to people as you create them. A tag assigned to nobody never reaches
-          the brief.</li>
-        <li><strong>Prune the catalogue.</strong> A fresh install seeds around 170 common ingredients
-          to save you typing. Under <em>Manage → Ingredients</em>, retire the ones you'll never buy and
-          add the ones you always do. This is the one bit worth doing properly; everything else is
-          built on it.</li>
-        <li><strong>Check your staples.</strong> Anything you always have (oil, salt, common spices,
-          flour...) should be flagged as a staple so it stays out of your stock list and gets used
-          freely.</li>
-        <li><strong>Add your equipment</strong> under <em>Manage</em>, so recipes are written for the
-          kitchen you've actually got.</li>
-        <li><strong>Set your stock</strong>. A first pass through the kitchen, checking in what you've currently got.</li>
-        <li><strong>Cook something.</strong> Hit <em>Lets Cook</em>. Your suggestions will be empty
-          at first; that list fills out as your recipe bank grows, and writing in two or three
-          recipes you already cook regularly is the fastest way to get it going.</li>
       </ol>
+      <p class="muted">With Home Assistant Cloud or your own HTTPS setup, the app is reached through
+        Home Assistant's ingress, so there are no ports to forward.</p>
     </div>
 
     <div class="gs-block">
-      <h2>{{ icon('dns') }} Docker</h2>
-      <p>My Kitchen is a single container with a single-file SQLite
-         database on a mounted volume, and it runs database migrations automatically on start.</p>
+      <h2><span class="bead k3">{{ icon('dns') }}</span> Docker</h2>
+      <p>One container, with the SQLite database on a mounted volume. Database migrations run
+        automatically when it starts.</p>
       <ol class="walk">
-        <li><strong>Clone the repo.</strong>
+        <li><strong>Clone the repository.</strong>
           <pre class="code"><code>git clone {{ site.github }}.git
 cd my-kitchen</code></pre>
         </li>
-        <li><strong>Set your config.</strong> Copy the example environment file and fill in your
-          values. At minimum, a stable <code>SECRET_KEY</code>, your LLM provider and API key, and the
-          database path. The repository's <a href="{{ site.github }}/blob/main/DEPLOY.md" rel="noopener" target="_blank">DEPLOY.md</a>
+        <li><strong>Set the configuration.</strong> Copy the example environment file and fill it in.
+          At minimum you need a <code>SECRET_KEY</code>, a provider and its API key, and the database
+          path. <a href="{{ site.github }}/blob/main/DEPLOY.md" rel="noopener" target="_blank">DEPLOY.md</a>
           lists every variable.
-          <pre class="code"><code># a few of the key variables (see DEPLOY.md for the full list)
+          <pre class="code"><code># the main ones; DEPLOY.md has the full list
 SECRET_KEY=change-me-to-a-long-random-string
 MY_KITCHEN_DB_PATH=/data/my_kitchen.db
 LLM_PROVIDER=gemini
+GEMINI_API_KEY=...
 APP_TIMEZONE=Europe/London</code></pre>
         </li>
-        <li><strong>Launch.</strong>
+        <li><strong>Start it.</strong>
           <pre class="code"><code>docker compose up -d --build</code></pre>
         </li>
-        <li><strong>Reverse proxy (optional).</strong> Put it behind nginx or Caddy for a clean
+        <li><strong>Reverse proxy (optional).</strong> Put it behind nginx or Caddy if you want a
           hostname and TLS.</li>
       </ol>
     </div>
 
     <div class="gs-block">
-      <h2>{{ icon('tune') }} Or just run it</h2>
-      <p>It's an ordinary Flask app, so no container is required if you'd rather not.</p>
+      <h2><span class="bead k2">{{ icon('tune') }}</span> Plain Python</h2>
+      <p>It's an ordinary Flask app, so you can run it without a container.</p>
       <pre class="code"><code>python3 -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env            # then edit
-flask db upgrade &amp;&amp; flask seed  # schema + starter catalogue
+cp .env.example .env            # then edit it
+flask db upgrade &amp;&amp; flask seed  # database + starter ingredients
 python run.py</code></pre>
-      <p class="muted">With <code>LLM_PROVIDER=mock</code> that needs no API key. A good way
-        to check out the app before deciding whether you want to add your key.</p>
+      <p class="muted">With <code>LLM_PROVIDER=mock</code> no API key is needed, which is a quick way
+        to look around before adding one.</p>
     </div>
 
     <div class="gs-block">
       <h2 id="configure" class="anchored">Configuration</h2>
-      <p>My Kitchen talks to a large language model through a swappable provider adapter. Set these in
-         the app's <em>Configuration</em> tab, or as environment variables under Docker.</p>
+      <p>Set these on the app's <em>Configuration</em> tab in Home Assistant, or as environment
+        variables (in capitals, e.g. <code>LLM_MODEL</code>) under Docker.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Setting</th><th>What it does</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td>LLM provider</td><td>Which model service to use: <code>gemini</code>, <code>anthropic</code>, or <code>mock</code> (no API calls — for trying the app).</td><td><code>gemini</code></td></tr>
-            <tr><td>API key</td><td>Your key for the chosen provider. Stored on your device; sent only with generation requests.</td><td>—</td></tr>
-            <tr><td>Model</td><td>The specific model to call.</td><td><code>gemini-3.5-flash</code></td></tr>
-            <tr><td>Temperature</td><td>How adventurous generation is. Higher = more variety.</td><td><code>0.8</code></td></tr>
-            <tr><td>Max tokens</td><td>Output length ceiling per generation.</td><td><code>8000</code></td></tr>
-            <tr><td>Timezone</td><td>Used for recipe history timestamps.</td><td><code>Europe/London</code></td></tr>
+            <tr><td><code>llm_provider</code></td><td><code>gemini</code>, <code>anthropic</code>, or <code>mock</code> (no API calls).</td><td><code>gemini</code></td></tr>
+            <tr><td><code>gemini_api_key</code> / <code>anthropic_api_key</code></td><td>The key for your provider. Stored on your machine and only sent to that provider.</td><td>none</td></tr>
+            <tr><td><code>llm_model</code></td><td>The model for new recipes and new versions. Blank uses the provider's default.</td><td><code>gemini-3.5-flash</code></td></tr>
+            <tr><td><code>llm_qa_model</code></td><td>The model for @kitchen questions. Blank uses a lighter, cheaper model, falling back to the main one if it's unavailable.</td><td><code>gemini-3.5-flash-lite</code></td></tr>
+            <tr><td><code>llm_temperature</code></td><td>Higher gives more varied recipes.</td><td><code>0.8</code></td></tr>
+            <tr><td><code>llm_max_tokens</code></td><td>The output limit for one generation.</td><td><code>8000</code></td></tr>
+            <tr><td><code>llm_recent_titles_n</code></td><td>How many recent recipe titles go in the brief, so it doesn't repeat itself.</td><td><code>10</code></td></tr>
+            <tr><td><code>app_timezone</code></td><td>Used for dates and the midnight reset of the daily limits.</td><td><code>Europe/London</code></td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>What it costs</h3>
-      <p>The app is free and open source. The running cost is your provider's API usage, billed to
-        your own key. Only generation calls the model - browsing, suggestions, stock and everything
-        else are local and free. Generation is a single call to a lightweight model. In
-        practice that's pennies over a month of normal household cooking, but it isn't nothing, and
-        it's worth setting a spending cap in your provider's console.</p>
-
-      <div class="callout callout--info">
+      <h3 id="limits" class="anchored">Costs and limits</h3>
+      <p>The app is free. AI calls are billed to your own API key: new recipes, new versions, retries
+        and @kitchen questions. Stock, suggestions, browsing and everything else run locally. In my
+        house it comes to pennies a month, but it's worth setting a spending cap with your provider
+        as well.</p>
+      <p>Daily limits stop a busy evening (or a bug) running up a bill. They reset at midnight, and
+        the <em>Usage</em> page shows where you are against them and what's been spent.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setting</th><th>Limit</th><th>Default</th></tr></thead>
+          <tbody>
+            <tr><td><code>limit_generations_per_user_day</code></td><td>New recipes, new versions and retries, per person</td><td><code>10</code></td></tr>
+            <tr><td><code>limit_questions_per_user_day</code></td><td>@kitchen questions, per person</td><td><code>20</code></td></tr>
+            <tr><td><code>limit_household_calls_day</code></td><td>All AI calls, for the whole household</td><td><code>40</code></td></tr>
+            <tr><td><code>limit_regenerates_per_brief</code></td><td>Times you can ask for two more from one brief</td><td><code>3</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
         {{ icon('info') }}
-        <div><strong>Running fully local?</strong> Not yet. The provider adapter is
-          swappable and a local model (such as Ollama) is a natural fit, but a local provider
-          isn't implemented yet. Currently, generation means a call to a cloud model with an API key. See
-          <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
+        <div><strong>No local model yet.</strong> The provider code is designed to take more providers,
+          and a local one such as Ollama is on the <a href="{{ url_for('approach') }}#roadmap">roadmap</a>,
+          but today generation needs a cloud provider. See <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
       </div>
     </div>
 
     <div class="gs-block">
-      <h2>Updating &amp; backups</h2>
-      <p><strong>Home Assistant:</strong> new versions appear under standard 'updates'. Configure
-         <em>Settings → System → Backups</em> if you want HA to snapshot the app's data before schema-changing releases.</p>
-      <p><strong>Docker:</strong> <code>git pull</code> then <code>docker compose up -d --build</code>;
-         migrations apply on start. Data lives on the mounted <code>/data</code> volume. Back that
-         up yourself however you want.</p>
-      <p class="muted">What changed in each version is listed under
-        <a href="{{ url_for('releases') }}">Releases</a>.</p>
+      <h2 id="setup" class="anchored"><span class="bead bead--pinwheel" aria-hidden="true"></span> First steps</h2>
+      <p>About a quarter of an hour here makes the difference between an empty app and a useful one.</p>
+      <ol class="walk">
+        <li><strong>Change the starter password</strong> and add everyone else in the house, under
+          <em>Household</em>.</li>
+        <li><strong>Add dietary tags</strong> (allergies, dislikes, diets) and assign them to people.
+          A tag that isn't assigned to anyone never reaches a brief.</li>
+        <li><strong>Trim the ingredient catalogue.</strong> A new install starts with about 170 common
+          ingredients. Under <em>Manage → Ingredients</em>, retire the ones you never buy and add the
+          ones you do. Everything else builds on this, so it's worth doing properly.</li>
+        <li><strong>Check the staples.</strong> Anything you always have (oil, salt, common spices,
+          flour) should be a staple, so it stays off the stock list and can always be used.</li>
+        <li><strong>Add your equipment</strong> under <em>Manage</em>, so recipes are written for your
+          kitchen.</li>
+        <li><strong>Set your stock</strong> with one pass through the fridge and cupboards.</li>
+        <li><strong>Cook something.</strong> Tap <em>Lets Cook</em>. Suggestions will be empty at first;
+          typing in two or three recipes you already make is the quickest way to fill them out.</li>
+      </ol>
+    </div>
+
+    <div class="gs-block">
+      <h2>Updates and backups</h2>
+      <p><strong>Home Assistant:</strong> new versions appear with your other updates. If you want a
+        snapshot before each update, turn that on under <em>Settings → System → Backups</em>.</p>
+      <p><strong>Docker:</strong> <code>git pull</code>, then <code>docker compose up -d --build</code>.
+        Migrations run on start. Your data is on the mounted <code>/data</code> volume, so back that up
+        however you normally would.</p>
+      <p class="muted">Each version's changes are on the <a href="{{ url_for('releases') }}">Releases</a> page.</p>
     </div>
 
     <div class="next-row">
-      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Read the docs</a>
-      <a class="btn btn--secondary" href="{{ url_for('faq') }}">{{ icon('info') }} FAQ</a>
+      <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Docs</a>
+      <a class="btn btn--ghost" href="{{ url_for('docs') }}#trouble">Troubleshooting</a>
     </div>
 
   </div>

@@ -19,7 +19,7 @@ import urllib.request
 from datetime import date, datetime
 from pathlib import Path
 
-from flask import Flask, Response, abort, render_template, url_for
+from flask import Flask, Response, abort, redirect, render_template, url_for
 from markupsafe import Markup, escape
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -38,11 +38,11 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 # --------------------------------------------------------------------------- #
 SITE = {
     "name": "My Kitchen",
-    "tagline": "The self-hosted recipe brain for your house.",
+    "tagline": "A self-hosted recipe app for a household.",
     "blurb": (
-        "My Kitchen turns what's actually in your kitchen into delicious, varied "
-        "recipes — and remembers everything you cook, save and stock. Self-hosted, "
-        "private, and at home in Home Assistant."
+        "My Kitchen keeps track of what's in stock, holds your household's recipes and "
+        "shows which ones you can cook now. Self-hosted and open source; runs as a Home "
+        "Assistant add-on or a Docker container."
     ),
     "url": "https://my-kitchen.io",
     "github": "https://github.com/amiablealex/my-kitchen",
@@ -57,7 +57,7 @@ NAV = [
     ("get_started", "Get started"),
     ("docs", "Docs"),
     ("approach", "Approach"),
-    ("faq", "FAQ"),
+    ("releases", "Releases"),
 ]
 
 
@@ -368,7 +368,11 @@ def _recipe_jsonld(recipe):
 # --------------------------------------------------------------------------- #
 @app.route("/")
 def index():
-    return render_template("index.html", page="index")
+    # Latest version for the facts list. Same hourly cache as /releases; if
+    # GitHub can't be reached the row is simply left out.
+    releases = get_releases()
+    return render_template("index.html", page="index",
+                           latest=releases[0] if releases else None)
 
 
 @app.route("/get-started")
@@ -388,7 +392,8 @@ def approach():
 
 @app.route("/faq")
 def faq():
-    return render_template("faq.html", page="faq")
+    # The FAQ was retired; old links land on the docs' troubleshooting section.
+    return redirect(url_for("docs") + "#trouble", code=301)
 
 
 def changelog_link():
@@ -440,7 +445,7 @@ def recipe(slug):
 @app.route("/sitemap.xml")
 def sitemap():
     entries = [(url_for(endpoint), None) for endpoint, _ in NAV]
-    entries += [(url_for("releases"), None), (url_for("privacy"), None)]
+    entries += [(url_for("privacy"), None)]  # releases is in NAV
     entries += [(url_for("recipe", slug=r["slug"]), r["published"]) for r in get_recipes()]
     body = ['<?xml version="1.0" encoding="UTF-8"?>',
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']

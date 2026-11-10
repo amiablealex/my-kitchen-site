@@ -1,10 +1,10 @@
 # My Kitchen — website
 
 The showcase + documentation site for [My Kitchen](https://github.com/amiablealex/my-kitchen),
-the self-hosted recipe brain for your house.
+a self-hosted recipe app for a household.
 
-A small **Flask + Jinja** site — no build step — that reuses the app's design
-tokens and fonts so it's unmistakably the same product. It deploys exactly like
+A small **Flask + Jinja** site, with no build step, that reuses the app's design
+tokens, fonts and "Petals" components (see the app's `docs/brand-ui-guide.md`). It deploys exactly like
 the app and the personal site: gunicorn behind nginx, restarted by a git-pull
 cron.
 
@@ -23,11 +23,10 @@ templates/
   index.html                home
   get_started.html          install + configure
   docs.html                 documentation (sticky TOC)
-  faq.html                  FAQ
   privacy.html              privacy & data
   404.html
 static/
-  css/site.css              tokens (from the app) + the marketing shell
+  css/site.css              tokens + Petals components (from the app) + the docs shell
   fonts/                    drop the two .woff2 here (see fonts/README.md)
   icons/                    app icons + favicon (see icons/README.md)
   img/                      screenshots + OG card (see img/README.md)

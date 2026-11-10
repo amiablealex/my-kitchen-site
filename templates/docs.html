@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
-{% block title %}Documentation: {{ site.name }}{% endblock %}
-{% block description %}How My Kitchen works: stock, the ingredient catalogue, the Lets Cook wizard, suggestions, generation, your own recipes, notes, and household diets.{% endblock %}
+{% block title %}Docs: {{ site.name }}{% endblock %}
+{% block description %}How My Kitchen works: stock, the ingredient catalogue, the Lets Cook wizard, suggestions, generation, versions, @kitchen questions, notes, the household and usage limits.{% endblock %}
 
 {% block content %}
-<section class="page-head page-head--tight">
+<section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Documentation</p>
-    <h1 class="display page-title">How it works</h1>
+    <h1 class="display page-title">Docs</h1>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.29.</p>
   </div>
 </section>
 
@@ -15,313 +15,364 @@
   <aside class="docs-toc" aria-label="On this page">
     <p class="docs-toc-title">On this page</p>
     <nav>
-      <a href="#concepts">The big idea</a>
+      <a href="#overview">Overview</a>
       <a href="#stock">Stock</a>
       <a href="#catalogue">Ingredients &amp; the catalogue</a>
       <a href="#wizard">The Lets Cook wizard</a>
       <a href="#suggestions">Suggestions</a>
-      <a href="#generation">Generation</a>
+      <a href="#generation">New recipes</a>
       <a href="#recipes">Recipes &amp; favourites</a>
+      <a href="#servings">Servings</a>
+      <a href="#versions">Versions</a>
+      <a href="#notes">Notes &amp; @kitchen</a>
       <a href="#writing">Writing your own recipes</a>
-      <a href="#notes">Notes</a>
       <a href="#share">Print &amp; share</a>
       <a href="#household">Household &amp; diets</a>
-      <a href="#privacy">Self-hosting &amp; data</a>
+      <a href="#usage">Usage &amp; limits</a>
+      <a href="#data">Self-hosting &amp; data</a>
       <a href="#trouble">Troubleshooting</a>
     </nav>
   </aside>
 
   <article class="docs-body">
-    <section id="concepts" class="doc-sec">
-      <h2>The basic idea</h2>
-      <p>My Kitchen is the household's recipe brain. It knows what's in stock and it holds all of your
-        recipes — the ones you've written and the ones it has generated — and it turns that into
-        <strong>“what's cookable right now?”</strong></p>
-      <p>Two things follow from that. Recipes aren't stored as loose text: every ingredient line is
-        linked to a real entry in your ingredient catalogue, which is what makes “can I make this
-        tonight?” a question the app can actually answer. And AI generation is one source of recipes
-        among several, not the whole product — it's what you reach for when nothing you already have
-        takes your fancy.</p>
+    <section id="overview" class="doc-sec">
+      <h2>Overview</h2>
+      <p>My Kitchen keeps three things: what's in stock, a catalogue of ingredients, and the
+        household's recipes. Every ingredient line in a recipe is linked to an entry in the catalogue,
+        so the app can check a recipe against your stock and tell you what you can cook now.</p>
+      <p>AI is one way of getting recipes, not the core of the app. It's used when you ask for new
+        recipes, ask for a new version of one, or ask @kitchen a question. Everything else, including
+        suggestions, runs locally with no AI involved.</p>
     </section>
 
     <section id="stock" class="doc-sec">
       <h2>Stock</h2>
-      <p>Stock is a simple in-or-out toggle, maintained from the <em>Stock</em> screen: a view of
-        what's in, grouped and colour-coded by section, one search box that filters what you already
-        have <em>and</em> adds new things from your catalogue, and a tap to remove.</p>
-      <p>Each item can carry a short note — “needs using”, “1 large”, “half a bag” — which is passed
-        to the model when you generate.</p>
-      <div class="callout callout--info">
+      <p>Each ingredient is either in stock or not. The <em>Stock</em> screen shows what's in as
+        chips, grouped and coloured by section. Tap an item to add or change a short note (“needs
+        using”, “1 large”, “half a bag”), which goes into the brief when you generate. Tap × when
+        you've run out; <em>Undo</em> puts it back.</p>
+      <p>The search box at the top filters what's in stock and, underneath, shows matching
+        ingredients from your catalogue as dashed chips. Tap one to add it. If nothing in the
+        catalogue matches, you can add it as a new ingredient there and then.</p>
+      <div class="callout">
         {{ icon('info') }}
-        <div>Stock is in-or-out and always will be. There are no quantities, no decrementing when you
-          cook, no low-stock alerts. Keeping an inventory accurate is the chore that kills household
-          tools, and a toggle you'll actually maintain beats a count you won't.
-          <a href="{{ url_for('approach') }}">More on that thinking ›</a></div>
+        <div>Stock has no quantities, no counting down as you cook and no low-stock alerts. A count
+          needs updating every time you cook and soon goes wrong; an in-or-out toggle stays right.
+          <a href="{{ url_for('approach') }}#not-planned">More on that</a>.</div>
       </div>
     </section>
 
     <section id="catalogue" class="doc-sec">
       <h2>Ingredients &amp; the catalogue</h2>
-      <p>Behind the app is a catalogue of ingredients, each in a category (Protein, Carbohydrate,
-        Vegetable, Dairy, Spice, Oil, Pantry, Herb, Fruit, Condiment). Categories map onto four
-        sections — protein, carb, veg and other — which is what drives the colour coding and the lanes
-        in the wizard. A fresh install seeds roughly 170 ingredients to start you off; rename, retire
-        and add your own freely under <em>Manage</em>.</p>
-      <p>Every ingredient is one of two things:</p>
+      <p>Each catalogue ingredient has a category (Protein, Carbohydrate, Vegetable, Dairy, Spice, Oil,
+        Pantry, Herb, Fruit, Condiment). Categories fall into four sections, protein, carb, veg and
+        other, which set the colours and the lanes in the wizard. A new install starts with about 170
+        ingredients; rename, retire and add your own under <em>Manage</em>.</p>
+      <p>An ingredient is either:</p>
       <ul>
-        <li><strong>A core ingredient.</strong> Things that come and go, which you check in and out on
+        <li><strong>A core ingredient:</strong> something that comes and goes, checked in and out on
           the Stock screen.</li>
-        <li><strong>A staple.</strong> Oil, salt, common spices, flour. Assumed always available and
-          used freely, so they stay out of the stock list entirely — you manage them separately under
-          <em>Manage</em>.</li>
+        <li><strong>A staple:</strong> oil, salt, common spices, flour. Assumed always available and
+          kept off the stock list. Staples are managed under <em>Manage</em>.</li>
       </ul>
 
       <h3>Ingredient links</h3>
-      <p>When a recipe is saved, each ingredient line is matched to a catalogue entry by a
-        deterministic resolver — no AI involved, just normalisation, a synonym list and fuzzy matching
-        above a confidence threshold. Anything it can't match confidently is left unmatched rather
-        than guessed at.</p>
-      <p>On any recipe, each ingredient shows the catalogue entry it's linked to as a small tag. Tap
-        <em>Edit links</em> to re-link a line, unlink it, or add a brand-new ingredient to your
-        catalogue and link it in one step. Your corrections are shared across the household and
-        stick — nothing is silently re-linked behind your back.</p>
+      <p>When a recipe is saved, each ingredient line is matched to a catalogue entry. The matching is
+        plain code, not AI: normalising the text, a list of synonyms, and fuzzy matching above a
+        confidence threshold. A line it isn't confident about is left unlinked rather than guessed.</p>
+      <p>Each ingredient on a recipe shows its link as a small tag. <em>Edit links</em> lets you
+        re-link a line, unlink it, or add a new catalogue ingredient and link it in one go. Your
+        corrections are shared with the household and aren't changed behind your back.</p>
 
       <h3>Equipment</h3>
-      <p>Also under <em>Manage</em> is your equipment list — air fryer, wok, large baking dish,
-        whatever you've got. It's passed to the model with the brief, so recipes are written for the
-        kitchen you actually have. Anything temporarily out of action can be marked unavailable
-        rather than deleted.</p>
+      <p>Your equipment list (air fryer, wok, large baking dish) is under <em>Manage</em>. It goes into
+        the brief, so recipes are written for what you have. Something out of action can be marked
+        unavailable instead of deleted.</p>
     </section>
 
     <section id="wizard" class="doc-sec">
       <h2>The Lets Cook wizard</h2>
-      <p>This is where the app helps you decide what to make right now. Each step is one screen and
-        you can go back at any point.</p>
+      <p>One question per screen. Back and Continue sit together at the bottom right on every step.</p>
       <ol>
-        <li><strong>Choose ingredients to use up.</strong> Tap in-stock items to mark them
-          <em>must-use</em> — whatever comes out will be built to include them. Leave it blank and it
-          cooks from whatever's in. Staples live in their own drawer below the lanes, so you can build
-          a meal around the oregano if that's the mood; picking a staple is creative direction, not a
-          statement about availability.</li>
-        <li><strong>Meal type &amp; cuisine.</strong> Breakfast, Lunch, Dinner, Snack, Side dish,
-          Dessert, Baking, or a Sauce or dressing. Meal type comes first and gates cuisine — a dessert
-          doesn't ask you to pick between Italian and Mexican. Where cuisine applies you can leave it
-          on <em>Any</em>.</li>
+        <li><strong>Ingredients to use up.</strong> Tap in-stock items to make them <em>must-use</em>;
+          anything generated will include them. Leave it empty and it cooks from whatever's in.
+          Staples are in their own drawer, so you can build a meal around one if you want.</li>
+        <li><strong>Meal type and cuisine.</strong> Breakfast, Lunch, Dinner, Snack, Side dish, Dessert,
+          Baking, or Sauce or dressing. Cuisine is only asked where it applies (not for desserts, for
+          example), and can stay on <em>Any</em>.</li>
         <li><strong>Time.</strong> Quick (under 30 minutes) or Relaxed (30–75).</li>
-        <li><strong>Who's eating.</strong> Pick people from your household and add a guest count. This
-          is how servings and dietary needs are worked out. Each person's tags show as colour-coded
-          badges, so an allergy is visible at the moment you apply it.</li>
-        <li><strong>Review.</strong> A recap of the brief, then any saved recipes you could cook right
-          now (below), and finally the button to generate something new.</li>
+        <li><strong>Who's eating.</strong> Pick people from the household and add a number of guests.
+          This sets the servings and the dietary needs. Each person's tags show next to their name.</li>
+        <li><strong>Ready to cook?</strong> Your brief as a row of chips (tap <em>Full brief</em> for
+          the detail), then any saved recipes you can cook now, then <em>Make something new</em>.</li>
       </ol>
-      <p>Stock is read live as you go, so a mid-flow fix via the “Stock not right? Update →” link
-        shows up immediately.</p>
+      <p>Stock is read as you go, so fixing it part-way through (<em>Stock not right? Update</em>)
+        shows up straight away.</p>
     </section>
 
     <section id="suggestions" class="doc-sec">
       <h2>Suggestions</h2>
-      <p>Before any generation, the review step surfaces saved recipes that are
-        <strong>cookable right now</strong> and fit your brief, as tappable cards. This is the part
-        that makes the app more than a generator: the bank you've built up gets offered back to you at
-        the moment it's useful.</p>
-      <p>A recipe qualifies when all of these hold:</p>
+      <p>On <em>Ready to cook?</em>, <em>Already in your recipes</em> lists saved recipes that fit the
+        brief and can be cooked with what's in. A recipe is included when:</p>
       <ul>
-        <li>Every required ingredient is linked to something that's currently in stock (staples are
-          assumed).</li>
-        <li>Its meal type matches, and its cuisine matches unless you chose <em>Any</em>.</li>
-        <li>Every must-use ingredient you picked actually appears in it.</li>
+        <li>every required ingredient is linked to something in stock (staples count as in);</li>
+        <li>its meal type matches, and its cuisine matches unless you chose <em>Any</em>;</li>
+        <li>every must-use ingredient you picked is in it.</li>
       </ul>
-      <p>Optional extras don't count against a recipe, and the time band is shown as a badge but never
-        used to filter. It's a plain database query — no AI, no cost, no waiting.</p>
-      <div class="callout callout--info">
+      <p>Optional extras don't count against a recipe. The time band is shown but doesn't filter.
+        It's a database query, so it's instant and costs nothing.</p>
+      <div class="callout">
         {{ icon('info') }}
-        <div>Suggestions are precise on purpose: if a required ingredient line isn't linked to your
-          catalogue, the recipe is left out rather than promised falsely. Expect this to be sparse at
-          first and to grow as your recipe bank does.</div>
+        <div>If a required ingredient line isn't linked to your catalogue, the recipe is left out
+          rather than offered on a guess. Expect few suggestions at first; they grow with your recipes.</div>
       </div>
     </section>
 
     <section id="generation" class="doc-sec">
-      <h2>Generation</h2>
-      <p>Nothing takes your fancy? Generation sends a short brief to your chosen model and returns
-        <strong>two deliberately different recipes</strong> to choose between, each with an energetic
-        write-up: why the dish works, technique, doneness cues you can see and smell, and finishing
-        touches worth bothering with.</p>
-      <p>The brief carries your must-use picks, everything else in stock, your staples and equipment,
-        meal type, cuisine, time band, servings, the dietary needs of whoever's eating, the titles of
-        your recent recipes (so you don't get the same thing twice), and one randomly chosen creative
-        angle. That angle is applied to the first recipe only — the second is designed freely as a
-        genuine alternative, differing in technique or flavour direction.</p>
-      <p>Recipes are written in UK units and British ingredient names throughout. The model may
-        suggest up to two things you don't have, flagged as <strong>Optional Extra</strong> — a
-        garnish or a flavour lift, never something the meal is built around.</p>
-      <p>Generation runs in the background. You get a “cooking up your recipes…” page that updates
-        itself and jumps to your two options the moment they're ready, so a slow generation can't time
-        out on you — including over a remote connection. Tapping generate twice resumes the same wait
-        rather than starting a second one.</p>
-      <p>Both recipes are saved, not just the one you pick, so the road not taken stays retrievable
-        from your history.</p>
+      <h2>New recipes</h2>
+      <p>Under <em>Make something new</em> you can add a request (“something spicy”, “a one-pot”,
+        up to 280 characters) and tap <em>Generate recipes</em>. The brief goes to your provider, which
+        returns <strong>two different recipes</strong> to choose between.</p>
+      <p>The brief contains your must-use picks, everything else in stock with its notes, your staples
+        and equipment, the meal type, cuisine, time and servings, the dietary tags of whoever's eating,
+        your request, the titles of your recent recipes (to avoid repeats) and one randomly chosen
+        creative angle. The angle applies to the first recipe only; the second is written as a
+        different alternative.</p>
+      <p>Recipes use metric units and British ingredient names. The model can suggest up to two things
+        you don't have, marked <strong>Optional extra</strong>, never something the dish depends on.</p>
+      <p>Generation runs in the background. A waiting page updates itself and moves on to the two
+        recipes when they're ready, so a slow response can't time out, even over a remote connection.
+        Tapping generate twice joins the same wait rather than starting another.</p>
+
+      <h3>Choosing</h3>
+      <p><em>Take your pick</em> shows the two recipes numbered 1 and 2, with their cuisine, time and
+        servings. Tap <em>Cook this</em> on one. Both are saved either way, so the other stays in your
+        recipes.</p>
+      <p>If neither appeals, <em>Neither one?</em> asks for two more from the same brief, told which
+        two you passed on, with an optional steer. You can do this up to three times per brief (see
+        <a href="#usage">limits</a>), and go back to the previous pair from there.</p>
     </section>
 
     <section id="recipes" class="doc-sec">
       <h2>Recipes &amp; favourites</h2>
-      <p>Every recipe has the same shape whatever its origin: intro, ingredients, prep, cook, and
-        optional tips. A small coloured dot marks where it came from — a pinwheel for AI-generated, a
-        solid dot for one you wrote.</p>
-      <p>The <em>Recipes</em> screen is a dated list of everything the household has. One search box
-        filters it by <strong>cuisine, meal type, cook and source</strong> as well as by name: start
-        typing, tap a suggestion, and it becomes a chip you can stack or remove. Filtering happens
-        instantly as you type, which matters when you're at the hob.</p>
-      <p>Favouriting is per person — everyone sees every recipe in the main list, but your starred
-        list is yours. Meal type and cuisine tags can be edited inline on any recipe, which is worth
-        doing: those tags are what make a recipe show up in suggestions later.</p>
+      <p>Every recipe has the same parts, whoever wrote it: intro, ingredients, prep, cook and optional
+        tips. A pinwheel dot marks an AI-generated recipe; a lime dot marks one written by hand.</p>
+      <p>The <em>Recipes</em> list shows each recipe on two lines: the title, then the cook's initial,
+        date, cuisine, time and servings. A pair you haven't chosen between yet shows as one
+        <em>Pick one</em> row. The search box filters by <strong>name, cuisine, meal type, cook and
+        source</strong>: tap a suggestion to turn it into a chip, and stack as many as you like.</p>
+      <p>Favourites are per person. Meal type and cuisine can be changed on any recipe with
+        <em>Edit tags</em>, which matters because they decide whether it appears in suggestions.</p>
+
+      <h3>Archive</h3>
+      <p>The <em>⋯</em> menu on a recipe has <em>Archive this recipe</em>. Archived recipes are hidden
+        from your recipes, favourites and suggestions, but nothing is deleted: <em>Recipes →
+        Archive</em> lists them with a <em>Restore</em> button. A failed generation in the list has a
+        small × to clear it.</p>
+    </section>
+
+    <section id="servings" class="doc-sec">
+      <h2>Servings</h2>
+      <p>The stepper above a recipe's ingredients scales the amounts for any number of servings. This
+        happens on your screen only: nothing is saved, and the print view always uses the recipe's own
+        count. The method isn't changed, so quantities and times in the steps stay as written. To have
+        those rewritten too, tap <em>Rewrite the method for this many</em>, which opens a
+        <a href="#versions">new version</a> with that change filled in.</p>
+    </section>
+
+    <section id="versions" class="doc-sec">
+      <h2>Versions</h2>
+      <p>An AI-generated recipe can be changed by asking for a new version. Tap <em>+ New version</em>
+        at the end of the version trail at the top of the recipe, describe the change (“make it
+        lighter”, “swap the broccoli for green beans”), or tap one of the suggested changes, then
+        <em>Create</em>.</p>
+      <p>Before anything is sent, a confirmation shows your change and explains that the AI will
+        rewrite the recipe as the next version and the current one is kept. Only the newest version
+        can be changed again. Each version in the trail is labelled with the change that made it, and
+        an earlier version shows a link back to the latest.</p>
+      <p class="muted">A new version keeps the original's meal type and who's eating, with their
+        current dietary tags. It counts towards the daily generation limit.</p>
+    </section>
+
+    <section id="notes" class="doc-sec">
+      <h2>Notes &amp; @kitchen</h2>
+      <p>Any recipe can have <strong>notes</strong>: how it went, what you changed, whether to make it
+        again. They're dated and attributed, oldest first, and the whole household sees them. Notes
+        can't be edited (add another one instead), and you can delete your own. Recipes with notes
+        show a speech bubble in the list. Notes are never sent to the AI.</p>
+
+      <h3>Asking @kitchen</h3>
+      <p>Start a note with <strong>@kitchen</strong>, or tap <em>Ask @kitchen</em>, to ask a question
+        about the recipe: what to swap, how long it keeps, how to tell when it's done. The reply
+        appears under the question in the thread, usually within a few seconds. A slower one shows
+        <em>Thinking…</em>, and a failed one has <em>Try again</em>.</p>
+      <p>The model is given the recipe, the servings you're viewing it at, the last few questions and
+        answers on that recipe, what's in stock, your staples, and the allergies and dislikes of
+        everyone in the household, so it won't suggest something someone can't eat. It answers
+        questions; it doesn't rewrite the recipe.</p>
+
+      <h3>Make this version N</h3>
+      <p>When an answer suggests a change big enough to need the recipe rewriting (making it
+        vegetarian, cooking it in a slow cooker, turning it into a traybake), a <em>Make this version
+        N</em> button appears under the reply. It opens the new-version panel with the change filled
+        in, and the same confirmation applies. Small swaps the cook can make as they go (lemon for lime,
+        dried herbs for fresh) and questions about storage, timing or technique don't get the button.</p>
+      <p class="muted">Questions use a lighter, cheaper model by default, and have their own daily limit.</p>
     </section>
 
     <section id="writing" class="doc-sec">
       <h2>Writing your own recipes</h2>
-      <p>Recipes you write yourself sit alongside the generated ones, and they're arguably the more
-        valuable half of the bank — a family recipe or a favourite from a book becomes something the
-        app can offer you when you've got the ingredients in.</p>
-      <p>Create one from the <em>Recipes</em> page. You fill in the same sections the app uses
-        everywhere, and pick ingredients straight from your catalogue, so the lines are linked from
-        the moment you save — no matching needed. Ingredient, prep, cook and tip rows can be dragged
-        into order within their sections. Tag the meal type, cuisine and time band and it'll be
-        offered up in the wizard like any other recipe.</p>
-      <div class="callout callout--info">
+      <p>Recipes you write sit alongside the generated ones and are offered in suggestions in the same
+        way, so a family recipe or one from a book comes up when you have the ingredients.</p>
+      <p>Use <em>Create a recipe</em> on the Recipes page. You fill in the same sections as any other
+        recipe and pick ingredients from your catalogue, so every line is linked when you save.
+        Ingredient, prep, cook and tip rows can be dragged into order. Set the meal type, cuisine and
+        time band so it can be suggested. Edit it later from the recipe's <em>⋯</em> menu.</p>
+      <div class="callout">
         {{ icon('info') }}
-        <div>Importing a recipe from a web page or a photograph is the next thing on the list. Today
-          it's typed in by hand.</div>
+        <div>Importing from a web page or a photo isn't available yet. It's first on the
+          <a href="{{ url_for('approach') }}#roadmap">roadmap</a>.</div>
       </div>
-    </section>
-
-    <section id="notes" class="doc-sec">
-      <h2>Notes</h2>
-      <p>Any recipe can carry <strong>notes</strong>: how it went, what you changed, whether to make
-        it again. They're attributed and dated, oldest first, and everyone in the house sees them —
-        it's a shared cooking log rather than a private scratchpad.</p>
-      <p>Cooked it a second time? Add a second note. There's no editing — a correction is just another
-        note, which keeps the log honest — and you can delete your own. Recipes with notes show a
-        small speech bubble in the list.</p>
-      <p>Notes are never fed back into generation. They're for you to read before cooking something
-        again, not a signal the model gets to interpret.</p>
     </section>
 
     <section id="share" class="doc-sec">
       <h2>Print &amp; share</h2>
-      <p>Every recipe has a <em>Print / share this recipe</em> action. It opens a clean version with
-        no navigation or app furniture, which prints — or saves to PDF — properly on a light
-        background, and screenshots in one piece.</p>
-      <p>This exists because the obvious thing to do, pasting someone a
-        <code>192.168.…</code> link, doesn't work outside your network. The share view hands you an
-        artifact instead: a PDF or an image you send however you like. There's no public link and
-        nothing is exposed — the page sits behind the same login as everything else.</p>
+      <p><em>Print or share</em> in a recipe's <em>⋯</em> menu opens a plain version of the recipe,
+        without navigation, that prints or saves to PDF on a white background and screenshots in one
+        piece.</p>
+      <p>A link to your instance won't work for anyone outside your network, so this gives you a file
+        to send instead. There's no public link: the page is behind the same login as the rest of the
+        app.</p>
     </section>
 
     <section id="household" class="doc-sec">
       <h2>Household &amp; diets</h2>
-      <p>Add the people in your house under <em>Household</em>, each with their own login, favourites
-        and dietary tags. In the wizard, whoever you're cooking for has their tags combined into the
-        brief. Guests add servings but carry no dietary data.</p>
-      <p>Tags come in three kinds, and the difference matters — it's the difference between “never,
-        under any circumstances” and “they're not keen”:</p>
+      <p>Add the people in your house under <em>Household</em>, each with a login, favourites and
+        dietary tags. In the wizard, the tags of whoever you're cooking for go into the brief. Guests
+        add servings but have no dietary tags.</p>
+      <p>There are three kinds of tag:</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Type</th><th>What it means</th><th>Examples</th></tr></thead>
           <tbody>
-            <tr>
-              <td><strong>Allergy</strong></td>
+            <tr><td><strong>Allergy</strong></td>
               <td>Never used, in any form, anywhere in the recipe. Overrides everything else.</td>
-              <td>Peanuts, shellfish</td>
-            </tr>
-            <tr>
-              <td><strong>Dislike</strong></td>
-              <td>A food someone doesn't like. Kept out of the whole recipe — ingredients, optional
-                  extras, tips and serving suggestions alike. Taste, not safety.</td>
-              <td>Pesto, olives, blue cheese</td>
-            </tr>
-            <tr>
-              <td><strong>Diet</strong></td>
-              <td>How someone eats generally. Steers the whole recipe rather than banning one thing.</td>
-              <td>Vegetarian, gluten-free, nothing too spicy</td>
-            </tr>
+              <td>Peanuts, shellfish</td></tr>
+            <tr><td><strong>Dislike</strong></td>
+              <td>Kept out of the whole recipe: ingredients, optional extras, tips and serving
+                suggestions. A matter of taste, not safety.</td>
+              <td>Pesto, olives, blue cheese</td></tr>
+            <tr><td><strong>Diet</strong></td>
+              <td>A general way of eating that shapes the whole recipe.</td>
+              <td>Vegetarian, gluten-free, nothing too spicy</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>When things conflict</h3>
-      <p>Pick chicken to use up while cooking for a vegetarian and something has to give. The order is
-        fixed, strongest first:</p>
+      <h3>When they conflict</h3>
+      <p>If you pick chicken to use up while cooking for a vegetarian, something has to give. The
+        order, strongest first:</p>
       <ol>
-        <li><strong>Allergies</strong> win outright. If an ingredient you selected is an allergen for
-          someone at the table, it's dropped rather than used.</li>
-        <li><strong>Ingredients you chose</strong> in the wizard come next. A deliberate pick is
-          treated as deliberate.</li>
-        <li><strong>Dislikes</strong> are excluded from everything — unless you explicitly picked the
-          thing, in which case you clearly meant it.</li>
-        <li><strong>Diets</strong> steer the whole recipe, but never against something you chose on
-          purpose.</li>
+        <li><strong>Allergies.</strong> A selected ingredient that's an allergen for someone eating is
+          dropped.</li>
+        <li><strong>Ingredients you chose</strong> in the wizard.</li>
+        <li><strong>Dislikes,</strong> unless you picked that ingredient yourself.</li>
+        <li><strong>Diets,</strong> which shape the recipe but don't override a deliberate pick.</li>
       </ol>
-      <p>A tag only reaches a brief if it's assigned to someone, and only when that person is one of
-        the people you're cooking for. You can assign a tag to people as you create it.</p>
+      <p>A tag only reaches the brief if it's assigned to someone who's eating. You can assign it to
+        people when you create it.</p>
       <div class="callout callout--warn">
         {{ icon('info') }}
-        <div><strong>Allergies:</strong> an AI is not a safety guarantee. Allergies are stated in the
-          brief as absolute exclusions and the model handles the obvious cases well, but the app can't
-          verify the output in code — there's no ingredient-level allergen data behind the tags.
-          Recipes generated with an allergy in play carry a visible reminder to check the ingredients
-          yourself. Always do.</div>
+        <div><strong>Allergies:</strong> an AI is not a safety guarantee. Allergies go into the brief
+          as absolute exclusions and the obvious cases are handled well, but the app can't check the
+          output, because there's no allergen data behind the tags. Recipes generated with an allergy
+          in the brief show a reminder to check the ingredients yourself. Always do.</div>
       </div>
     </section>
 
-    <section id="privacy" class="doc-sec">
+    <section id="usage" class="doc-sec">
+      <h2>Usage &amp; limits</h2>
+      <p>The <em>Usage</em> page (in the menu) shows today's counts against the limits, for you and the
+        household, totals over recent days, a per-person breakdown and the most recent calls, each with
+        its model, tokens and an estimated cost.</p>
+      <p>The limits reset at midnight in your timezone. New recipes, new versions and retries share
+        the per-person generation limit; @kitchen questions have their own; and every call counts
+        towards the household total. The defaults and settings are under
+        <a href="{{ url_for('get_started') }}#limits">Costs and limits</a>.</p>
+    </section>
+
+    <section id="data" class="doc-sec">
       <h2>Self-hosting &amp; data</h2>
-      <p>Everything runs on your hardware and your data stays there: accounts, stock, catalogue,
-        recipes, history, favourites and notes all live in a single database file on your machine.
-        There's no account with us, no sync and no telemetry.</p>
-      <p>The one thing that leaves your network is the generation brief — a short, low-sensitivity
-        description of ingredients and constraints, sent to your chosen provider with your own API
-        key, and only when you press generate. Nothing else is sent, and nothing is sent at any other
-        time. See <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
+      <p>Accounts, stock, the catalogue, recipes, history, favourites and notes are all in one SQLite
+        database file on your machine. There's no account with me, no sync and no telemetry.</p>
+      <p>Only the AI requests leave your network, sent to your chosen provider with your own key, and
+        only when you generate, ask for a new version or ask @kitchen. What each one contains is on
+        <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
     </section>
 
     <section id="trouble" class="doc-sec">
       <h2>Troubleshooting</h2>
 
-      <h3>I can't see My Kitchen in the Home Assistant 'App' store</h3>
-      <p>The store caches its list. <em>Settings → Apps → ⋮ → Check for updates</em>, or reload the
-        Supervisor, then look again. Apps also need Home Assistant <strong>OS</strong> or
-        <strong>Supervised</strong>, they aren't available on Container or Core installs.</p>
+      <h3>My Kitchen isn't in the Home Assistant app store</h3>
+      <p>The store caches its list. Use <em>Settings → Apps → ⋮ → Check for updates</em>, or reload the
+        Supervisor, and look again. Apps also need Home Assistant <strong>OS</strong> or
+        <strong>Supervised</strong>; they aren't available on Container or Core.</p>
 
       <h3>I've lost the first-run password</h3>
-      <p>It's printed once in the app's <em>Log</em> tab. If it's scrolled away, running
-        <code>flask set-password</code> from the app's shell sets a new one.</p>
+      <p>It's printed once in the app's <em>Log</em> tab. If it's gone, run
+        <code>flask set-password</code> from the app's shell to set a new one.</p>
 
       <h3>The sidebar entry hasn't changed after an update</h3>
-      <p>Changes to the sidebar panel need a full Home Assistant Core restart. Restarting the app
-        alone isn't enough.</p>
+      <p>Changes to the sidebar panel need a full Home Assistant Core restart; restarting the app isn't
+        enough.</p>
+
+      <h3>The app looks out of date after an update</h3>
+      <p>The app caches its styles on your phone. Close it fully and open it again.</p>
 
       <h3>Generation fails or returns nothing</h3>
-      <p>Check the provider and API key on the <em>Configuration</em> tab, and the app log for the
-        error. Switching the provider to <code>mock</code> is a quick way to test if the app itself is
-        fine.</p>
+      <p>Check the provider and API key on the <em>Configuration</em> tab, and the app's log for the
+        error. You may also have reached a daily limit; the <em>Usage</em> page shows where you are.
+        Setting the provider to <code>mock</code> is a quick way to check the rest of the app is
+        working.</p>
 
-      <h3>A recipe won't show up in suggestions</h3>
-      <p>Most often one of three things: an ingredient line isn't linked to your catalogue (open the
-        recipe and check the tags beside each ingredient), the recipe has no meal type tag, or one of
-        its required ingredients isn't in stock. Suggestions exclude anything they can't verify.</p>
+      <h3>A recipe doesn't show up in suggestions</h3>
+      <p>Usually one of three things: an ingredient line isn't linked to your catalogue (check the tags
+        next to each ingredient), the recipe has no meal type, or a required ingredient isn't in stock.</p>
 
-      <h3>“Add to home screen” installs Home Assistant, not the My Kitchen app</h3>
-      <p> Through Home Assistant ingress, the browser sees HA's overall app rather than My Kitchen. HA doesn't provide a cloud URL that directs straight to an 'app', so unfortunately a native 'install' is not possible.</p>
+      <h3>“Add to home screen” installs Home Assistant, not My Kitchen</h3>
+      <p>Through Home Assistant's ingress, the browser sees Home Assistant rather than My Kitchen, and
+        Home Assistant doesn't provide a URL that opens an app directly, so a separate install isn't
+        possible that way.</p>
 
-      <p class="muted">Still stuck? Open an issue on the
-        <a href="{{ site.github }}/issues" rel="noopener" target="_blank">GitHub repository</a>.</p>
+      <p class="muted">Something else? Open an issue on
+        <a href="{{ site.github }}/issues" rel="noopener" target="_blank">GitHub</a>.</p>
     </section>
 
     <div class="next-row">
       <a class="btn btn--secondary" href="{{ url_for('get_started') }}">{{ icon('arrow_forward') }} Get started</a>
-      <a class="btn btn--secondary" href="{{ url_for('approach') }}">{{ icon('tune') }} What it won't do</a>
-      <a class="btn btn--secondary" href="{{ url_for('faq') }}">{{ icon('info') }} FAQ</a>
+      <a class="btn btn--ghost" href="{{ url_for('approach') }}">Approach</a>
     </div>
   </article>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Highlight the contents entry for the section being read (desktop only;
+  // the contents list is hidden on phones).
+  (function () {
+    var links = document.querySelectorAll(".docs-toc nav a");
+    if (!links.length || !("IntersectionObserver" in window)) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove("is-current"); });
+        var a = byId[e.target.id]; if (a) a.classList.add("is-current");
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    document.querySelectorAll(".doc-sec[id]").forEach(function (s) { obs.observe(s); });
+  })();
+</script>
 {% endblock %}

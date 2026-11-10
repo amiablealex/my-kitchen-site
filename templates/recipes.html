@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Recipes: {{ site.name }}{% endblock %}
-{% block description %}Recipes from My Kitchen, the self-hosted household recipe app: most written by its creative assistant around whatever was in stock.{% endblock %}
+{% block description %}Recipes from our own My Kitchen, as the app exports them. Most were generated around what was in stock at the time.{% endblock %}
 
 {% block content %}
 <section class="page-head">
   <div class="wrap recipes-intro">
     <h1 class="display page-title">Recipes</h1>
-    <p class="lead">Recipes from our own My Kitchen, shown exactly as the app exports them. Most came
-      from its creative assistant, built around whatever happened to be in stock that day.</p>
-    <p class="muted">AI isn't a safety guarantee, so check the ingredients against any allergies before
-      you cook.</p>
+    <p class="lead">Recipes from our own My Kitchen, as the app exports them. Most were generated
+      around what we had in at the time.</p>
+    <p class="muted">An AI is not a safety guarantee: check the ingredients against any allergies
+      before you cook.</p>
   </div>
 </section>
 
@@ -33,7 +33,7 @@
       {% endfor %}
     </ul>
   {% else %}
-    <p class="muted center recipes-empty">No recipes published yet. Check back soon.</p>
+    <p class="muted recipes-empty">No recipes published yet.</p>
   {% endif %}
 </section>
 {% endblock %}
