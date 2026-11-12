@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Docs: {{ site.name }}{% endblock %}
-{% block description %}How My Kitchen works: stock, the ingredient catalogue, the Lets Cook wizard, suggestions, generation, versions, @kitchen questions, notes, the household and usage limits.{% endblock %}
+{% block description %}How My Kitchen works: stock, receipts, the ingredient catalogue, the Lets Cook wizard, suggestions, generation, versions, @kitchen questions, notes, adding and importing recipes, the household and usage limits.{% endblock %}
 
 {% block content %}
 <section class="page-head">
   <div class="wrap">
     <h1 class="display page-title">Docs</h1>
-    <p class="lead">How each part of the app works, as of {{ site.name }} 0.29.</p>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.36.</p>
   </div>
 </section>
 
@@ -17,6 +17,7 @@
     <nav>
       <a href="#overview">Overview</a>
       <a href="#stock">Stock</a>
+      <a href="#receipts">Receipts</a>
       <a href="#catalogue">Ingredients &amp; the catalogue</a>
       <a href="#wizard">The Lets Cook wizard</a>
       <a href="#suggestions">Suggestions</a>
@@ -25,11 +26,12 @@
       <a href="#servings">Servings</a>
       <a href="#versions">Versions</a>
       <a href="#notes">Notes &amp; @kitchen</a>
-      <a href="#writing">Writing your own recipes</a>
+      <a href="#adding">Adding recipes</a>
       <a href="#share">Print &amp; share</a>
       <a href="#household">Household &amp; diets</a>
       <a href="#usage">Usage &amp; limits</a>
       <a href="#data">Self-hosting &amp; data</a>
+      <a href="#own-model">Your own model</a>
       <a href="#trouble">Troubleshooting</a>
     </nav>
   </aside>
@@ -41,8 +43,8 @@
         household's recipes. Every ingredient line in a recipe is linked to an entry in the catalogue,
         so the app can check a recipe against your stock and tell you what you can cook now.</p>
       <p>AI is one way of getting recipes, not the core of the app. It's used when you ask for new
-        recipes, ask for a new version of one, or ask @kitchen a question. Everything else, including
-        suggestions, runs locally with no AI involved.</p>
+        recipes, ask for a new version of one, ask @kitchen a question, scan a receipt, or import a
+        recipe. Everything else, including suggestions, runs locally with no AI involved.</p>
     </section>
 
     <section id="stock" class="doc-sec">
@@ -54,12 +56,44 @@
       <p>The search box at the top filters what's in stock and, underneath, shows matching
         ingredients from your catalogue as dashed chips. Tap one to add it. If nothing in the
         catalogue matches, you can add it as a new ingredient there and then.</p>
+
+      <h3>Adding several at once</h3>
+      <p>Type or paste a list into the same box, such as “milk, eggs, leeks” or an online order
+        email, and it offers <em>Add these N items</em>. A sheet shows what it recognised, already
+        ticked: untick anything you don't want and tap <em>Mark as in stock</em>. Items already in
+        stock and staples are skipped and counted. <em>Undo</em> puts it all back.</p>
+      <p>The list is matched on your own machine first. Lines it can't place go to the AI as text,
+        just those lines, and anything still unknown is listed under <em>Needs a hand</em> rather
+        than dropped. Tap a line there to say what it was: pick from your catalogue, add it as a new
+        ingredient, or skip it. If you untick one of its guesses, that line comes back to
+        <em>Needs a hand</em> too.</p>
+
+      <h3>Used anything up?</h3>
+      <p>At the end of a recipe's method, <em>Finished? Mark anything you've used up</em> opens the
+        same sheet with that recipe's ingredients that are in stock, none ticked. Tap what's run
+        out.</p>
       <div class="callout">
         {{ icon('info') }}
         <div>Stock has no quantities, no counting down as you cook and no low-stock alerts. A count
           needs updating every time you cook and soon goes wrong; an in-or-out toggle stays right.
           <a href="{{ url_for('approach') }}#not-planned">More on that</a>.</div>
       </div>
+    </section>
+
+    <section id="receipts" class="doc-sec">
+      <h2>Receipts</h2>
+      <p>The receipt icon in the stock search box reads a photo of a shopping receipt. Take or choose
+        a photo, then drag the two bars so that only the item lines are between them. Only that part
+        is sent: the photo is cropped and shrunk on your phone before it's uploaded, and it isn't
+        kept. What the AI finds opens in the same sheet as a pasted list. Lines it couldn't match show
+        its guess (“Dragon fruit?”) under <em>Needs a hand</em>, ready to add as a new ingredient with
+        the category filled in.</p>
+      <p>A receipt can carry the shop, the date and time, and card and loyalty details, which is why
+        framing comes first. If you'd rather not send receipt photos at all, pasting the receipt's text
+        works too, or turn the feature off with <code>receipt_scanning</code>. More on
+        <a href="{{ url_for('privacy') }}#receipts">Privacy &amp; data</a>.</p>
+      <p class="muted">Receipt scanning only appears when your AI model can read images. Receipt reads
+        and list matches have their own daily limit.</p>
     </section>
 
     <section id="catalogue" class="doc-sec">
@@ -83,6 +117,8 @@
       <p>Each ingredient on a recipe shows its link as a small tag. <em>Edit links</em> lets you
         re-link a line, unlink it, or add a new catalogue ingredient and link it in one go. Your
         corrections are shared with the household and aren't changed behind your back.</p>
+      <p>Imported recipes keep each line's own wording (“2 garlic cloves, crushed”), linked where the
+        app recognises the ingredient. A line can stay unlinked and be linked later.</p>
 
       <h3>Equipment</h3>
       <p>Your equipment list (air fryer, wok, large baking dish) is under <em>Manage</em>. It goes into
@@ -121,6 +157,8 @@
       </ul>
       <p>Optional extras don't count against a recipe. The time band is shown but doesn't filter.
         It's a database query, so it's instant and costs nothing.</p>
+      <p>The home page runs the same check without a brief, and says how many saved recipes you could
+        make right now. Tap the line to see them.</p>
       <div class="callout">
         {{ icon('info') }}
         <div>If a required ingredient line isn't linked to your catalogue, the recipe is left out
@@ -156,7 +194,8 @@
     <section id="recipes" class="doc-sec">
       <h2>Recipes &amp; favourites</h2>
       <p>Every recipe has the same parts, whoever wrote it: intro, ingredients, prep, cook and optional
-        tips. A pinwheel dot marks an AI-generated recipe; a lime dot marks one written by hand.</p>
+        tips. A pinwheel dot marks an AI-generated recipe, a lime dot one written by hand, and an
+        orange dot an imported one. The list groups them the same way.</p>
       <p>The <em>Recipes</em> list shows each recipe on two lines: the title, then the cook's initial,
         date, cuisine, time and servings. A pair you haven't chosen between yet shows as one
         <em>Pick one</em> row. The search box filters by <strong>name, cuisine, meal type, cook and
@@ -220,19 +259,37 @@
       <p class="muted">Questions use a lighter, cheaper model by default, and have their own daily limit.</p>
     </section>
 
-    <section id="writing" class="doc-sec">
-      <h2>Writing your own recipes</h2>
-      <p>Recipes you write sit alongside the generated ones and are offered in suggestions in the same
-        way, so a family recipe or one from a book comes up when you have the ingredients.</p>
-      <p>Use <em>Create a recipe</em> on the Recipes page. You fill in the same sections as any other
-        recipe and pick ingredients from your catalogue, so every line is linked when you save.
-        Ingredient, prep, cook and tip rows can be dragged into order. Set the meal type, cuisine and
-        time band so it can be suggested. Edit it later from the recipe's <em>⋯</em> menu.</p>
-      <div class="callout">
-        {{ icon('info') }}
-        <div>Importing from a web page or a photo isn't available yet. It's first on the
-          <a href="{{ url_for('approach') }}#roadmap">roadmap</a>.</div>
-      </div>
+    <section id="adding" class="doc-sec">
+      <h2>Adding recipes</h2>
+      <p>Recipes you add sit alongside the generated ones and are offered in suggestions in the same
+        way, so a family recipe or one from a book comes up when you have the ingredients.
+        <em>Add a recipe</em> on the Recipes page offers three ways in.</p>
+
+      <h3>Write it yourself</h3>
+      <p>You fill in the same sections as any other recipe and pick ingredients from your catalogue,
+        so every line is linked when you save. Ingredient, prep, cook and tip rows can be dragged into
+        order. Set the meal type, cuisine and time band so it can be suggested. Edit it later from the
+        recipe's <em>⋯</em> menu.</p>
+
+      <h3>Import from the web</h3>
+      <p>Paste a link to a recipe. Most recipe sites include a structured copy of the recipe in the
+        page, and when there is one, only that is sent to the AI; otherwise the page's text is. You can
+        also paste a recipe's text instead, for a site that won't share its page or a recipe from a
+        message.</p>
+      <p>The AI lays it out as ingredients, prep, cook and tips <strong>without rewriting it</strong>:
+        the source's wording, quantities and method are kept, and only US cups and °F are converted.
+        It picks the meal type, cuisine and time. The result opens in the recipe form, headed
+        <em>Check the import</em>, and nothing is saved until you press <em>Save recipe</em>. The
+        recipe then shows where it came from (“from bbcgoodfood.com”), on its page and when printed.</p>
+
+      <h3>From a photo</h3>
+      <p>Photograph a cookbook page or a handwritten card. A recipe that runs over the page is fine:
+        add up to four pages and they're read together in one go, so ingredients on one page and the
+        method on the next come back as one recipe. If a page shows more than one recipe, say which
+        you want. The photos are shrunk on your phone and aren't kept; the recipe shows “from a
+        photo”. This option only appears when your AI model can read images.</p>
+      <p class="muted">Web and text imports use the lighter @kitchen model; photos use the main model,
+        which reads handwriting better. Imports count towards the household's daily limit.</p>
     </section>
 
     <section id="share" class="doc-sec">
@@ -296,7 +353,8 @@
         household, totals over recent days, a per-person breakdown and the most recent calls, each with
         its model, tokens and an estimated cost.</p>
       <p>The limits reset at midnight in your timezone. New recipes, new versions and retries share
-        the per-person generation limit; @kitchen questions have their own; and every call counts
+        the per-person generation limit; @kitchen questions have their own; receipt reads and list
+        matches have their own; imports count only towards the household; and every call counts
         towards the household total. The defaults and settings are under
         <a href="{{ url_for('get_started') }}#limits">Costs and limits</a>.</p>
     </section>
@@ -306,8 +364,29 @@
       <p>Accounts, stock, the catalogue, recipes, history, favourites and notes are all in one SQLite
         database file on your machine. There's no account with me, no sync and no telemetry.</p>
       <p>Only the AI requests leave your network, sent to your chosen provider with your own key, and
-        only when you generate, ask for a new version or ask @kitchen. What each one contains is on
+        only when you generate, ask for a new version, ask @kitchen, scan a receipt, match a pasted
+        list or import a recipe. What each one contains is on
         <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</p>
+    </section>
+
+    <section id="own-model" class="doc-sec">
+      <h2>Your own model</h2>
+      <div class="callout callout--warn">
+        {{ icon('info') }}
+        <div><strong>Untested.</strong> I've tried to let you use your own model, but I haven't been
+          able to test it with one. It will only be as good as your model.</div>
+      </div>
+      <p>Set <code>llm_provider</code> to <code>openai_compatible</code> to use any server that speaks
+        the OpenAI chat API: Ollama, LM Studio, llama.cpp, vLLM, or a cloud service such as
+        OpenRouter. Give it the server's address and the model's name; the settings are under
+        <a href="{{ url_for('get_started') }}#configure">Configuration</a>.</p>
+      <p>Recipe quality was tuned on Gemini. Smaller models write plainer recipes and may break the
+        format, which shows as a failed generation. <strong>They also follow allergy and dislike
+        rules less reliably</strong>, and the prompt is the only safeguard, so check recipes for
+        anyone with an allergy. A Raspberry Pi is too slow to run a useful model itself; a computer
+        with a recent graphics card or Apple Silicon is a better host. Turn on
+        <code>llm_images</code> only if the model reads images; otherwise receipts and photo imports
+        don't appear.</p>
     </section>
 
     <section id="trouble" class="doc-sec">
@@ -334,6 +413,15 @@
         error. You may also have reached a daily limit; the <em>Usage</em> page shows where you are.
         Setting the provider to <code>mock</code> is a quick way to check the rest of the app is
         working.</p>
+
+      <h3>There's no receipt icon, or no “From a photo”</h3>
+      <p>Both need an AI model that reads images. Gemini and Anthropic do; with your own model, turn
+        on <code>llm_images</code> if yours does. The receipt icon also needs
+        <code>receipt_scanning</code> on.</p>
+
+      <h3>An import says the site wouldn't share the page</h3>
+      <p>Some sites turn away requests that don't come from a browser. Open the recipe yourself, copy
+        it, and use <em>Or paste the recipe's text</em> instead.</p>
 
       <h3>A recipe doesn't show up in suggestions</h3>
       <p>Usually one of three things: an ingredient line isn't linked to your catalogue (check the tags

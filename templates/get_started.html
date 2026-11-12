@@ -91,10 +91,15 @@ python run.py</code></pre>
         <table>
           <thead><tr><th>Setting</th><th>What it does</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td><code>llm_provider</code></td><td><code>gemini</code>, <code>anthropic</code>, or <code>mock</code> (no API calls).</td><td><code>gemini</code></td></tr>
+            <tr><td><code>llm_provider</code></td><td><code>gemini</code>, <code>anthropic</code>, <code>openai_compatible</code> (your own model, untested), or <code>mock</code> (no API calls).</td><td><code>gemini</code></td></tr>
             <tr><td><code>gemini_api_key</code> / <code>anthropic_api_key</code></td><td>The key for your provider. Stored on your machine and only sent to that provider.</td><td>none</td></tr>
             <tr><td><code>llm_model</code></td><td>The model for new recipes and new versions. Blank uses the provider's default.</td><td><code>gemini-3.5-flash</code></td></tr>
             <tr><td><code>llm_qa_model</code></td><td>The model for @kitchen questions. Blank uses a lighter, cheaper model, falling back to the main one if it's unavailable.</td><td><code>gemini-3.5-flash-lite</code></td></tr>
+            <tr><td><code>llm_base_url</code></td><td>For <code>openai_compatible</code>: your model server's address, e.g. <code>http://192.168.1.20:11434</code> for Ollama.</td><td>none</td></tr>
+            <tr><td><code>llm_api_key</code></td><td>For <code>openai_compatible</code>, only if your server or service needs a key.</td><td>none</td></tr>
+            <tr><td><code>llm_images</code></td><td>For <code>openai_compatible</code>: whether your model reads images. Off hides receipt scanning and photo imports.</td><td><code>false</code></td></tr>
+            <tr><td><code>llm_job_timeout_minutes</code></td><td>How long a generation may take before it's treated as stuck. Raise it for a slow local model.</td><td><code>5</code></td></tr>
+            <tr><td><code>receipt_scanning</code></td><td>Shows the receipt icon on the Stock page. Turn off if you'd rather not send receipt photos at all.</td><td><code>true</code></td></tr>
             <tr><td><code>llm_temperature</code></td><td>Higher gives more varied recipes.</td><td><code>0.8</code></td></tr>
             <tr><td><code>llm_max_tokens</code></td><td>The output limit for one generation.</td><td><code>8000</code></td></tr>
             <tr><td><code>llm_recent_titles_n</code></td><td>How many recent recipe titles go in the brief, so it doesn't repeat itself.</td><td><code>10</code></td></tr>
@@ -104,8 +109,8 @@ python run.py</code></pre>
       </div>
 
       <h3 id="limits" class="anchored">Costs and limits</h3>
-      <p>The app is free. AI calls are billed to your own API key: new recipes, new versions, retries
-        and @kitchen questions. Stock, suggestions, browsing and everything else run locally. In my
+      <p>The app is free. AI calls are billed to your own API key: new recipes, new versions, retries,
+        @kitchen questions, receipt reads, list matches and imports. Stock, suggestions, browsing and everything else run locally. In my
         house it comes to pennies a month, but it's worth setting a spending cap with your provider
         as well.</p>
       <p>Daily limits stop a busy evening (or a bug) running up a bill. They reset at midnight, and
@@ -116,16 +121,18 @@ python run.py</code></pre>
           <tbody>
             <tr><td><code>limit_generations_per_user_day</code></td><td>New recipes, new versions and retries, per person</td><td><code>10</code></td></tr>
             <tr><td><code>limit_questions_per_user_day</code></td><td>@kitchen questions, per person</td><td><code>20</code></td></tr>
-            <tr><td><code>limit_household_calls_day</code></td><td>All AI calls, for the whole household</td><td><code>40</code></td></tr>
+            <tr><td><code>limit_receipt_reads_per_user_day</code></td><td>Receipt reads and pasted-list matches, per person</td><td><code>10</code></td></tr>
+            <tr><td><code>limit_household_calls_day</code></td><td>All AI calls, for the whole household, imports included</td><td><code>40</code></td></tr>
             <tr><td><code>limit_regenerates_per_brief</code></td><td>Times you can ask for two more from one brief</td><td><code>3</code></td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout">
         {{ icon('info') }}
-        <div><strong>No local model yet.</strong> The provider code is designed to take more providers,
-          and a local one such as Ollama is on the <a href="{{ url_for('approach') }}#roadmap">roadmap</a>,
-          but today generation needs a cloud provider. See <a href="{{ url_for('privacy') }}">Privacy &amp; data</a>.</div>
+        <div><strong>Your own model is untested.</strong> <code>openai_compatible</code> lets you use
+          Ollama, LM Studio or a similar server, but I haven't been able to test it, and it will only
+          be as good as your model. Its calls show tokens but no cost on the <em>Usage</em> page.
+          See <a href="{{ url_for('docs') }}#own-model">Your own model</a>.</div>
       </div>
     </div>
 
@@ -144,9 +151,13 @@ python run.py</code></pre>
           flour) should be a staple, so it stays off the stock list and can always be used.</li>
         <li><strong>Add your equipment</strong> under <em>Manage</em>, so recipes are written for your
           kitchen.</li>
-        <li><strong>Set your stock</strong> with one pass through the fridge and cupboards.</li>
-        <li><strong>Cook something.</strong> Tap <em>Lets Cook</em>. Suggestions will be empty at first;
-          typing in two or three recipes you already make is the quickest way to fill them out.</li>
+        <li><strong>Set your stock</strong> with one pass through the fridge and cupboards. Typing it
+          as a list (“milk, eggs, leeks, …”) into the stock search adds it in one go, and after a
+          shop, the receipt icon does the same from a photo.</li>
+        <li><strong>Add a few recipes you already make.</strong> <em>Recipes → Add a recipe</em>: import
+          them from a link or a photo of the book, or write them in. Suggestions are empty until you
+          have some.</li>
+        <li><strong>Cook something.</strong> Tap <em>Lets Cook</em>.</li>
       </ol>
     </div>
 

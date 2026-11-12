@@ -30,7 +30,8 @@
       <h3>Stock quantities and low-stock alerts</h3>
       <p>Once stock holds numbers, it needs updating every time you cook, and within a couple of weeks
         it's wrong, at which point the suggestions are wrong too. In or out is less precise, but it's
-        something I still keep up to date.</p>
+        something I still keep up to date. The effort has gone into making that quicker instead:
+        pasting a list, scanning a receipt, and marking what a recipe used up.</p>
 
       <h3>Shopping lists, or “what am I missing?”</h3>
       <p>The app is for cooking from what you have. A recipe you can't make tonight doesn't get cooked
@@ -69,13 +70,12 @@
 
     <div class="gs-block">
       <h2 id="roadmap" class="anchored">Roadmap</h2>
+      <p>The last roadmap is done: importing from the web and from photos arrived in 0.34 and 0.35,
+        and an (untested) option for your own model in 0.36, alongside quicker ways to keep stock
+        right. Next:</p>
       <ul>
-        <li><strong>Importing recipes from the web.</strong> Most recipe sites publish the recipe as
-          structured data (schema.org) that can be read straight into the app's format, often with no
-          AI at all. Typing recipes in is the main thing that slows down building up a collection, so
-          this comes first.</li>
-        <li><strong>Importing from a photo</strong>, for cookbooks.</li>
-        <li><strong>A local model option</strong>, so generation can stay on your network too.</li>
+        <li><strong>Home Assistant entities.</strong> What's in stock and what you could cook tonight,
+          as sensors for dashboards and automations.</li>
       </ul>
       <p class="muted">Roughly in that order, with no dates. What's actually shipped is on
         <a href="{{ url_for('releases') }}">Releases</a>.</p>

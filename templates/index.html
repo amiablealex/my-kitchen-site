@@ -26,7 +26,8 @@
   <p class="lead">A recipe app for one household, self-hosted and open source.</p>
   <p>I built it for my own kitchen. It keeps track of what's in stock, holds the recipes we cook,
     and shows which of them we can make with what's in. When none of them fit, it asks an AI model
-    for two new ones.</p>
+    for two new ones. Recipes can also be written in, imported from a web page or read from a
+    photo of a cookbook.</p>
   <div class="btn-row">
     <a class="btn btn--primary" href="{{ url_for('get_started') }}">Get started {{ icon('arrow_forward') }}</a>
     <a class="btn btn--secondary" href="{{ url_for('docs') }}">{{ icon('menu_book') }} Docs</a>
@@ -36,8 +37,10 @@
   <dl class="facts">
     <div><dt>Runs on</dt><dd>Home Assistant (as an add-on), Docker, or plain Python.</dd></div>
     <div><dt>Built with</dt><dd>Flask, SQLite and server-rendered templates. No JavaScript framework and no build step.</dd></div>
-    <div><dt>AI</dt><dd>Google Gemini or Anthropic, with your own API key. Used to write, revise and answer
-      questions about recipes; everything else runs locally. A mock provider lets you try it without a key.</dd></div>
+    <div><dt>AI</dt><dd>Google Gemini or Anthropic, with your own API key, or (untested) your own model
+      through an OpenAI-compatible server such as Ollama. Used to write and revise recipes, answer
+      questions, read receipts and lay out imported recipes; everything else runs locally. A mock
+      provider lets you try it without a key.</dd></div>
     <div><dt>Cost</dt><dd>Free, MIT licence. API use is billed to your key: pennies a month for a household,
       under daily limits you set.</dd></div>
     {% if latest %}<div><dt>Latest</dt><dd><a href="{{ url_for('releases') }}">{{ latest.version }}</a>{% if latest.title %} · {{ latest.title }}{% endif %}</dd></div>{% endif %}
@@ -52,16 +55,35 @@
       <div>
         <h3>Stock</h3>
         <p>Each ingredient is either in or out, grouped by section, with an optional note such as
-          “needs using”. Staples like oil and spices are assumed and kept off the list.</p>
+          “needs using”. Staples like oil and spices are assumed and kept off the list. Paste a
+          shopping list to add several at once, and mark what a recipe used up when you've cooked it.</p>
       </div>
     </li>
     <li class="feature">
       <span class="bead k3">{{ icon('menu_book') }}</span>
       <div>
         <h3>Recipes</h3>
-        <p>Generated recipes and ones you write yourself sit in one list. Every ingredient line is
-          linked to your ingredient catalogue, which is what lets the app check a recipe against
-          your stock.</p>
+        <p>Generated recipes, ones you write yourself and imported ones sit in one list. Ingredient
+          lines are linked to your ingredient catalogue, which is what lets the app check a recipe
+          against your stock.</p>
+      </div>
+    </li>
+    <li class="feature">
+      <span class="bead k3">{{ icon('photo_camera') }}</span>
+      <div>
+        <h3>Importing recipes</h3>
+        <p>Paste a link to a recipe, paste its text, or photograph a cookbook page or a handwritten
+          card, over several pages if it runs on. It comes in with its own wording, laid out like the
+          rest, for you to check before saving.</p>
+      </div>
+    </li>
+    <li class="feature">
+      <span class="bead k2">{{ icon('receipt') }}</span>
+      <div>
+        <h3>Receipts</h3>
+        <p>Photograph a shopping receipt, frame just the item lines, and the app offers to mark what
+          you bought as in stock. Only the framed part is sent, and lines it can't place are listed
+          for you rather than dropped.</p>
       </div>
     </li>
     <li class="feature">
@@ -69,8 +91,8 @@
       <div>
         <h3>Cooking from what's in</h3>
         <p>A short wizard asks what you want to use up, the meal, cuisine, time and who's eating,
-          then lists the saved recipes you can make now. That part is a database query, with no AI
-          involved.</p>
+          then lists the saved recipes you can make now. The home page says how many you could cook
+          before you start. That part is a database query, with no AI involved.</p>
       </div>
     </li>
     <li class="feature">
@@ -110,8 +132,8 @@
       <span class="bead k2">{{ icon('lock') }}</span>
       <div>
         <h3>Your data</h3>
-        <p>Everything is stored in one SQLite file on your machine. Only the brief for a request
-          leaves your network, sent to your provider with your key.
+        <p>Everything is stored in one SQLite file on your machine. Only what an AI request needs
+          leaves your network, sent to your provider with your key, and photos are never kept.
           <a href="{{ url_for('privacy') }}">Privacy &amp; data</a></p>
       </div>
     </li>

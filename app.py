@@ -40,9 +40,10 @@ SITE = {
     "name": "My Kitchen",
     "tagline": "A self-hosted recipe app for a household.",
     "blurb": (
-        "My Kitchen keeps track of what's in stock, holds your household's recipes and "
-        "shows which ones you can cook now. Self-hosted and open source; runs as a Home "
-        "Assistant add-on or a Docker container."
+        "My Kitchen keeps track of what's in stock, holds your household's recipes, "
+        "including ones imported from websites and photos, and shows which ones you can "
+        "cook now. Self-hosted and open source; runs as a Home Assistant add-on or a "
+        "Docker container."
     ),
     "url": "https://my-kitchen.io",
     "github": "https://github.com/amiablealex/my-kitchen",

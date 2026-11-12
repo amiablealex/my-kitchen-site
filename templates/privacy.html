@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
 {% block title %}Privacy &amp; data: {{ site.name }}{% endblock %}
-{% block description %}What stays on your machine, what's sent to the AI provider, and exactly what each request contains.{% endblock %}
+{% block description %}What stays on your machine, what's sent to the AI provider, exactly what each request contains, and how receipt photos are handled.{% endblock %}
 
 {% block content %}
 <section class="page-head">
@@ -23,8 +23,8 @@
 
     <div class="gs-block">
       <h2>Sent to your AI provider</h2>
-      <p>The app calls your chosen provider, with your own API key, in three situations and no others.
-        Browsing, filtering, suggestions and stock never leave your network.</p>
+      <p>The app calls your chosen provider, with your own API key, in the situations below and no
+        others. Browsing, filtering, suggestions and ordinary stock changes never leave your network.</p>
 
       <h3>New recipes</h3>
       <p>When you tap <em>Generate recipes</em> (or ask for two more), the request contains:</p>
@@ -47,11 +47,38 @@
         viewing it at, the last few questions and answers on that recipe, what's in stock, your
         staples, and the allergy and dislike tags of everyone in the household (tag names only).</p>
 
+      <h3 id="receipts" class="anchored">Receipts</h3>
+      <p>A receipt can carry the shop's name and address, the date and time, your card's last digits,
+        and your loyalty card number, so the app makes you frame the item lines before anything is
+        sent. The crop and a size reduction happen on your phone, so only the framed part leaves it,
+        and not even your own server sees the rest. That crop goes to your provider for one read, with
+        your ingredient catalogue (names only) so it can match the items. It isn't written to disk or
+        logged, and the reply is checked against your catalogue before anything is shown.</p>
+      <p>If you'd rather not send receipt photos, paste the receipt's text into the stock search
+        instead, or turn receipt scanning off with <code>receipt_scanning</code>.</p>
+
+      <h3>Pasted lists</h3>
+      <p>A list pasted into the stock search is matched on your own machine first. Only the lines it
+        can't place are sent, as text, with your ingredient catalogue's names.</p>
+
+      <h3>Imported recipes</h3>
+      <p>For a link, the app fetches the page itself and sends the recipe's structured data where the
+        site provides it, or the page's text where it doesn't. Pasted recipe text is sent as written.
+        For photos, the pages you add are shrunk on your phone, sent together, and not kept.</p>
+
       <p>Account details, people's names, favourites and ordinary notes are never sent.</p>
       <div class="callout">
         {{ icon('info') }}
+        <div>Check how your provider treats what you send. Some free tiers use submitted content,
+          images included, to improve their products and allow human review; paid, billing-enabled
+          API projects generally don't. Google applies its paid-tier data terms to the Gemini API's
+          free quota too in the UK, EEA and Switzerland. Elsewhere, a billing-enabled project is the
+          safer choice.</div>
+      </div>
+      <div class="callout">
+        {{ icon('info') }}
         <div>A small machine like a Raspberry Pi can't run a model that writes recipes this well, so
-          generation uses a cloud model while everything else stays local. I'd rather say that plainly
+          by default the AI features use a cloud model while everything else stays local. I'd rather say that plainly
           than call the app fully private.</div>
       </div>
       <p class="muted">Dietary tags are free text you write yourself. If you name one after a medical
@@ -61,14 +88,14 @@
 
     <div class="gs-block">
       <h2>Running fully local</h2>
-      <p>Not possible yet. Providers sit behind one interface (that's how <code>mock</code>, Gemini and
-        Anthropic work), and a local model such as Ollama is on the
-        <a href="{{ url_for('approach') }}#roadmap">roadmap</a>. On capable hardware that would keep
-        everything on your network; on a small Pi it would cost recipe quality and speed, which is why
-        it hasn't come first.</p>
-      <p>Meanwhile, <code>mock</code> mode runs the whole app with no API key and no outbound calls. You
-        lose generation and @kitchen, but stock, suggestions, your own recipes and everything else work
-        as normal.</p>
+      <p>Possible, but untested. The <code>openai_compatible</code> provider talks to a model server on
+        your own network, such as Ollama or LM Studio, and then nothing leaves it: generation,
+        @kitchen, imports, list matching and, with a model that reads images, receipts. I haven't been
+        able to test it, and it will only be as good as your model; small models are less reliable
+        with allergy rules. See <a href="{{ url_for('docs') }}#own-model">Your own model</a>.</p>
+      <p><code>mock</code> mode also runs the whole app with no API key and no outbound calls. You lose
+        generation, @kitchen, receipts and imports, but stock, suggestions, your own recipes and
+        everything else work as normal.</p>
     </div>
 
     <div class="gs-block">
