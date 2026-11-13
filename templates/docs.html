@@ -169,7 +169,8 @@
       <div class="callout">
         {{ icon('info') }}
         <div>If a required ingredient line isn't linked to your catalogue, the recipe is left out
-          rather than offered on a guess. Expect few suggestions at first; they grow with your recipes.</div>
+          rather than offered on a guess. Expect few suggestions at first; they grow with your recipes.
+          The <em>Unlinked ingredients</em> filter on <em>Recipes</em> lists the ones to fix.</div>
       </div>
     </section>
 
@@ -214,6 +215,10 @@
         reading “3 recipes use brown sugar”. This only finds ingredient lines that are linked. A
         count shows while you're filtering, and the filter is kept when you open a recipe and come
         back. Favourites works the same way.</p>
+      <p>When any recipe has an ingredient line that isn't linked, the filters gain a last group,
+        <em>Needs a hand</em>, with <em>Unlinked ingredients</em>. Pick it for a to-do list: open
+        each recipe, use <em>Link it</em>, and come back. Linked recipes drop off the list, and the
+        group disappears once there's nothing left to link.</p>
       <p>Favourites are per person. Meal type and cuisine can be changed on any recipe with
         <em>Edit tags</em>, which matters because they decide whether it appears in suggestions.</p>
 
@@ -438,8 +443,10 @@
         it, and use <em>Or paste the recipe's text</em> instead.</p>
 
       <h3>A recipe doesn't show up in suggestions</h3>
-      <p>Usually one of three things: an ingredient line isn't linked to your catalogue (check the tags
-        next to each ingredient), the recipe has no meal type, or a required ingredient isn't in stock.</p>
+      <p>Usually one of three things: an ingredient line isn't linked to your catalogue (the recipe
+        says so under <em>Ingredients</em>, and the <em>Unlinked ingredients</em> filter on
+        <em>Recipes</em> lists every such recipe), the recipe has no meal type, or a required
+        ingredient isn't in stock.</p>
 
       <h3>“Add to home screen” installs Home Assistant, not My Kitchen</h3>
       <p>Through Home Assistant's ingress, the browser sees Home Assistant rather than My Kitchen, and
