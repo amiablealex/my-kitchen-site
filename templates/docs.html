@@ -7,7 +7,7 @@
 <section class="page-head">
   <div class="wrap">
     <h1 class="display page-title">Docs</h1>
-    <p class="lead">How each part of the app works, as of {{ site.name }} 0.37.</p>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.38.</p>
   </div>
 </section>
 
@@ -112,7 +112,12 @@
         <li><strong>Veg:</strong> Vegetable, Herb.</li>
         <li><strong>Other:</strong> Fruit, Dairy, Spice, Oil &amp; vinegar, Condiment, Pantry, Baking.</li>
       </ul>
-      <p>Rename, retire and add your own under <em>Manage</em>. Category names are shared across
+      <p>Rename, retire and add your own under <em>Manage</em>. An ingredient's page says how many
+        recipes use it. If you find you have the same thing twice (“Baby button mushrooms” and
+        “Button mushrooms”), use <em>Merge into…</em> in its <em>⋯</em> menu: every recipe line
+        linked to the duplicate moves to the one you keep, which counts as in stock if either was,
+        and the duplicate is removed. Deleting an ingredient instead leaves the recipes that used it
+        with an unlinked line, and it tells you how many. Category names are shared across
         sections, so a second catch-all needs its own name, such as “Other protein”. Installs from
         before 0.37.0 keep the categories they started with.</p>
       <p>An ingredient is either:</p>
@@ -135,6 +140,12 @@
         the recipe can't be checked against your stock and won't be suggested. A note under
         <em>Ingredients</em> says so, with <em>Link it</em> to fix it. Staples such as water and salt
         are worth having in your catalogue for this reason.</p>
+      <p>A line that offers a choice, “1 cup cauliflower or broccoli”, can link both, and either
+        one in stock is enough. Imports and generated recipes do this when both ingredients are in
+        your catalogue; on any other line that says “or”, <em>Edit links</em> has <em>Link the other
+        one too</em>. It's deliberately limited to lines whose own wording says “or”, with one
+        alternative each: it isn't a list of substitutes. For those, ask
+        <a href="#notes">@kitchen</a>.</p>
 
       <h3>Equipment</h3>
       <p>Your equipment list (air fryer, wok, large baking dish) is under <em>Manage</em>. It goes into
@@ -226,10 +237,12 @@
         reading “3 recipes use brown sugar”. This only finds ingredient lines that are linked. A
         count shows while you're filtering, and the filter is kept when you open a recipe and come
         back. Favourites works the same way.</p>
-      <p>When any recipe has an ingredient line that isn't linked, the filters gain a last group,
+      <p>When any recipe that could be suggested has an ingredient line that isn't linked, the
+        filters gain a last group,
         <em>Needs a hand</em>, with <em>Unlinked ingredients</em>. Pick it for a to-do list: open
         each recipe, use <em>Link it</em>, and come back. Linked recipes drop off the list, and the
-        group disappears once there's nothing left to link.</p>
+        group disappears once there's nothing left to link. A pair you haven't chosen between isn't
+        included: unchosen recipes never come up in suggestions, so their links don't matter.</p>
       <p>Favourites are per person. Meal type and cuisine can be changed on any recipe with
         <em>Edit tags</em>, which matters because they decide whether it appears in suggestions.</p>
 
