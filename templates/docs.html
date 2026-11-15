@@ -7,7 +7,7 @@
 <section class="page-head">
   <div class="wrap">
     <h1 class="display page-title">Docs</h1>
-    <p class="lead">How each part of the app works, as of {{ site.name }} 0.38.</p>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.39.</p>
   </div>
 </section>
 
@@ -120,6 +120,16 @@
         with an unlinked line, and it tells you how many. Category names are shared across
         sections, so a second catch-all needs its own name, such as “Other protein”. Installs from
         before 0.37.0 keep the categories they started with.</p>
+      <p>Some ingredients are kinds of another: fusilli, spaghetti and penne are kinds of pasta. On
+        the general ingredient's page, <em>Kinds</em> → <em>+ Add kinds</em> lets you tick several at
+        once (or set <em>A kind of</em> on the specific one). A recipe that asks for pasta can then be
+        cooked with any of them in stock, and its tick says which. It only works one way: a recipe
+        that asks for spaghetti still needs spaghetti. One level only, so a kind can't have kinds of
+        its own.</p>
+      <p>Retiring hides an ingredient from Stock and Lets Cook, and recipes count it as out of stock.
+        A retired ingredient's page has <em>Reactivate</em> at the top. Retired ingredients can also
+        be selected together (press and hold, or <em>Select all</em> on the Retired list) and
+        reactivated in one go.</p>
       <p>An ingredient is either:</p>
       <ul>
         <li><strong>A core ingredient:</strong> something that comes and goes, checked in and out on
@@ -142,8 +152,8 @@
         are worth having in your catalogue for this reason.</p>
       <p>A line that offers a choice, “1 cup cauliflower or broccoli”, can link both, and either
         one in stock is enough. Imports and generated recipes do this when both ingredients are in
-        your catalogue; on any other line that says “or”, <em>Edit links</em> has <em>Link the other
-        one too</em>. It's deliberately limited to lines whose own wording says “or”, with one
+        your catalogue; on any other line that says “or”, <em>Edit links</em> shows both links as rows,
+        with <em>Add the other ingredient</em> for the second. It's deliberately limited to lines whose own wording says “or”, with one
         alternative each: it isn't a list of substitutes. For those, ask
         <a href="#notes">@kitchen</a>.</p>
 
