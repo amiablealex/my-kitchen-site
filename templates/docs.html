@@ -7,7 +7,7 @@
 <section class="page-head">
   <div class="wrap">
     <h1 class="display page-title">Docs</h1>
-    <p class="lead">How each part of the app works, as of {{ site.name }} 0.36.</p>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.37.</p>
   </div>
 </section>
 
@@ -83,8 +83,9 @@
 
     <section id="receipts" class="doc-sec">
       <h2>Receipts</h2>
-      <p>The receipt icon in the stock search box reads a photo of a shopping receipt. Take or choose
-        a photo, then drag the two bars so that only the item lines are between them. Only that part
+      <p>The receipt icon in the stock search box reads a photo of a shopping receipt. Use
+        <em>Take a photo</em> to open the camera, or <em>Choose a photo</em> for one you've already
+        taken, then drag the two bars so that only the item lines are between them. Only that part
         is sent: the photo is cropped and shrunk on your phone before it's uploaded, and it isn't
         kept. What the AI finds opens in the same sheet as a pasted list, with <strong>every line it
         read</strong> and the receipt's own text, so you can check it against the paper: things you
@@ -102,10 +103,18 @@
 
     <section id="catalogue" class="doc-sec">
       <h2>Ingredients &amp; the catalogue</h2>
-      <p>Each catalogue ingredient has a category (Protein, Carbohydrate, Vegetable, Dairy, Spice, Oil,
-        Pantry, Herb, Fruit, Condiment). Categories fall into four sections, protein, carb, veg and
-        other, which set the colours and the lanes in the wizard. A new install starts with about 170
-        ingredients; rename, retire and add your own under <em>Manage</em>.</p>
+      <p>Each catalogue ingredient has a category, and categories fall into four sections, protein,
+        carb, veg and other, which set the colours and the lanes in the wizard. A new install starts
+        with about 170 ingredients in these categories:</p>
+      <ul>
+        <li><strong>Protein:</strong> Meat, Fish, Beans &amp; pulses, Other protein.</li>
+        <li><strong>Carb:</strong> Pasta, Bread, Grain, Other carb.</li>
+        <li><strong>Veg:</strong> Vegetable, Herb.</li>
+        <li><strong>Other:</strong> Fruit, Dairy, Spice, Oil &amp; vinegar, Condiment, Pantry, Baking.</li>
+      </ul>
+      <p>Rename, retire and add your own under <em>Manage</em>. Category names are shared across
+        sections, so a second catch-all needs its own name, such as “Other protein”. Installs from
+        before 0.37.0 keep the categories they started with.</p>
       <p>An ingredient is either:</p>
       <ul>
         <li><strong>A core ingredient:</strong> something that comes and goes, checked in and out on
@@ -203,7 +212,9 @@
       <h2>Recipes &amp; favourites</h2>
       <p>Every recipe has the same parts, whoever wrote it: intro, ingredients, prep, cook and optional
         tips. A small petal marks where it came from: four colours for an AI-generated recipe, lime
-        for one written by hand and orange for an imported one.</p>
+        for one written by hand and orange for an imported one. The line under the title says it in
+        words: <em>AI generated</em>, the site it was imported from, <em>from a photo</em>, or what
+        you've written in <em>Where it's from</em>.</p>
       <p>The <em>Recipes</em> list is one list, newest first, with each recipe on two lines beside its
         petal: the title, then its meal, cuisine, cook, when and whether it's quick or relaxed. A pair you
         haven't chosen between yet shows as one <em>Pick one</em> row.</p>
@@ -222,6 +233,21 @@
       <p>Favourites are per person. Meal type and cuisine can be changed on any recipe with
         <em>Edit tags</em>, which matters because they decide whether it appears in suggestions.</p>
 
+      <h3>What you have</h3>
+      <p>Each ingredient line on a recipe has a mark where the bullet would be: a green tick if you
+        have it, a small pink dot if you don't, and a dash if the line isn't linked to your catalogue,
+        so the app can't tell. Staples count as ones you have. An optional extra you don't have gets
+        no mark, because it never stops you cooking. Open a recipe and the pink dots are your
+        shopping list. The marks follow your stock: they update when you link a line, and when you
+        come back from the Stock screen.</p>
+
+      <h3>Keep screen on</h3>
+      <p>The first method heading (Prep, or Cook if there's no prep) has a <em>Keep screen on</em>
+        button. Tap it and your phone won't dim or lock while the recipe is open; it turns green and
+        reads <em>Screen stays on</em>. Tap again to stop. Leaving the recipe stops it too, and it
+        isn't remembered for the next one. The browser only allows this on a secure (HTTPS) address;
+        elsewhere the button doesn't appear. See <a href="#no-screen-on">Troubleshooting</a>.</p>
+
       <h3>Archive</h3>
       <p>The <em>⋯</em> menu on a recipe has <em>Archive this recipe</em>. Archived recipes are hidden
         from your recipes, favourites and suggestions, but nothing is deleted: <em>Recipes →
@@ -231,11 +257,12 @@
 
     <section id="servings" class="doc-sec">
       <h2>Servings</h2>
-      <p>The stepper above a recipe's ingredients scales the amounts for any number of servings. This
-        happens on your screen only: nothing is saved, and the print view always uses the recipe's own
-        count. The method isn't changed, so quantities and times in the steps stay as written. To have
-        those rewritten too, tap <em>Rewrite the method for this many</em>, which opens a
-        <a href="#versions">new version</a> with that change filled in.</p>
+      <p>The <em>Serves</em> stepper in a recipe's <em>Ingredients</em> heading scales the amounts for
+        any number of servings. This happens on your screen only: nothing is saved, and the print view
+        always uses the recipe's own count. The method isn't changed, so quantities and times in the
+        steps stay as written; a line under the heading says so while you're scaled, with
+        <em>Reset</em>. To have the method rewritten for a different number, ask for it as a
+        <a href="#versions">new version</a>.</p>
     </section>
 
     <section id="versions" class="doc-sec">
@@ -287,8 +314,12 @@
       <h3>Write it yourself</h3>
       <p>You fill in the same sections as any other recipe and pick ingredients from your catalogue,
         so every line is linked when you save. Ingredient, prep, cook and tip rows can be dragged into
-        order. Set the meal type, cuisine and time band so it can be suggested. Edit it later from the
-        recipe's <em>⋯</em> menu.</p>
+        order. Set the meal type, cuisine and time band so it can be suggested, and if you like, say
+        <em>Where it's from</em> (“Mum's cookbook”), which shows under the title. Edit it later from
+        the recipe's <em>⋯</em> menu.</p>
+      <p><em>Save</em> and <em>Cancel</em> stay at the bottom of the screen while you scroll the form,
+        moving aside while the keyboard is open. If you've changed something and try to leave without
+        saving, the browser asks first. <em>Cancel</em> on an edit takes you back to the recipe.</p>
 
       <h3>Import from the web</h3>
       <p>Paste a link to a recipe. Most recipe sites include a structured copy of the recipe in the
@@ -299,14 +330,18 @@
         the source's wording, quantities and method are kept, and only US cups and °F are converted.
         It picks the meal type, cuisine and time. The result opens in the recipe form, headed
         <em>Check the import</em>, and nothing is saved until you press <em>Save recipe</em>. The
-        recipe then shows where it came from (“from bbcgoodfood.com”), on its page and when printed.</p>
+        recipe then shows where it came from (“from bbcgoodfood.com”), on its page and when printed.
+        Write something in <em>Where it's from</em>, now or later, and it shows instead (“from BBC
+        Good Food”), still linked to the original page. The link itself can't be changed. A recipe
+        from pasted text shows nothing unless you fill this in.</p>
 
       <h3>From a photo</h3>
-      <p>Photograph a cookbook page or a handwritten card. A recipe that runs over the page is fine:
+      <p>Photograph a cookbook page or a handwritten card with <em>Take a photo</em>, or use
+        <em>Choose photos</em> for ones you've already taken. A recipe that runs over the page is fine:
         add up to four pages and they're read together in one go, so ingredients on one page and the
         method on the next come back as one recipe. If a page shows more than one recipe, say which
-        you want. The photos are shrunk on your phone and aren't kept; the recipe shows “from a
-        photo”. This option only appears when your AI model can read images.</p>
+        you want. The photos are shrunk on your phone and aren't kept. The recipe shows “from a
+        photo”, or the book's name if you add it under <em>Where it's from</em>. This option only appears when your AI model can read images.</p>
       <p class="muted">Web and text imports use the lighter @kitchen model; photos use the main model,
         which reads handwriting better. Imports count towards the household's daily limit.</p>
     </section>
@@ -447,6 +482,21 @@
         says so under <em>Ingredients</em>, and the <em>Unlinked ingredients</em> filter on
         <em>Recipes</em> lists every such recipe), the recipe has no meal type, or a required
         ingredient isn't in stock.</p>
+
+      <h3 id="no-screen-on">There's no “Keep screen on” button</h3>
+      <p>Browsers only let a page keep the screen awake on a secure address: HTTPS, or
+        <code>localhost</code>. Opened as plain <code>http://</code> on your network (the Pi's address
+        and port, say), the button is hidden. Through Home Assistant over HTTPS (Nabu Casa or your
+        own certificate) or behind an HTTPS reverse proxy, it shows. To use it on a plain local
+        address in Chrome, open <code>chrome://flags/#unsafely-treat-insecure-origin-as-secure</code>,
+        add your address (<code>http://192.168.1.20:5000</code>, say), and relaunch Chrome. That's a
+        setting in your own browser, not a change to the app. Chrome flags are experimental, so an
+        update can reset it.</p>
+
+      <h3>“Take a photo” opens the photo picker instead of the camera</h3>
+      <p>Whether a web page can open the camera is up to the browser or app it's running in. Chrome
+        opens the camera; some apps' built-in browsers don't, and show the picker instead. Take the
+        photo with your camera app and use <em>Choose a photo</em>.</p>
 
       <h3>“Add to home screen” installs Home Assistant, not My Kitchen</h3>
       <p>Through Home Assistant's ingress, the browser sees Home Assistant rather than My Kitchen, and
