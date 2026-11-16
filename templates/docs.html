@@ -7,7 +7,7 @@
 <section class="page-head">
   <div class="wrap">
     <h1 class="display page-title">Docs</h1>
-    <p class="lead">How each part of the app works, as of {{ site.name }} 0.39.</p>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.40.</p>
   </div>
 </section>
 
@@ -103,42 +103,32 @@
 
     <section id="catalogue" class="doc-sec">
       <h2>Ingredients &amp; the catalogue</h2>
-      <p>Each catalogue ingredient has a category, and categories fall into four sections, protein,
-        carb, veg and other, which set the colours and the lanes in the wizard. A new install starts
-        with about 170 ingredients in these categories:</p>
+      <p>Your catalogue is the list of every ingredient the app knows about. Recipes link their
+        ingredient lines to it, and that link is what lets a recipe be checked against your stock.
+        Each ingredient has a category, and categories fall into four sections, protein, carb, veg
+        and other, which set the colours and the lanes in the wizard. Everything here is under
+        <em>Manage → Ingredients</em>; an ingredient's page says how many recipes use it.</p>
+
+      <h3 id="categories" class="anchored">Categories</h3>
+      <p>A new install starts with about 170 ingredients in these categories:</p>
       <ul>
         <li><strong>Protein:</strong> Meat, Fish, Beans &amp; pulses, Other protein.</li>
         <li><strong>Carb:</strong> Pasta, Bread, Grain, Other carb.</li>
         <li><strong>Veg:</strong> Vegetable, Herb.</li>
         <li><strong>Other:</strong> Fruit, Dairy, Spice, Oil &amp; vinegar, Condiment, Pantry, Baking.</li>
       </ul>
-      <p>Rename, retire and add your own under <em>Manage</em>. An ingredient's page says how many
-        recipes use it. If you find you have the same thing twice (“Baby button mushrooms” and
-        “Button mushrooms”), use <em>Merge into…</em> in its <em>⋯</em> menu: every recipe line
-        linked to the duplicate moves to the one you keep, which counts as in stock if either was,
-        and the duplicate is removed. Deleting an ingredient instead leaves the recipes that used it
-        with an unlinked line, and it tells you how many. Category names are shared across
-        sections, so a second catch-all needs its own name, such as “Other protein”. Installs from
-        before 0.37.0 keep the categories they started with.</p>
-      <p>Some ingredients are kinds of another: fusilli, spaghetti and penne are kinds of pasta. On
-        the general ingredient's page, <em>Kinds</em> → <em>+ Add kinds</em> lets you tick several at
-        once (or set <em>A kind of</em> on the specific one). A recipe that asks for pasta can then be
-        cooked with any of them in stock, and its tick says which. It only works one way: a recipe
-        that asks for spaghetti still needs spaghetti. One level only, so a kind can't have kinds of
-        its own.</p>
-      <p>Retiring hides an ingredient from Stock and Lets Cook, and recipes count it as out of stock.
-        A retired ingredient's page has <em>Reactivate</em> at the top. Retired ingredients can also
-        be selected together (press and hold, or <em>Select all</em> on the Retired list) and
-        reactivated in one go.</p>
-      <p>An ingredient is either:</p>
-      <ul>
-        <li><strong>A core ingredient:</strong> something that comes and goes, checked in and out on
-          the Stock screen.</li>
-        <li><strong>A staple:</strong> oil, salt, common spices, flour. Assumed always available and
-          kept off the stock list. Staples are managed under <em>Manage</em>.</li>
-      </ul>
+      <p>Rename, reorder and add your own. Category names are shared across sections, so a second
+        catch-all needs its own name, such as “Other protein”. Installs from before 0.37.0 keep the
+        categories they started with.</p>
 
-      <h3>Ingredient links</h3>
+      <h3 id="staples" class="anchored">Staples</h3>
+      <p>An ingredient is either a <strong>core ingredient</strong>, something that comes and goes and
+        is checked in and out on the Stock screen, or a <strong>staple</strong>: oil, salt, common
+        spices, flour. Staples are assumed always available, kept off the stock list, and never stop a
+        recipe from being suggested. Make something a staple when you'd never want to tick it in and
+        out.</p>
+
+      <h3 id="links" class="anchored">Ingredient links</h3>
       <p>When a recipe is saved, each ingredient line is matched to a catalogue entry. The matching is
         plain code, not AI: normalising the text, a list of synonyms, and fuzzy matching above a
         confidence threshold. A line it isn't confident about is left unlinked rather than guessed.</p>
@@ -148,14 +138,79 @@
       <p>Imported recipes keep each line's own wording (“2 garlic cloves, crushed”), linked where the
         app recognises the ingredient. A line can stay unlinked and be linked later, but until it is,
         the recipe can't be checked against your stock and won't be suggested. A note under
-        <em>Ingredients</em> says so, with <em>Link it</em> to fix it. Staples such as water and salt
-        are worth having in your catalogue for this reason.</p>
+        <em>Ingredients</em> says so, with <em>Link it</em> to fix it, and <em>Recipes → Unlinked
+        ingredients</em> lists every recipe that needs a hand. Staples such as water and salt are
+        worth having in your catalogue for this reason.</p>
+
+      <h3 id="which-one" class="anchored">Which one do I want?</h3>
+      <p>Four tools deal with ingredients that are related. They look alike but do different jobs,
+        and the difference is what they do to suggestions: whether a recipe still comes up when you
+        have something close to what it asks for.</p>
+      <ul>
+        <li><strong>The same thing under two names → merge.</strong> “Baby button mushrooms” and
+          “Button mushrooms”. Two entries for one thing split your recipes: some link to one, some
+          to the other, and only the one you've ticked in stock counts, so half of them drop out of
+          suggestions. Merging leaves one ingredient that every recipe links to.</li>
+        <li><strong>A particular kind of a general thing → a kind.</strong> Fusilli and spaghetti are
+          kinds of pasta. A recipe that asks for pasta should still come up when fusilli is what's in
+          the cupboard, so a kind counts towards its general ingredient. It doesn't work the other
+          way: a recipe that asks for spaghetti wants spaghetti, so having fusilli, or “pasta” ticked
+          in stock, doesn't make it cookable. Use kinds when you want both: generous matching for
+          recipes that don't mind, exact matching for ones that do.</li>
+        <li><strong>The recipe itself offers a choice → an “or” link.</strong> “1 cup cauliflower or
+          broccoli”. The recipe says either will do, so either one in stock satisfies that line.
+          It belongs to that one line of that one recipe, not to the ingredients, so it can't make
+          other recipes more lenient than they say.</li>
+        <li><strong>Something that could stand in → ask @kitchen.</strong> Courgette for carrot, bread
+          flour for plain. Whether a swap works depends on the dish, so it isn't recorded anywhere
+          that would change suggestions. Ask <a href="#notes">@kitchen</a> on the recipe instead.</li>
+      </ul>
+
+      <h3 id="kinds" class="anchored">Kinds</h3>
+      <p>A kind is a particular variety of a more general ingredient: fusilli, spaghetti and penne are
+        kinds of pasta; basmati and arborio are kinds of rice; red onion is a kind of onion. Recipes
+        are written both ways (“150g dried pasta”, “200g spaghetti”), and kinds let each be treated
+        the way it means:</p>
+      <ul>
+        <li><strong>A recipe that asks for the general one</strong> (pasta) is cookable if pasta or
+          any of its kinds is in stock. On the recipe, the tick says which (“In stock
+          (Fusilli)”).</li>
+        <li><strong>A recipe that asks for a particular kind</strong> (spaghetti) still needs that
+          kind. Fusilli doesn't count, and neither does “pasta” ticked in stock, because you can't
+          tell which shape that is.</li>
+      </ul>
+      <p>So with fusilli in, a pasta bake comes up in suggestions and spaghetti carbonara doesn't,
+        which is what you'd decide yourself standing at the cupboard.</p>
+      <p><strong>Setting them up.</strong> Open the general ingredient (Pasta) and use <em>Kinds →
+        + Add kinds</em> to tick several at once. Or, on a particular one (Fusilli), set <em>A kind
+        of</em> and save. Either way, add the specific kinds you actually buy as their own catalogue
+        ingredients first. A new install starts with a few already set (red onion, new potatoes,
+        cherry tomatoes); the rest depends on what your household keeps.</p>
+      <p><strong>Limits.</strong> One level only: a kind can't have kinds of its own, and an
+        ingredient with kinds can't become a kind. A retired kind doesn't count. Deleting a general
+        ingredient leaves its kinds as ordinary ingredients; merging it hands them to the one you
+        keep.</p>
+
+      <h3 id="or-links" class="anchored">“Or” links</h3>
       <p>A line that offers a choice, “1 cup cauliflower or broccoli”, can link both, and either
         one in stock is enough. Imports and generated recipes do this when both ingredients are in
-        your catalogue; on any other line that says “or”, <em>Edit links</em> shows both links as rows,
-        with <em>Add the other ingredient</em> for the second. It's deliberately limited to lines whose own wording says “or”, with one
-        alternative each: it isn't a list of substitutes. For those, ask
-        <a href="#notes">@kitchen</a>.</p>
+        your catalogue. On any line that says “or”, <em>Edit links</em> shows both links as rows,
+        with <em>Add the other ingredient</em> for the second. It's deliberately limited to lines
+        whose own wording says “or”, with one alternative each.</p>
+
+      <h3 id="merging" class="anchored">Merging duplicates</h3>
+      <p>If you find the same thing twice, open the one you don't want and use <em>Merge into…</em>
+        in its <em>⋯</em> menu. Every recipe line linked to it moves to the one you keep, which
+        counts as in stock if either was; its kinds move too, and then it's removed. It can't be
+        undone, so it asks first.</p>
+
+      <h3 id="retiring" class="anchored">Retiring and deleting</h3>
+      <p>Retiring hides an ingredient from Stock and Lets Cook, and recipes count it as out of stock,
+        but it stays in your history and can come back. A retired ingredient's page has
+        <em>Reactivate</em> at the top, and retired ingredients can be selected together (press and
+        hold, or <em>Select all</em> on the Retired list) and reactivated in one go.</p>
+      <p>Deleting removes it for good. Recipes that used it are left with an unlinked line, and it
+        tells you how many. If it's really a duplicate, merge instead.</p>
 
       <h3>Equipment</h3>
       <p>Your equipment list (air fryer, wok, large baking dish) is under <em>Manage</em>. It goes into
@@ -344,7 +399,7 @@
         moving aside while the keyboard is open. If you've changed something and try to leave without
         saving, the browser asks first. <em>Cancel</em> on an edit takes you back to the recipe.</p>
 
-      <h3>Import from the web</h3>
+      <h3 id="import" class="anchored">Import from the web</h3>
       <p>Paste a link to a recipe. Most recipe sites include a structured copy of the recipe in the
         page, and when there is one, only that is sent to the AI; otherwise the page's text is. You can
         also paste a recipe's text instead, for a site that won't share its page or a recipe from a
@@ -358,7 +413,7 @@
         Good Food”), still linked to the original page. The link itself can't be changed. A recipe
         from pasted text shows nothing unless you fill this in.</p>
 
-      <h3>From a photo</h3>
+      <h3 id="photo" class="anchored">From a photo</h3>
       <p>Photograph a cookbook page or a handwritten card with <em>Take a photo</em>, or use
         <em>Choose photos</em> for ones you've already taken. A recipe that runs over the page is fine:
         add up to four pages and they're read together in one go, so ingredients on one page and the
@@ -403,7 +458,7 @@
         </table>
       </div>
 
-      <h3>When they conflict</h3>
+      <h3 id="conflicts" class="anchored">When they conflict</h3>
       <p>If you pick chicken to use up while cooking for a vegetarian, something has to give. The
         order, strongest first:</p>
       <ol>
@@ -504,9 +559,12 @@
       <p>Usually one of three things: an ingredient line isn't linked to your catalogue (the recipe
         says so under <em>Ingredients</em>, and the <em>Unlinked ingredients</em> filter on
         <em>Recipes</em> lists every such recipe), the recipe has no meal type, or a required
-        ingredient isn't in stock.</p>
+        ingredient isn't in stock. The recipe's pink dots show which. If it asks for a particular kind
+        (spaghetti) and you have another (fusilli), that's deliberate; see
+        <a href="#kinds">Kinds</a>. If you have the same thing under two names, see
+        <a href="#merging">Merging duplicates</a>.</p>
 
-      <h3 id="no-screen-on">There's no “Keep screen on” button</h3>
+      <h3 id="no-screen-on" class="anchored">There's no “Keep screen on” button</h3>
       <p>Browsers only let a page keep the screen awake on a secure address: HTTPS, or
         <code>localhost</code>. Opened as plain <code>http://</code> on your network (the Pi's address
         and port, say), the button is hidden. Through Home Assistant over HTTPS (Nabu Casa or your
