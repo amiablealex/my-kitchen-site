@@ -7,7 +7,7 @@
 <section class="page-head">
   <div class="wrap">
     <h1 class="display page-title">Docs</h1>
-    <p class="lead">How each part of the app works, as of {{ site.name }} 0.40.</p>
+    <p class="lead">How each part of the app works, as of {{ site.name }} 0.42.</p>
   </div>
 </section>
 
@@ -249,6 +249,10 @@
       </ul>
       <p>Optional extras don't count against a recipe. The time band is shown but doesn't filter.
         It's a database query, so it's instant and costs nothing.</p>
+      <p>A recipe with <a href="#versions">versions</a> is checked version by version, but only ever
+        shows once. You get the newest version if it fits; if it doesn't, the newest one that does,
+        marked with a small <strong>v2</strong> badge so you know it isn't the latest. A cut-down
+        version you made for a bare cupboard can come up when the full one can't.</p>
       <p>The home page runs the same check without a brief, and says how many saved recipes you could
         make right now. Tap the line to see them.</p>
       <div class="callout">
@@ -290,10 +294,13 @@
         tips. A small petal marks where it came from: four colours for an AI-generated recipe, lime
         for one written by hand and orange for an imported one. The line under the title says it in
         words: <em>AI generated</em>, the site it was imported from, <em>from a photo</em>, or what
-        you've written in <em>Where it's from</em>.</p>
+        you've written in <em>Where it's from</em>. A new version of an imported recipe keeps the
+        credit: “AI version of a recipe from bbcgoodfood.com”, linked to the original.</p>
       <p>The <em>Recipes</em> list is one list, newest first, with each recipe on two lines beside its
         petal: the title, then its meal, cuisine, cook, when and whether it's quick or relaxed. A pair you
-        haven't chosen between yet shows as one <em>Pick one</em> row.</p>
+        haven't chosen between yet shows as one <em>Pick one</em> row. A recipe with versions shows
+        once, as its newest version, with a badge such as <strong>v3</strong>; filtering by
+        <em>Imported</em> or <em>By hand</em> still finds one you've made a version of.</p>
       <p>The search box does the organising. The filter button at its end shows every filter at
         once: who made it, meal, cuisine and cook. Tap it again to close them. One tap adds a
         filter, so your own recipes are two taps away, and filters stack (“By hand” and
@@ -331,6 +338,10 @@
         from your recipes, favourites and suggestions, but nothing is deleted: <em>Recipes →
         Archive</em> lists them with a <em>Restore</em> button. A failed generation in the list has a
         small × to clear it.</p>
+      <p>On a recipe with versions the menu says <em>Archive recipe (all 3 versions)</em> and asks
+        first, because it archives every version together; the Archive shows them as one row, and
+        <em>Restore</em> brings them all back. To get rid of one version instead, see
+        <a href="#removing-versions">Removing a version</a>.</p>
     </section>
 
     <section id="servings" class="doc-sec">
@@ -345,16 +356,75 @@
 
     <section id="versions" class="doc-sec">
       <h2>Versions</h2>
-      <p>An AI-generated recipe can be changed by asking for a new version. Tap <em>+ New version</em>
-        at the end of the version trail at the top of the recipe, describe the change (“make it
-        lighter”, “swap the broccoli for green beans”), or tap one of the suggested changes, then
-        <em>Create</em>.</p>
-      <p>Before anything is sent, a confirmation shows your change and explains that the AI will
-        rewrite the recipe as the next version and the current one is kept. Only the newest version
-        can be changed again. Each version in the trail is labelled with the change that made it, and
-        an earlier version shows a link back to the latest.</p>
-      <p class="muted">A new version keeps the original's meal type and who's eating, with their
-        current dietary tags. It counts towards the daily generation limit.</p>
+      <p>Any recipe can be changed by asking for a new version: AI-generated, written by hand or
+        imported. Tap the <strong>+</strong> beside the version you're looking at in the trail at the
+        top of the recipe, describe the change (“make it lighter”, “add some vegetables”, “bake it
+        instead of air frying”), or tap a suggested change, then <em>Create</em>. The AI rewrites the
+        whole recipe as the next version; the one you started from is kept exactly as it is.</p>
+      <p>Before anything is sent, a confirmation shows your change and what will happen. A new
+        version counts towards the daily generation limit.</p>
+
+      <h3 id="version-stock" class="anchored">Stick to what's in stock</h3>
+      <p>The new-version panel has a <em>Stick to what's in stock</em> box, ticked to start with. It
+        decides whether your current stock is part of the request.</p>
+      <ul>
+        <li><strong>Ticked:</strong> the AI is given what's in stock now, plus your staples and
+          equipment. Anything it <em>adds</em> comes from those, plus at most two optional extras.
+          What's <em>already in the recipe</em> stays, even if you've run out of it since: a version
+          is a change to the recipe, not a refit to this week's cupboard. Those lines just show a pink
+          dot. If your request names an ingredient you don't have (“work some mushrooms in”), it's
+          used anyway, as a proper ingredient.</li>
+        <li><strong>Unticked:</strong> free rein. Your stock isn't sent at all, so the AI uses
+          whatever suits the change. Nothing is marked as an optional extra; the pink dots on the new
+          version show what you'd need to buy.</li>
+      </ul>
+      <p>To have a recipe refitted to what you've got now, swapping out the things you're missing,
+        tap the suggested change <em>Make it work with what I've got</em>.</p>
+
+      <h3>Questions go to @kitchen</h3>
+      <p>If what you type reads like a question or a swap (“can I use thighs instead?”, “swap the
+        cream for yoghurt”), the confirmation offers <em>Ask @kitchen</em> first. That posts it as a
+        question in the recipe's <a href="#notes">notes</a>, where it's answered without rewriting
+        anything, and costs less. <em>Make version N anyway</em> carries on. It's a simple check on the
+        wording, so it can be wrong in either direction; both buttons are always there.</p>
+
+      <h3 id="version-tree" class="anchored">The version trail</h3>
+      <p>Versions are numbered in the order they were made, and a number never changes. Each one in
+        the trail is labelled with the change that made it; tap one to open it.</p>
+      <p>A new version is made from the version you're looking at, so you can go back to an earlier
+        one and try a different change. That starts a <strong>branch</strong>: a second row in the
+        trail, joined by a line to the version it came from. A straight run of versions stays on one
+        row. The line from the original to the version you're on is lit, so you can see how you got
+        there.</p>
+      <p>The newest version is the one that stands for the recipe: it's the row in <em>Recipes</em>,
+        and the version suggestions try first. On any other version, a line under the trail says so,
+        with <em>Go to</em> the newest.</p>
+
+      <h3>What changed</h3>
+      <p>Under the title, a later version shows the change it was made with (“From v1, you asked: …”)
+        and a line saying what happened to the ingredients: what was added, marking anything you don't
+        have, what was dropped, and any change in servings. The app works this out by comparing the
+        two versions' ingredient lines; it isn't the AI's own account. A change that only touches the
+        method, such as baking instead of air frying, reads <em>Same ingredients</em>.</p>
+
+      <h3 id="own-recipe-versions" class="anchored">Versions of your own recipes</h3>
+      <p>Recipes you wrote or imported get new versions the same way, and the new version is written
+        by the AI, so it's marked as AI-made (with the original's credit kept). To fix the original by
+        hand, use <em>Edit recipe</em> instead.</p>
+      <p>Your own recipes weren't written around anyone's dietary tags, so the tags work differently
+        here. The allergies and dislikes of <strong>everyone in the household</strong> stop the AI
+        <em>adding</em> anything on them, but anything already in the recipe stays unless you ask: a
+        satay you chose to keep won't lose its peanuts because you asked for it to serve four. Diets
+        aren't applied. The new version shows the usual allergy reminder.</p>
+
+      <h3 id="removing-versions" class="anchored">Removing a version</h3>
+      <p><em>Remove this version</em> in the <em>⋯</em> menu removes the last version on a branch. It
+        isn't offered on the original, or on a version something else was made from (remove that one
+        first). A removed version goes to the Archive and can be restored; restoring it also brings
+        back any versions it was made from.</p>
+      <p class="muted">A new version of an AI recipe keeps its meal type and who it was made for, with
+        their current dietary tags. A new version of your own recipe takes its meal type, cuisine,
+        time and servings from the recipe itself.</p>
     </section>
 
     <section id="notes" class="doc-sec">
@@ -469,7 +539,9 @@
         <li><strong>Diets,</strong> which shape the recipe but don't override a deliberate pick.</li>
       </ol>
       <p>A tag only reaches the brief if it's assigned to someone who's eating. You can assign it to
-        people when you create it.</p>
+        people when you create it. New versions of recipes you wrote or imported use the whole
+        household's allergies and dislikes in a different way; see
+        <a href="#own-recipe-versions">Versions of your own recipes</a>.</p>
       <div class="callout callout--warn">
         {{ icon('info') }}
         <div><strong>Allergies:</strong> an AI is not a safety guarantee. Allergies go into the brief
@@ -563,6 +635,18 @@
         (spaghetti) and you have another (fusilli), that's deliberate; see
         <a href="#kinds">Kinds</a>. If you have the same thing under two names, see
         <a href="#merging">Merging duplicates</a>.</p>
+
+      <h3>A new version used something I don't have</h3>
+      <p>Three ways that happens, all on purpose. With <em>Stick to what's in stock</em> ticked, the
+        AI may add up to two optional extras, and anything already in the recipe stays even if you've
+        run out; and an ingredient you named in the request is used whether you have it or not. With
+        the box unticked, anything goes. To swap out what you're missing, ask for <em>Make it work
+        with what I've got</em>. See <a href="#version-stock">Stick to what's in stock</a>.</p>
+
+      <h3>A suggestion opened an older version of a recipe</h3>
+      <p>Suggestions check every version and offer the newest one you can cook. When that isn't the
+        latest, the card carries a badge such as <strong>v2</strong>. See
+        <a href="#suggestions">Suggestions</a>.</p>
 
       <h3 id="no-screen-on" class="anchored">There's no “Keep screen on” button</h3>
       <p>Browsers only let a page keep the screen awake on a secure address: HTTPS, or
